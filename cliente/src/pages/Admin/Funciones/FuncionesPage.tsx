@@ -1,4 +1,4 @@
-import ListaFunciones from "@/components/admin/Productos/ListaFunciones";
+import ListaFunciones from "@/components/admin/Funciones/ListaFunciones";
 
 function FuncionesPage() {
   return <ListaFunciones />;

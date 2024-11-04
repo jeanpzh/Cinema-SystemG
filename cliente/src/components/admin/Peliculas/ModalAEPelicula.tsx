@@ -122,6 +122,21 @@ const ModalAEPelicula: React.FC<ModalAEPeliculaProps> = ({
             </span>
           )}
         </div>
+        <div>
+          <Label htmlFor="Sinopsis">Sinopsis</Label>
+          <Input
+            {...register("Sinopsis", {
+              required: "Este campo es requerido",
+            })}
+            type="text"
+            className="mt-1 block w-full"
+          />
+          {errors.Duracion && (
+            <span className="text-red-500 text-sm">
+              {errors.Duracion.message}
+            </span>
+          )}
+        </div>
 
         <div className="flex justify-end space-x-2">
           <DialogClose asChild>

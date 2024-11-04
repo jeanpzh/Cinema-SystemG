@@ -12,9 +12,7 @@ import ModalAEPelicula from "./ModalAEPelicula";
 
 function ListaPeliculas() {
   const [isOpen, setIsOpen] = useState(false);
-  const [currentMovie, setCurrentMovie] = useState<Pelicula | undefined>(
-    undefined
-  );
+  const [currentMovie, setCurrentMovie] = useState<Pelicula>();
 
   const {
     items: peliculas,
@@ -69,7 +67,7 @@ function ListaPeliculas() {
             handleEdit(pelicula);
           }
         }}
-        eliminarItem={(id) => deletePelicula("movies",id)}
+        eliminarItem={(id) => deletePelicula("movies", id)}
         idKey="Codigo_Pelicula"
       />
     </MainWrapper>

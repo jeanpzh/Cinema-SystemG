@@ -43,6 +43,7 @@ function useTable<T extends Record<string, any>>({
 
   const addItem = async (item: T) => {
     try {
+      // Asignamos la id generada por el servidor al nuevo item:
       const newItem = await agregarItem(item, url);
       setData((prev) => [
         ...prev,
@@ -51,7 +52,6 @@ function useTable<T extends Record<string, any>>({
           [idKey]: newItem,
         },
       ]);
-      // Asignamos la id generada por el servidor al nuevo item:
     } catch (error) {
       console.error("Error adding item:", error);
     }

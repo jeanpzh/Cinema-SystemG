@@ -22,6 +22,7 @@ export interface HorarioOpcion {
   Hora_Inicio: string;
 }
 export interface Funcion {
+  Codigo_Funcion?: string;
   Codigo_Pelicula: string;
   Codigo_Sala: string;
   Codigo_Horario: string;

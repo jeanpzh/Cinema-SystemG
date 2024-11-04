@@ -5,14 +5,14 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
 import ModalAEFuncion from "./ModalAEFuncion";
 import useTable from "@/hooks/useTable";
-import { Funcion, OpcionElegida } from "@/constants/models";
+import { Funcion } from "@/constants/models";
 import { funcion_columnas } from "@/constants/columns";
 import { useState } from "react";
 import useOpciones from "@/hooks/useOpciones";
 
 function ListaFunciones() {
   const [isOpen, setIsOpen] = useState(false);
-  const [currentMovie, setCurrentMovie] = useState<Funcion | undefined>(
+  const [currentFuncion, setCurrentFuncion] = useState<Funcion | undefined>(
     undefined
   );
 
@@ -20,28 +20,34 @@ function ListaFunciones() {
     addItem: agregarPelicula,
     items: funciones,
     deleteItem: eliminarFuncion,
-  } = useTable<OpcionElegida>({ idKey: "Codigo_Funcion", url: "funcion" });
+    updateItem: actualizarFuncion,
+  } = useTable<Funcion>({ idKey: "Codigo_Funcion", url: "funcion" });
 
   const { opciones } = useOpciones("opciones");
 
   const handleSubmit = async (data: Funcion) => {
-    if (currentMovie) {
-      console.log("currentMovie", currentMovie);
-    } else {
+    if (currentFuncion) {
+      if (currentFuncion?.Codigo_Funcion)
+        actualizarFuncion(currentFuncion.Codigo_Funcion, {
+          Codigo_Pelicula: data.Codigo_Pelicula,
+          Codigo_Horario: data.Codigo_Horario,
+          Codigo_Sala: data.Codigo_Sala,
+        });
+    } else
       await agregarPelicula({
         Codigo_Pelicula: data.Codigo_Pelicula,
         Codigo_Horario: data.Codigo_Horario,
         Codigo_Sala: data.Codigo_Sala,
       });
-    }
+
     setIsOpen(false);
     setCurrentMovie(undefined);
   };
 
-  /*  const handleEdit = (funcion: Funcion) => {
+  const handleEdit = (funcion: Funcion) => {
     setCurrentMovie(funcion);
     setIsOpen(true);
-  }; */
+  };
 
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open);
