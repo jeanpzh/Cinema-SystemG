@@ -26,13 +26,14 @@ function ListaFunciones() {
   const { opciones } = useOpciones("opciones");
 
   const handleSubmit = async (data: Funcion) => {
-    if (currentFuncion) {
-      if (currentFuncion?.Codigo_Funcion)
-        actualizarFuncion(currentFuncion.Codigo_Funcion, {
-          Codigo_Pelicula: data.Codigo_Pelicula,
-          Codigo_Horario: data.Codigo_Horario,
-          Codigo_Sala: data.Codigo_Sala,
-        });
+    console.log(data);
+    if (currentFuncion && currentFuncion.Codigo_Funcion) {
+      console.log("actualizar", currentFuncion.Codigo_Funcion);
+      actualizarFuncion(currentFuncion.Codigo_Funcion, {
+        Codigo_Pelicula: data.Codigo_Pelicula,
+        Codigo_Horario: data.Codigo_Horario,
+        Codigo_Sala: data.Codigo_Sala,
+      });
     } else
       await agregarPelicula({
         Codigo_Pelicula: data.Codigo_Pelicula,
@@ -41,18 +42,18 @@ function ListaFunciones() {
       });
 
     setIsOpen(false);
-    setCurrentMovie(undefined);
+    setCurrentFuncion(undefined);
   };
 
   const handleEdit = (funcion: Funcion) => {
-    setCurrentMovie(funcion);
+    setCurrentFuncion(funcion);
     setIsOpen(true);
   };
 
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open);
     if (!open) {
-      setCurrentMovie(undefined);
+      setCurrentFuncion(undefined);
     }
   };
   return (
@@ -76,6 +77,12 @@ function ListaFunciones() {
         idKey="Codigo_Funcion"
         items={funciones}
         eliminarItem={(id) => eliminarFuncion("funcion", id)}
+        editarItem={(id) => {
+          const funcion = funciones.find((p) => p.Codigo_Funcion === id);
+          if (funcion) {
+            handleEdit(funcion);
+          }
+        }}
       />
     </MainWrapper>
   );

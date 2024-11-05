@@ -1,5 +1,5 @@
 // ListaPeliculas.tsx
-import React, { useState } from "react";
+import { useState } from "react";
 import CustomTable from "@/components/common/CustomTable";
 import MainWrapper from "@/components/common/MainWrapper";
 import { Button } from "@/components/ui/button";
@@ -22,11 +22,11 @@ function ListaPeliculas() {
   } = useTable<Pelicula>({ idKey: "Codigo_Pelicula", url: "movies" });
 
   const handleSubmit = async (data: Pelicula) => {
-    if (currentMovie) {
-      await updatePelicula(currentMovie.Codigo_Pelicula, data);
-    } else {
+    if (currentMovie) await updatePelicula(currentMovie.Codigo_Pelicula, data);
+    else {
       await addPelicula(data);
     }
+
     setIsOpen(false);
     setCurrentMovie(undefined);
   };
@@ -62,7 +62,7 @@ function ListaPeliculas() {
         headers={pelicula_columnas.map((column) => column.Header) as string[]}
         items={peliculas}
         editarItem={(id) => {
-          const pelicula = peliculas.find((p) => p.Codigo_Pelicula === id);
+          const pelicula = peliculas.find((p) => p.Codigo_Pelicula === id)
           if (pelicula) {
             handleEdit(pelicula);
           }

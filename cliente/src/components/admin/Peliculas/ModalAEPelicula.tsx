@@ -1,7 +1,11 @@
 // ModalAEPelicula.tsx
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Pelicula } from "@/constants/models";
+import {
+  Pelicula,
+  MOCK_OPTIONS_PELICULAS_GENEROS,
+  CLASIFICACION_OPTIONS,
+} from "@/constants/models";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -11,6 +15,13 @@ import {
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectItem,
+} from "@/components/ui/select";
+import CustomSelectContent from "@/components/common/CustomSelectContent";
 
 interface ModalAEPeliculaProps {
   peliculaActual?: Pelicula;
@@ -29,17 +40,15 @@ const ModalAEPelicula: React.FC<ModalAEPeliculaProps> = ({
     register,
     handleSubmit: handleFormSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<Pelicula>({
     defaultValues: peliculaActual || {},
   });
 
   useEffect(() => {
-    if (type.toLowerCase() === "agregar") {
-      reset({});
-    } else {
-      reset(peliculaActual || {});
-    }
+    if (type.toLowerCase() === "agregar") reset({});
+    else reset(peliculaActual || {});
   }, [peliculaActual, reset, type]);
 
   if (isLoading) {
@@ -54,32 +63,59 @@ const ModalAEPelicula: React.FC<ModalAEPeliculaProps> = ({
       </DialogHeader>
       <form onSubmit={handleFormSubmit(handleSubmit)} className="space-y-4">
         <div>
-          <Label htmlFor="Nombre_Pelicula">Nombre de la Película</Label>
+          <Label htmlFor="Nombre_Pelicula">Película</Label>
           <Input
-            id="Nombre_Pelicula"
             {...register("Nombre_Pelicula", {
               required: "Este campo es requerido",
             })}
             type="text"
             className="mt-1 block w-full"
           />
-          {errors.Nombre_Pelicula && (
+          {errors.Codigo_Pelicula && (
             <span className="text-red-500 text-sm">
-              {errors.Nombre_Pelicula.message}
+              {errors.Codigo_Pelicula.message}
+            </span>
+          )}
+        </div>
+
+        <div>
+          <Label htmlFor="Genero">Género</Label>
+          <Select onValueChange={(value) => setValue("Genero", value)}>
+            <SelectTrigger>
+              <SelectValue placeholder="Seleccione un género" />
+            </SelectTrigger>
+            <CustomSelectContent label="Géneros">
+              {MOCK_OPTIONS_PELICULAS_GENEROS.map((genero) => (
+                <SelectItem key={genero.value} value={genero.value}>
+                  {genero.label}
+                </SelectItem>
+              ))}
+            </CustomSelectContent>
+          </Select>
+          {errors.Genero && (
+            <span className="text-red-500 text-sm">
+              {errors.Genero.message}
             </span>
           )}
         </div>
 
         <div>
           <Label htmlFor="Clasificacion">Clasificación</Label>
-          <Input
-            id="Clasificacion"
-            {...register("Clasificacion", {
-              required: "Este campo es requerido",
-            })}
-            type="text"
-            className="mt-1 block w-full"
-          />
+          <Select onValueChange={(value) => setValue("Clasificacion", value)}>
+            <SelectTrigger>
+              <SelectValue placeholder="Seleccione una clasificación" />
+            </SelectTrigger>
+            <CustomSelectContent label="Clasificaciones">
+              {CLASIFICACION_OPTIONS.map((clasificacion) => (
+                <SelectItem
+                  key={clasificacion.value}
+                  value={clasificacion.value}
+                >
+                  {clasificacion.label}
+                </SelectItem>
+              ))}
+            </CustomSelectContent>
+          </Select>
           {errors.Clasificacion && (
             <span className="text-red-500 text-sm">
               {errors.Clasificacion.message}
@@ -90,7 +126,6 @@ const ModalAEPelicula: React.FC<ModalAEPeliculaProps> = ({
         <div>
           <Label htmlFor="Duracion">Duración (min)</Label>
           <Input
-            id="Duracion"
             {...register("Duracion", {
               required: "Este campo es requerido",
               valueAsNumber: true,
@@ -107,22 +142,6 @@ const ModalAEPelicula: React.FC<ModalAEPeliculaProps> = ({
         </div>
 
         <div>
-          <Label htmlFor="Genero">Género</Label>
-          <Input
-            id="Genero"
-            {...register("Genero", {
-              required: "Este campo es requerido",
-            })}
-            type="text"
-            className="mt-1 block w-full"
-          />
-          {errors.Genero && (
-            <span className="text-red-500 text-sm">
-              {errors.Genero.message}
-            </span>
-          )}
-        </div>
-        <div>
           <Label htmlFor="Sinopsis">Sinopsis</Label>
           <Input
             {...register("Sinopsis", {
@@ -131,9 +150,9 @@ const ModalAEPelicula: React.FC<ModalAEPeliculaProps> = ({
             type="text"
             className="mt-1 block w-full"
           />
-          {errors.Duracion && (
+          {errors.Sinopsis && (
             <span className="text-red-500 text-sm">
-              {errors.Duracion.message}
+              {errors.Sinopsis.message}
             </span>
           )}
         </div>

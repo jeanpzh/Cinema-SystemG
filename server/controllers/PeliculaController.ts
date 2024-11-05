@@ -18,20 +18,6 @@ export const añadirPelicula = async (
 ): Promise<void> => {
   const { Nombre_Pelicula, Clasificacion, Duracion, Sinopsis, Genero } =
     req.body;
-  console.log("Datos recibidos en el cuerpo de la solicitud:", req.body);
-  console.log(
-    "Campos individuales:",
-    Nombre_Pelicula,
-    Clasificacion,
-    Duracion,
-    Sinopsis,
-    Genero
-  );
-
-  if (!Nombre_Pelicula || !Clasificacion || !Duracion || !Sinopsis || !Genero) {
-    res.status(400).json({ error: "Todos los campos son requeridos" });
-    return;
-  }
 
   const pelicula = new Pelicula(
     randomUUID(),
@@ -61,6 +47,26 @@ export const eliminarPelicula = async (
   const { id } = req.params;
   res.json({ id });
   return new PeliculaLN().eliminarPeliculaLN(id).then((pelicula) => {
+    res.status(200).json(pelicula);
+  });
+};
+export const editarPelicula = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { id } = req.params;
+  const { Nombre_Pelicula, Clasificacion, Duracion, Sinopsis, Genero } =
+    req.body;
+  
+  const pelicula = new Pelicula(
+    id,
+    Nombre_Pelicula,
+    Clasificacion,
+    Duracion,
+    Sinopsis,
+    Genero
+  );
+  return new PeliculaLN().actualizarPeliculaLN(pelicula).then((pelicula) => {
     res.status(200).json(pelicula);
   });
 };

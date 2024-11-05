@@ -40,9 +40,10 @@ export class FuncionDA {
       const [filas]: [RowDataPacket[], FieldPacket[]] = await conn
         .promise()
         .execute("CALL ObtenerFunciones");
+
       return filas[0] as Funcion[];
     } catch (error) {
-      console.error("Error executing query:", error);
+      
       throw error;
     }
   }

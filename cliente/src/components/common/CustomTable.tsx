@@ -59,14 +59,23 @@ function CustomTable({
               {headers.map((header, colIndex) =>
                 header.toLowerCase() === "acciones" ? (
                   <TableCell key={colIndex}>
-                    <button onClick={() => editarItem(item[idKey])}>
+                    <button
+                      onClick={() => {
+                        if (editarItem) editarItem(item[idKey]);
+                      }}
+                    >
                       <Edit2
                         color="blue"
                         style={{ marginRight: "10px" }}
                         size={20}
                       />
                     </button>
-                    <button onClick={() => eliminarItem(item[idKey])}>
+                    <button
+                      onClick={() => {
+                        console.log(item[idKey]);
+                        if (eliminarItem) eliminarItem(item[idKey]);
+                      }}
+                    >
                       <Trash2
                         color="red"
                         style={{ marginLeft: "10px" }}
