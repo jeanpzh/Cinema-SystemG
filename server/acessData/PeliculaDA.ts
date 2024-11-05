@@ -1,90 +1,105 @@
-import { FieldPacket, RowDataPacket } from "mysql2";
-import conn from "../config";
 import Pelicula from "../models/Pelicula";
+import { pool } from "../db/config";
 
 export class PeliculaDA {
-  verificarPelicula = async (
-    titulo: string,
-    año_lanzamiento: Date
-  ): Promise<boolean> => {
+  async obtenerPeliculaPorTituloNormalizado(tituloNormalizado: string) {
     try {
-      const [filas]: [RowDataPacket[], FieldPacket[]] = await conn
-        .promise()
-        .execute("CALL verificarPelicula(? , ?)", [titulo, año_lanzamiento]);
-      return filas.length > 0;
+      const result = await pool
+        .request()
+        .input("p_Titulo_Normalizado", tituloNormalizado)
+        .execute("ObtenerPeliculaPorTituloNormalizado");
+
+      return result.recordset[0];
     } catch (error) {
       console.error("Error executing query:", error);
-      throw error;
+      throw new Error("Error al obtener la película por título normalizado");
     }
-  };
+  }
 
   obtenerPeliculaIDDA = async (id: string): Promise<Pelicula> => {
     try {
-      const [filas]: [RowDataPacket[], FieldPacket[]] = await conn
-        .promise()
-        .execute("CALL paObtenerPeliculaPorID(?)", [id]);
-      return filas[0] as Pelicula;
+      const result = await pool
+        .request()
+        .input("p_Codigo_Pelicula", id)
+        .execute("paObtenerPeliculaPorID");
+      return result.recordset[0];
     } catch (error) {
       console.error("Error executing query:", error);
-      throw error;
+      throw new Error("Error al obtener la película por ID");
     }
   };
 
   obtenerPeliculasDA = async (): Promise<Pelicula[]> => {
     try {
-      const [filas]: [RowDataPacket[], FieldPacket[]] = await conn
-        .promise()
-        .execute("CALL paObtenerPeliculas()");
-      return filas as Pelicula[];
+      const result = await pool.request().execute("paObtenerPeliculas");
+      return result.recordset as Pelicula[];
     } catch (error) {
       console.error("Error executing query:", error);
-      throw error;
+      throw new Error("Error al obtener las películas");
     }
   };
 
-  añadirPeliculaDA = async (pelicula: Pelicula): Promise<Pelicula> => {
+  añadirPeliculaDA = async (pelicula: Pelicula): Promise<any> => {
     try {
-      const [fila]: [RowDataPacket[], FieldPacket[]] = await conn
-        .promise()
-        .execute("CALL InsertarPelicula(?, ?, ?, ?, ?, ?)", [
-          pelicula.getPeliculaId(),
-          pelicula.getTitulo(),
-          pelicula.getClasificacion(),
-          pelicula.getDuracion(),
-          pelicula.getSinopsis(),
-          pelicula.getGenero(),
-        ]);
-      return fila[0] as Pelicula;
+      const tituloNormalizado = pelicula
+        .getTitulo()
+        .toLowerCase()
+        .replace(/\s+/g, "");
+
+      const peliculaExistente = await this.obtenerPeliculaPorTituloNormalizado(
+        tituloNormalizado
+      );
+      if (peliculaExistente)
+        throw new Error("La película ya existe en la base de datos");
+
+      await pool
+        .request()
+        .input("p_Codigo_Pelicula", pelicula.getPeliculaId())
+        .input("p_Nombre_Pelicula", pelicula.getTitulo())
+        .input("p_Clasificacion", pelicula.getClasificacion())
+        .input("p_Duracion", pelicula.getDuracion())
+        .input("p_Sinopsis", pelicula.getSinopsis())
+        .input("p_Genero", pelicula.getGenero())
+        .execute("InsertarPelicula");
+
+      const peliculaAnyadida = await this.obtenerPeliculaIDDA(
+        pelicula.getPeliculaId()
+      );
+      return peliculaAnyadida;
     } catch (error) {
-      console.error("Error executing query:", error);
-      throw error;
+      if (error instanceof Error) throw new Error(error.message);
+      else throw new Error("Error al añadir la película");
     }
   };
 
-  actualizarPeliculaDA = async (pelicula: Pelicula): Promise<void> => {
+  actualizarPeliculaDA = async (pelicula: Pelicula): Promise<any> => {
     try {
-      await conn
-        .promise()
-        .execute("CALL paActualizarPelicula(?, ?, ?, ?, ?, ?)", [
-          pelicula.getPeliculaId(),
-          pelicula.getTitulo(),
-          pelicula.getClasificacion(),
-          pelicula.getDuracion(),
-          pelicula.getSinopsis(),
-          pelicula.getGenero(),
-        ]);
+      await pool
+        .request()
+        .input("p_Codigo_Pelicula", pelicula.getPeliculaId())
+        .input("p_Nombre_Pelicula", pelicula.getTitulo())
+        .input("p_Clasificacion", pelicula.getClasificacion())
+        .input("p_Duracion", pelicula.getDuracion())
+        .input("p_Sinopsis", pelicula.getSinopsis())
+        .input("p_Genero", pelicula.getGenero())
+        .execute("paActualizarPelicula");
+
+      return await this.obtenerPeliculaIDDA(pelicula.getPeliculaId());
     } catch (error) {
       console.error("Error executing query:", error);
-      throw error;
+      throw new Error("Error al actualizar la película");
     }
   };
 
   eliminarPeliculaDA = async (id: string): Promise<void> => {
     try {
-      await conn.promise().execute("CALL paEliminarPelicula(?)", [id]);
+      await pool
+        .request()
+        .input("p_Codigo_Pelicula", id)
+        .execute("paEliminarPelicula");
     } catch (error) {
       console.error("Error executing query:", error);
-      throw error;
+      throw new Error("Error al eliminar la película");
     }
   };
 }

@@ -57,7 +57,7 @@ const ModalAEFuncion: React.FC<ModalAEFuncionProps> = ({
     <DialogContent className="sm:max-w-[425px]">
       <DialogHeader>
         <DialogTitle>{type}</DialogTitle>
-        <DialogClose asChild/>
+        <DialogClose asChild />
       </DialogHeader>
       <form onSubmit={handleFormSubmit(handleSubmit)} className="space-y-4">
         <div>
@@ -131,7 +131,7 @@ const ModalAEFuncion: React.FC<ModalAEFuncionProps> = ({
             </Button>
           </DialogClose>
           <Button type="submit" className="bg-blue-600 text-white">
-            {type.toLowerCase() === "editar" ? "Actualizar" : "Agregar"}
+            {type === "Editar" ? "Actualizar" : "Agregar"}
           </Button>
         </div>
       </form>

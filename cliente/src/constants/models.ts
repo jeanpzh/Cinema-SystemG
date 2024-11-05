@@ -47,13 +47,18 @@ export interface OpcionElegida extends Funcion {
   Capacidad?: number;
 }
 
-// Mock data for options
+// Mock data para las opciones de las peliculas
 export const MOCK_OPTIONS_PELICULAS_GENEROS = [
   { value: "Accion", label: "Acción" },
   { value: "Comedia", label: "Comedia" },
   { value: "Drama", label: "Drama" },
   { value: "Terror", label: "Terror" },
-  // Add more genres as needed
+  { value: "Ciencia Ficcion", label: "Ciencia Ficción" },
+  { value: "Fantasia", label: "Fantasía" },
+  { value: "Musical", label: "Musical" },
+  { value: "Romance", label: "Romance" },
+  { value: "Misterio", label: "Misterio" },
+  { value: "Aventura", label: "Aventura" },
 ];
 
 export const CLASIFICACION_OPTIONS = [
@@ -62,4 +67,5 @@ export const CLASIFICACION_OPTIONS = [
   { value: "B", label: "B" },
   { value: "B15", label: "B15" },
   { value: "C", label: "C" },
+  { value: "D", label: "D" },
 ];

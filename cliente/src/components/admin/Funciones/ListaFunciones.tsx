@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
 import ModalAEFuncion from "./ModalAEFuncion";
+import ModalEliminacion from "@/components/common/ModalEliminacion";
 import useTable from "@/hooks/useTable";
 import { Funcion } from "@/constants/models";
 import { funcion_columnas } from "@/constants/columns";
@@ -15,6 +16,8 @@ function ListaFunciones() {
   const [currentFuncion, setCurrentFuncion] = useState<Funcion | undefined>(
     undefined
   );
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false); // Estado para el modal de eliminación
+  const [funcionToDelete, setFuncionToDelete] = useState<string | null>(null); // Estado para la función a eliminar
 
   const {
     addItem: agregarPelicula,
@@ -26,10 +29,9 @@ function ListaFunciones() {
   const { opciones } = useOpciones("opciones");
 
   const handleSubmit = async (data: Funcion) => {
-    console.log(data);
     if (currentFuncion && currentFuncion.Codigo_Funcion) {
       console.log("actualizar", currentFuncion.Codigo_Funcion);
-      actualizarFuncion(currentFuncion.Codigo_Funcion, {
+      actualizarFuncion("funcion", currentFuncion.Codigo_Funcion, {
         Codigo_Pelicula: data.Codigo_Pelicula,
         Codigo_Horario: data.Codigo_Horario,
         Codigo_Sala: data.Codigo_Sala,
@@ -52,21 +54,33 @@ function ListaFunciones() {
 
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open);
-    if (!open) {
-      setCurrentFuncion(undefined);
+    if (!open) setCurrentFuncion(undefined);
+  };
+
+  const handleDelete = (id: string) => {
+    setFuncionToDelete(id);
+    setIsDeleteOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (funcionToDelete) {
+      eliminarFuncion("funcion", funcionToDelete);
+      setFuncionToDelete(null);
+      setIsDeleteOpen(false);
     }
   };
+
   return (
     <MainWrapper titulo="Lista de Funciones">
       <Dialog open={isOpen} onOpenChange={handleOpenChange}>
         <DialogTrigger asChild>
-          <Button className="mb-4">
+          <Button className="mb-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
             <Plus className="mr-2 h-4 w-4" /> Agregar Función
           </Button>
         </DialogTrigger>
         <ModalAEFuncion
           handleSubmit={handleSubmit}
-          type="Agregar"
+          type={currentFuncion ? "Editar" : "Agregar"}
           peliculaOpcion={opciones.peliculaOpcion}
           salaOpcion={opciones.salaOpcion}
           horarioOpcion={opciones.horarioOpcion}
@@ -76,14 +90,19 @@ function ListaFunciones() {
         headers={funcion_columnas.map((column) => column.Header) as string[]}
         idKey="Codigo_Funcion"
         items={funciones}
-        eliminarItem={(id) => eliminarFuncion("funcion", id)}
+        eliminarItem={handleDelete}
         editarItem={(id) => {
           const funcion = funciones.find((p) => p.Codigo_Funcion === id);
-          if (funcion) {
-            handleEdit(funcion);
-          }
+          if (funcion) handleEdit(funcion);
         }}
       />
+      {isDeleteOpen && (
+        <ModalEliminacion
+          item="función"
+          onCancel={() => setIsDeleteOpen(false)}
+          onConfirm={confirmDelete}
+        />
+      )}
     </MainWrapper>
   );
 }

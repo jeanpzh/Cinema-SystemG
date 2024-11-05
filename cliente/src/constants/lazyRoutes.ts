@@ -9,7 +9,7 @@ const lazyRoutes = [
         lazyComponent: lazy(
           () => import("@/pages/Admin/Películas/PeliculasPage")
         ),
-        path: "peliculas", // Note: No leading slash for nested routes
+        path: "peliculas",
       },
       {
         lazyComponent: lazy(
@@ -17,8 +17,12 @@ const lazyRoutes = [
         ),
         path: "funciones",
       },
-    ],
+    ]
   },
+  {
+    lazyComponent: lazy(() => import("@/pages/Auth/LoginPage")),
+    path: "/login"
+  }
 ];
 
 export default lazyRoutes;

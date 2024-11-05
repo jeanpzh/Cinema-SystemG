@@ -1,4 +1,3 @@
-// useTable.ts
 import { useState, useEffect } from "react";
 import {
   agregarItem,
@@ -15,7 +14,7 @@ interface UseTableProps {
 interface UseTableReturn<T> {
   items: T[];
   addItem: (item: T, itemFK?: T) => void;
-  updateItem: (id: string, item: T) => void;
+  updateItem: (route: string, id: string, item: T) => void;
   deleteItem: (url: string, id: string) => void;
 }
 
@@ -43,30 +42,27 @@ function useTable<T extends Record<string, any>>({
 
   const addItem = async (item: T) => {
     try {
-      // Asignamos la id generada por el servidor al nuevo item:
-      const newItem = await agregarItem(item, url);
-      setData((prev) => [
-        ...prev,
-        {
-          ...item,
-          [idKey]: newItem,
-        },
-      ]);
+      const itemAgregado = await agregarItem(item, url);
+      setData((prev) => [...prev, itemAgregado]);
     } catch (error) {
-      console.error("Error adding item:", error);
+      if (error instanceof Error) throw new Error(`${error.message}`);
+      else throw new Error("Unexpected error adding item");
     }
   };
 
-  const updateItem = async (id: string, item: T | undefined) => {
+  const updateItem = async (route: string, id: string, item: T | undefined) => {
     try {
       if (!item) return;
-      // Falta implementar la actualización en el servidor
+
+      const itemActualizado = await actualizarItem(route, id, item);
 
       setData((prev) =>
-        prev.map((i) => (i[idKey] === id ? { ...i, ...item } : i))
+        prev.map((i) => (i[idKey] === id ? { ...i, ...itemActualizado } : i))
       );
     } catch (error) {
-      console.error("Error updating item:", error);
+      if (error instanceof Error)
+        throw new Error(`Error updating item: ${error.message}`);
+      else throw new Error("Unexpected error updating item");
     }
   };
 

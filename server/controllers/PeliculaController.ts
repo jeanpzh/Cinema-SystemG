@@ -8,7 +8,7 @@ export const obtenerPeliculas = async (
   res: Response
 ): Promise<void> => {
   return new PeliculaLN().obtenerPeliculasLN().then((peliculas) => {
-    res.status(200).json(peliculas[0]);
+    res.status(200).json(peliculas);
   });
 };
 
@@ -27,8 +27,8 @@ export const añadirPelicula = async (
     Sinopsis,
     Genero
   );
-  await new PeliculaLN().añadirPeliculaLN(pelicula);
-  res.status(201).json(pelicula.getPeliculaId());
+  const peliculaAgregada = await new PeliculaLN().añadirPeliculaLN(pelicula);
+  res.status(201).json(peliculaAgregada);
 };
 export const obtenerPeliculaPorID = async (
   req: Request,
@@ -57,7 +57,7 @@ export const editarPelicula = async (
   const { id } = req.params;
   const { Nombre_Pelicula, Clasificacion, Duracion, Sinopsis, Genero } =
     req.body;
-  
+
   const pelicula = new Pelicula(
     id,
     Nombre_Pelicula,
@@ -66,6 +66,7 @@ export const editarPelicula = async (
     Sinopsis,
     Genero
   );
+  console.log(pelicula);
   return new PeliculaLN().actualizarPeliculaLN(pelicula).then((pelicula) => {
     res.status(200).json(pelicula);
   });

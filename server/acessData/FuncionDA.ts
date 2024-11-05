@@ -1,22 +1,23 @@
-import { FieldPacket, RowDataPacket } from "mysql2";
-import conn from "../config";
+import { IRecordSet } from "mssql";
+import { pool } from "../db/config";
 import Funcion from "../models/Funcion";
-import Pelicula from "../models/Pelicula";
-import OpcionesFuncion from "../models/OpcionesFuncion";
-import Sala from "../models/Sala";
-import Horario from "../models/Horario";
+
 export class FuncionDA {
-  async añadirFuncionDA(funcion: Funcion): Promise<Funcion> {
+  async añadirFuncionDA(funcion: Funcion): Promise<any> {
     try {
-      const [fila]: [RowDataPacket[], FieldPacket[]] = await conn
-        .promise()
-        .execute("CALL paCrearFuncion(?, ?, ?, ?)", [
-          funcion.getCodigoFuncion(),
-          funcion.getCodigoPelicula(),
-          funcion.getCodigoSala(),
-          funcion.getCodigoHorario(),
-        ]);
-      return fila[0] as Funcion;
+      await pool
+        .request()
+        .input("p_Codigo_Funcion", funcion.getCodigoFuncion())
+        .input("p_Codigo_Pelicula", funcion.getCodigoPelicula())
+        .input("p_Codigo_Sala", funcion.getCodigoSala())
+        .input("p_Codigo_Horario", funcion.getCodigoHorario())
+        .execute("paCrearFuncion");
+
+      const funciones = await this.obtenerFuncionesDA();
+      const funcionAnyadida = await funciones.find(
+        (f: any) => f.Codigo_Funcion === funcion.getCodigoFuncion()
+      );
+      return funcionAnyadida;
     } catch (error) {
       console.error("Error executing query:", error);
       throw error;
@@ -25,39 +26,41 @@ export class FuncionDA {
 
   async obtenerFuncionPorIDDA(id: string): Promise<Funcion> {
     try {
-      const [filas]: [RowDataPacket[], FieldPacket[]] = await conn
-        .promise()
-        .execute("CALL paObtenerFuncionPorID(?)", [id]);
-      return filas[0] as Funcion;
+      const result = await pool
+        .request()
+        .input("p_Codigo_Funcion", id)
+        .execute("paObtenerFuncionPorID");
+      return result.recordset[0];
     } catch (error) {
       console.error("Error executing query:", error);
       throw error;
     }
   }
 
-  async obtenerFuncionesDA(): Promise<Funcion[]> {
+  async obtenerFuncionesDA(): Promise<any> {
     try {
-      const [filas]: [RowDataPacket[], FieldPacket[]] = await conn
-        .promise()
-        .execute("CALL ObtenerFunciones");
-
-      return filas[0] as Funcion[];
+      const result = await pool.request().execute("obtenerFunciones");
+      return result.recordset;
     } catch (error) {
-      
       throw error;
     }
   }
 
-  async actualizarFuncionDA(funcion: Funcion): Promise<void> {
+  async actualizarFuncionDA(funcion: Funcion): Promise<any> {
     try {
-      await conn
-        .promise()
-        .execute("CALL paActualizarFuncion(?, ?, ?, ?, ?)", [
-          funcion.getCodigoFuncion(),
-          funcion.getCodigoPelicula(),
-          funcion.getCodigoSala(),
-          funcion.getCodigoHorario(),
-        ]);
+      await pool
+        .request()
+        .input("p_Codigo_Funcion", funcion.getCodigoFuncion())
+        .input("p_Codigo_Pelicula", funcion.getCodigoPelicula())
+        .input("p_Codigo_Sala", funcion.getCodigoSala())
+        .input("p_Codigo_Horario", funcion.getCodigoHorario())
+        .execute("paActualizarFuncion");
+      const funciones = await this.obtenerFuncionesDA();
+      const funcionActualizada = funciones.find(
+        (f: any) => f.Codigo_Funcion === funcion.getCodigoFuncion()
+      );
+
+      return funcionActualizada;
     } catch (error) {
       console.error("Error executing query:", error);
       throw error;
@@ -66,7 +69,10 @@ export class FuncionDA {
 
   async eliminarFuncionDA(id: string): Promise<void> {
     try {
-      await conn.promise().execute("CALL paEliminarFuncion(?)", [id]);
+      await pool
+        .request()
+        .input("p_Codigo_Funcion", id)
+        .execute("paEliminarFuncion");
     } catch (error) {
       console.error("Error executing query:", error);
       throw error;
@@ -74,20 +80,17 @@ export class FuncionDA {
   }
   async obtenerOpcionesFuncionDA(): Promise<any> {
     try {
-      const [result]: [RowDataPacket[][], FieldPacket[]] = await conn
-        .promise()
-        .execute("CALL obtenerDetallesFuncion()");
-
-      console.log("Resultados del procedimiento almacenado:", result);
-
-      return new OpcionesFuncion(
-        result[0] as Pelicula[],
-        result[1] as Sala[],
-        result[2] as Horario[]
-      );
+      const result = await pool.request().execute("ObtenerDetallesFuncion");
+      const recordsets = result.recordsets as IRecordSet<any>[];
+      const [peliculas, salas, horarios] = recordsets;
+      return {
+        peliculas,
+        salas,
+        horarios,
+      };
     } catch (error) {
-      console.error("Error ejecutando el procedimiento almacenado:", error);
-      throw error;
+      console.error("Error fetching function options:", error);
+      throw new Error("Failed to obtain function options");
     }
   }
 }

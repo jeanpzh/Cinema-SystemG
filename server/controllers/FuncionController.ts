@@ -16,21 +16,17 @@ export const añadirFuncion = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { Codigo_Pelicula, Codigo_Sala, Codigo_Horario } = req.body;
-  console.log(req.body);
-  if (!Codigo_Pelicula || !Codigo_Sala || !Codigo_Horario) {
-    res.status(400).json({ error: "Todos los campos son requeridos" });
-    return;
-  }
-
-  const funcion = new Funcion(
-    randomUUID(),
-    Codigo_Pelicula,
-    Codigo_Sala,
-    Codigo_Horario
-  );
-  await new FuncionLN().añadirFuncionLN(funcion);
-  res.status(201).json(funcion.getCodigoFuncion());
+  try {
+    const { Codigo_Pelicula, Codigo_Sala, Codigo_Horario } = req.body;
+    const funcion = new Funcion(
+      randomUUID(),
+      Codigo_Pelicula,
+      Codigo_Sala,
+      Codigo_Horario
+    );
+    const funcionAgregada = await new FuncionLN().añadirFuncionLN(funcion);
+    res.status(201).json(funcionAgregada);
+  } catch (error) {}
 };
 
 export const obtenerFuncionPorID = async (
@@ -47,33 +43,15 @@ export const actualizarFuncion = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const {
-    Codigo_Funcion,
-    Codigo_Pelicula,
-    Codigo_Sala,
-    Codigo_Horario,
-    Codigo_Trabajador,
-  } = req.body;
-  console.log(req.body);
-  if (
-    !Codigo_Funcion ||
-    !Codigo_Pelicula ||
-    !Codigo_Sala ||
-    !Codigo_Horario ||
-    !Codigo_Trabajador
-  ) {
-    res.status(400).json({ error: "Todos los campos son requeridos" });
-    return;
-  }
-
+  const id: string = req.params.id;
   const funcion = new Funcion(
-    Codigo_Funcion,
-    Codigo_Pelicula,
-    Codigo_Sala,
-    Codigo_Horario
+    id,
+    req.body.Codigo_Pelicula,
+    req.body.Codigo_Sala,
+    req.body.Codigo_Horario
   );
-  await new FuncionLN().actualizarFuncionLN(funcion);
-  res.status(200).json({ message: "Función actualizada correctamente" });
+  const funcionActualizada = await new FuncionLN().actualizarFuncionLN(funcion);
+  res.status(200).json(funcionActualizada);
 };
 
 export const eliminarFuncion = async (
@@ -88,7 +66,7 @@ export const eliminarFuncion = async (
 export const obtenerOpcionesFuncion = async (
   _: Request,
   res: Response
-): Promise<void> => {
+): Promise<any> => {
   return new FuncionLN().obtenerOpcionesLN().then((opciones) => {
     res.status(200).json(opciones);
   });

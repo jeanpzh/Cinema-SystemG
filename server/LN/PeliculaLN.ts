@@ -8,10 +8,7 @@ class PeliculaLN {
   }
 
   async añadirPeliculaLN(pelicula: Pelicula) {
-    const nuevaPelicula: Pelicula = await new PeliculaDA().añadirPeliculaDA(
-      pelicula
-    );
-    return nuevaPelicula;
+    return await new PeliculaDA().añadirPeliculaDA(pelicula);
   }
 
   async obtenerPeliculaIDLN(id: string) {
@@ -19,7 +16,7 @@ class PeliculaLN {
   }
 
   async actualizarPeliculaLN(pelicula: Pelicula) {
-    await new PeliculaDA().actualizarPeliculaDA(pelicula);
+    return await new PeliculaDA().actualizarPeliculaDA(pelicula);
   }
 
   async eliminarPeliculaLN(id: string) {

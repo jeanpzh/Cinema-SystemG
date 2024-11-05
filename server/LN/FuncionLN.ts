@@ -7,7 +7,7 @@ class FuncionLN {
     return await new FuncionDA().obtenerFuncionesDA();
   }
 
-  async añadirFuncionLN(funcion: Funcion): Promise<Funcion> {
+  async añadirFuncionLN(funcion: Funcion): Promise<any> {
     return await new FuncionDA().añadirFuncionDA(funcion);
   }
 
@@ -15,8 +15,8 @@ class FuncionLN {
     return await new FuncionDA().obtenerFuncionPorIDDA(id);
   }
 
-  async actualizarFuncionLN(funcion: Funcion): Promise<void> {
-    await new FuncionDA().actualizarFuncionDA(funcion);
+  async actualizarFuncionLN(funcion: Funcion): Promise<any> {
+    return await new FuncionDA().actualizarFuncionDA(funcion);
   }
 
   async eliminarFuncionLN(id: string): Promise<void> {
