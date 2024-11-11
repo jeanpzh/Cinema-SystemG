@@ -1,9 +1,10 @@
 import Sala from "../models/Sala";
-import { pool } from "../db/config";
+import pool from "../db/config";
+
 class SalaDA {
   async obtenerSalasDA(): Promise<Sala[]> {
     try {
-      return (await pool.request().execute("paObtenerSalas")).recordset;
+      return (await pool.query("CALL ObtenerSalas()")).rows;
     } catch (error) {
       console.error(error);
       return [];

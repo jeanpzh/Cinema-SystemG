@@ -1,34 +1,25 @@
 import * as dotenv from "dotenv";
-import { config, ConnectionPool } from "mssql";
+import { Pool } from "pg";
 
 // Configura para cargar las variables de entorno
 dotenv.config();
 
-// Crea una configuracion
-const dbConfig: config = {
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DATABASE,
-  server: process.env.DB_SERVER as string,
-  options: {
-    enableArithAbort: true,
-    // enable local db connection
-    trustedConnection: true,
-    encrypt: true,
-    trustServerCertificate: true,
-  },
-};
-
 // Crear una instancia de la base de datos
-const pool = new ConnectionPool(dbConfig);
+const pool = new Pool({
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_DATABASE,
+  password: process.env.DB_PASSWORD,
+  port: parseInt(process.env.DB_PORT || "5432"),
+});
 
-pool
-  .connect()
-  .then(() => {
-    console.log("Connected to the database");
-  })
-  .catch((err) => {
-    console.error("Database connection failed", err);
+// Conecta a la base de datos
+try {
+  pool.on("connect", () => {
+    console.log("Database connected");
   });
+} catch (error) {
+  console.error("Error connecting to database:", error);
+}
 
-export { pool };
+export default pool;

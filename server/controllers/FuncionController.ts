@@ -26,7 +26,9 @@ export const añadirFuncion = async (
     );
     const funcionAgregada = await new FuncionLN().añadirFuncionLN(funcion);
     res.status(201).json(funcionAgregada);
-  } catch (error) {}
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const obtenerFuncionPorID = async (

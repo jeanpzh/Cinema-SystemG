@@ -1,10 +1,10 @@
 import Horario from "../models/Horario";
-import { pool } from "../db/config";
+import pool from "../db/config";
 
 class HorarioDA {
   async getHorariosDA(): Promise<Horario[]> {
     try {
-      return (await pool.request().execute("paObtenerHorarios")).recordset;
+      return (await pool.query("CALL ObtenerHorarios()")).rows;
     } catch (error) {
       console.error(error);
       return [];
