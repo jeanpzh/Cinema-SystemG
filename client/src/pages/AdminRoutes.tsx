@@ -2,12 +2,13 @@ import ListaCombos from "@/features/admin/combos/ListaCombos";
 import ListaPeliculas from "@/features/admin/movies/ListaPeliculas";
 import ListaProductos from "@/features/admin/products/ListaProductos";
 import ListaFunciones from "@/features/admin/shows/ListaFunciones";
+import Dashboard from "@/features/admin/dashboard/Dashboard";
 import { Route, Routes } from "react-router-dom";
 
 function AdminRoutes() {
   return (
     <Routes>
-      <Route path="dashboard" element={<h1>Admin Dashboard</h1>} />
+      <Route path="dashboard" element={<Dashboard/>} />
       <Route path="peliculas" element={<ListaPeliculas />} />
       <Route path="productos" element={<ListaProductos />} />
       <Route path="funciones" element={<ListaFunciones />} />
