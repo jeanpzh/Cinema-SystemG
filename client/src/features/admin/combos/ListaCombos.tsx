@@ -136,7 +136,7 @@ function ListaCombos() {
   return (
     <div className="p-8 flex flex-col gap-6">
       <HeaderList
-        title="Combos"
+        title="COMBOS"
         showAddDialog={showAddDialog}
         buttonLabel="Agregar Combo"
       />

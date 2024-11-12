@@ -2,7 +2,6 @@
 import { useEffect } from "react";
 import { Dialog } from "primereact/dialog";
 import { Producto } from "@/constants/table";
-import { Button } from "primereact/button";
 import { useForm } from "react-hook-form";
 import Input from "@/components/Input";
 import { PRODUCT_OPTIONS } from "@/constants/productOptions";
@@ -229,20 +228,21 @@ const ModalFormularioProductos: React.FC<Props> = ({
           </div>
 
           {/* Botones */}
-          <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200">
-            <Button
-              label="Cancelar"
-              className="bg-gray-200 text-gray-700 hover:bg-gray-300 border-none py-1 px-4"
-              onClick={handleOnHide}
-              type="button"
-            />
-            <Button
-              label="Guardar"
-              className="bg-primary hover:bg-primary-dark text-white border-none py-1 px-4"
-              type="submit"
-              autoFocus
-            />
-          </div>
+       <div className="flex justify-end space-x-4">
+          <button
+            type="button"
+            onClick={handleOnHide}
+            className="w-[150px] bg-black h-[50px] my-3 flex items-center justify-center rounded-xl cursor-pointer relative overflow-hidden transition-all duration-500 ease-in-out shadow-md hover:scale-105 hover:shadow-lg before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-gradient-to-r before:from-[#FF5E5E] before:to-[#FF9191] before:transition-all before:duration-500 before:ease-in-out before:z-[-1] before:rounded-xl text-[#fff] hover:before:left-0"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            className="w-[150px] bg-black h-[50px] my-3 flex items-center justify-center rounded-xl cursor-pointer relative overflow-hidden transition-all duration-500 ease-in-out shadow-md hover:scale-105 hover:shadow-lg before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-gradient-to-r before:from-[#009b49] before:to-[rgb(105,184,141)] before:transition-all before:duration-500 before:ease-in-out before:z-[-1] before:rounded-xl text-[#fff] hover:before:left-0"
+          >
+            Guardar
+          </button>
+        </div>
         </form>
       </div>
     </Dialog>

@@ -123,7 +123,7 @@ function ListaPeliculas() {
     <div className="p-8 flex flex-col gap-6">
       {/* Título y Botón */}
       <HeaderList
-        title="Películas"
+        title="PELÍCULAS"
         buttonLabel="Agregar Película"
         showAddDialog={showAddDialog}
       />

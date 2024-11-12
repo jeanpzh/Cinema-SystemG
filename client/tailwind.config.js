@@ -20,9 +20,9 @@ module.exports = {
           shadow: "rgba(0, 0, 0, 0.05)",
         },
         primary: {
-          DEFAULT: "#4F46E5", // Azul suave
-          light: "#6366F1", // Azul claro para hover
-          dark: "#4338CA", // Azul oscuro para hover
+          DEFAULT: "#260938", // Morado oscuro
+          light: "#6870C5", // Morado claro para hover
+          dark: "#0B0215", // Morado oscuro para hover
         },
         danger: {
           DEFAULT: "#EF4444", // Rojo

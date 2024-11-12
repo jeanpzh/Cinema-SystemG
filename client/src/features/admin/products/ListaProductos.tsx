@@ -118,7 +118,7 @@ function ListaProductos() {
   return (
     <div className="p-8 flex flex-col gap-6">
       <HeaderList
-        title="Productos"
+        title="PRODUCTOS"
         showAddDialog={showAddDialog}
         buttonLabel="Agregar Producto"
       />

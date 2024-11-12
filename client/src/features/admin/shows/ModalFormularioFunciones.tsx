@@ -5,7 +5,8 @@ import { Funcion } from "@/constants/table";
 import { obtenerOpciones } from "@/api/funciones";
 import { PeliculaOpcion, SalaOpcion, HorarioOpcion } from "@/constants/options";
 import { Dropdown } from "primereact/dropdown";
-import { Button } from "primereact/button";
+import CustomButton from '@/components/Button';
+
 
 interface Props {
   visible: boolean;
@@ -53,6 +54,19 @@ const ModalFormularioFunciones: React.FC<Props> = ({
     }
   }, [funcion]);
 
+  // Función para manejar el cierre del modal
+  const handleOnHide = () => {
+    // Aquí puedes agregar cualquier lógica adicional antes de cerrar el modal
+    resetForm(); // Resetear el formulario si lo necesitas
+    onHide(); // Llamar a la función onHide pasada como prop
+  };
+
+  const resetForm = () => {
+    setCodigoPelicula("");
+    setCodigoSala("");
+    setCodigoHorario("");
+  };
+
   const handleSubmit = () => {
     const newFuncion: Funcion = {
       Codigo_Funcion: funcion ? funcion.Codigo_Funcion : "",
@@ -61,8 +75,9 @@ const ModalFormularioFunciones: React.FC<Props> = ({
       Codigo_Horario: codigoHorario,
     };
     onAdd(newFuncion);
-    onHide();
+    handleOnHide(); // Usar handleOnHide para manejar el cierre
   };
+
 
   return (
     <Dialog
@@ -143,20 +158,18 @@ const ModalFormularioFunciones: React.FC<Props> = ({
           />
         </div>
 
-        {/* Botones */}
         <div className="flex justify-end space-x-4">
-          <Button
-            label="Cancelar"
-            className="p-button-secondary p-button-outlined"
-            onClick={onHide}
-          />
-          <Button
-            label="Guardar"
-            className="p-button-primary"
-            onClick={handleSubmit}
-            autoFocus
-          />
+          {/* Botón de Cancelar */}
+          <CustomButton buttonType="cancel" onClick={handleOnHide}>
+            Cancelar
+          </CustomButton>
+
+          {/* Botón de Aceptar */}
+          <CustomButton buttonType="accept" onClick={handleSubmit}>
+            Aceptar
+          </CustomButton>
         </div>
+
       </div>
     </Dialog>
   );

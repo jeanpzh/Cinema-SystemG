@@ -99,7 +99,7 @@ function ListaFunciones() {
   return (
     <div className="p-8 flex flex-col gap-6">
       <HeaderList
-        title="Funciones"
+        title="FUNCIONES"
         buttonLabel="Agregar Función"
         showAddDialog={showAddDialog}
       />

@@ -12,7 +12,6 @@
 @tailwind utilities;
 
 
-
 /* Eliminar bordes de celdas de la tabla */
 .p-datatable .p-datatable-thead > tr > th,
 .p-datatable .p-datatable-tbody > tr > td {

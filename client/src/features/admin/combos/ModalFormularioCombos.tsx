@@ -139,15 +139,15 @@ function ModalFormularioCombos({ visible, onHide, onAdd, combo }: Props) {
     onHide();
   };
 
+   // Manejador para cerrar el modal
+   const handleOnHide = () => {
+    reset();  // Reset form fields
+    onHide(); // Llamamos al onHide pasado como prop
+  };
+
   return (
     <Dialog
-      header={
-        <div className="flex items-center">
-          <h2 className="text-xl font-semibold text-gray-800">
-            {combo ? "Editar Combo" : "Agregar Combo"}
-          </h2>
-        </div>
-      }
+      header={<h2 className="text-xl font-semibold text-gray-800">{combo ? "Editar Combo" : "Agregar Combo"}</h2>}
       visible={visible}
       style={{ width: "500px", maxWidth: "90vw" }}
       onHide={onHide}
@@ -156,10 +156,7 @@ function ModalFormularioCombos({ visible, onHide, onAdd, combo }: Props) {
       draggable={false}
       resizable={false}
     >
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col h-full p-6 overflow-y-auto bg-white space-y-6"
-      >
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col h-full p-6 overflow-y-auto bg-white space-y-6">
         {/* Nombre del Combo */}
         <div>
           <label
@@ -359,21 +356,21 @@ function ModalFormularioCombos({ visible, onHide, onAdd, combo }: Props) {
           <span>${precioFinal.toFixed(2)}</span>
         </div>
 
-        {/* Botones */}
-        <div className="flex justify-end space-x-4">
-          <Button
+       {/* Botones */}
+       <div className="flex justify-end space-x-4">
+          <button
             type="button"
-            label="Cancelar"
-            icon="pi pi-times"
-            onClick={onHide}
-            className="p-button-secondary"
-          />
-          <Button
+            onClick={handleOnHide}
+            className="w-[150px] bg-black h-[50px] my-3 flex items-center justify-center rounded-xl cursor-pointer relative overflow-hidden transition-all duration-500 ease-in-out shadow-md hover:scale-105 hover:shadow-lg before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-gradient-to-r before:from-[#FF5E5E] before:to-[#FF9191] before:transition-all before:duration-500 before:ease-in-out before:z-[-1] before:rounded-xl text-[#fff] hover:before:left-0"
+          >
+            Cancelar
+          </button>
+          <button
             type="submit"
-            label="Guardar"
-            icon="pi pi-check"
-            className="p-button-primary"
-          />
+            className="w-[150px] bg-black h-[50px] my-3 flex items-center justify-center rounded-xl cursor-pointer relative overflow-hidden transition-all duration-500 ease-in-out shadow-md hover:scale-105 hover:shadow-lg before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-gradient-to-r before:from-[#009b49] before:to-[rgb(105,184,141)] before:transition-all before:duration-500 before:ease-in-out before:z-[-1] before:rounded-xl text-[#fff] hover:before:left-0"
+          >
+            Guardar
+          </button>
         </div>
       </form>
     </Dialog>

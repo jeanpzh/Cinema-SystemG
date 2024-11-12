@@ -1,58 +1,19 @@
-// Dashboard.jsx
 import React, { useEffect, useState } from "react";
 import { FaFilm, FaUser, FaTicketAlt } from "react-icons/fa";
 import StatCard from "./StatCard";
-// Definición de la interfaz para las estadísticas generales
-interface GeneralStats {
-  totalMovies: number;
-  totalUsers: number;
-  totalBookings: number;
-}
+import { Bar, Pie } from "react-chartjs-2";
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, ArcElement, Tooltip, Legend } from 'chart.js';
 
-// Definición de la interfaz para las películas próximas a estrenarse
-interface Movie {
-  id: number;
-  title: string;
-  releaseDate: string;
-  imageUrl?: string;
-}
+// Register necessary components for Chart.js
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, ArcElement, Tooltip, Legend);
 
-const Dashboard: React.FC = () => {
-  // Estado inicial con estadísticas generales del cine
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [stats, setStats] = useState<GeneralStats | null>({
+const Dashboard = () => {
+  const [stats, setStats] = useState({
     totalMovies: 120,
-    totalUsers: 4500,
-    totalBookings: 1300,
+    totalUsers: 1500,
+    totalBookings: 1500,
   });
 
-  // Estado inicial para las películas próximas a estrenarse
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [upcomingMovies, setUpcomingMovies] = useState<Movie[]>([
-    {
-      id: 1,
-      title: "The Great Adventure",
-      releaseDate: "2024-12-01",
-      imageUrl:
-        "https://estaticos-cdn.prensaiberica.es/clip/122daf5f-0615-473d-8146-511d59853861_woman-libre-1200_default_0.webp",
-    },
-    {
-      id: 2,
-      title: "Space Journey",
-      releaseDate: "2024-12-15",
-      imageUrl:
-        "https://estaticos-cdn.prensaiberica.es/clip/6a57fd45-8785-4ee1-8627-8ba99a2665ea_woman-libre-1200_default_0.webp",
-    },
-    {
-      id: 3,
-      title: "Mystery Island",
-      releaseDate: "2025-01-10",
-      imageUrl:
-        "https://estaticos-cdn.prensaiberica.es/clip/09f0f5d7-1eb3-4a71-948f-c7555dd3526d_woman-libre-1200_default_0.webp",
-    },
-  ]);
-
-  // Estado para manejar si los datos están cargando
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -63,7 +24,6 @@ const Dashboard: React.FC = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Si los datos están cargando, mostramos un mensaje
   if (loading) {
     return (
       <div className="flex justify-center items-center h-full text-gray-400">
@@ -72,73 +32,98 @@ const Dashboard: React.FC = () => {
     );
   }
 
-  // Estructura del Dashboard
+  // Bar chart data
+  // Opciones para el gráfico de barras
+  // Opciones para el gráfico de barras
+  const barChartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "bottom" as const, // Añade "as const" para especificar que este es un literal de cadena
+        labels: {
+          boxWidth: 20,
+          padding: 15,
+          font: {
+            size: 12,
+          },
+        },
+      },
+    },
+  };
+
+
+  // Datos del gráfico de barras
+  const barChartData = {
+    labels: ["Películas", "Usuarios", "Entradas"],
+    datasets: [
+      {
+        label: "Estadísticas Generales",
+        data: [stats.totalMovies, stats.totalUsers, stats.totalBookings],
+        backgroundColor: ["#4A90E2", "#50E3C2", "#9013FE"],
+      },
+    ],
+  };
+
+
+  // Pie chart data
+  // Pie chart data con géneros de películas
+  const pieChartData = {
+    labels: ["Acción", "Terror", "Comedia", "Ciencia Ficción", "Drama", "Romance", "Documental"],
+    datasets: [
+      {
+        data: [30, 20, 15, 10, 10, 10, 5], // Ejemplo de porcentajes por género
+        backgroundColor: ["#4A90E2", "#E94A3F", "#FFD700", "#9D50BB", "#FF6347", "#FF69B4", "#4682B4"],
+      },
+    ],
+  };
+
+
   return (
     <div className="flex-1 p-8 bg-lightTheme-background min-h-screen">
       <div className="max-w-5xl mx-auto">
-        {/* Título del Dashboard */}
         <h1 className="text-3xl font-semibold text-lightTheme-text mb-8 text-center">
           Administración CinePlex
         </h1>
 
-        {/* Sección de estadísticas generales */}
+        {/* Estadísticas Generales */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
           <StatCard
             title="Películas en cartelera"
-            value={stats?.totalMovies || 0}
+            value={stats.totalMovies}
             icon={<FaFilm className="text-3xl text-comandanteN-1" />}
             bgColor="bg-lightTheme-card"
           />
           <StatCard
             title="Usuarios Totales"
-            value={stats?.totalUsers || 0}
+            value={stats.totalUsers}
             icon={<FaUser className="text-3xl text-comandanteN-1" />}
             bgColor="bg-lightTheme-card"
           />
           <StatCard
             title="Entradas Vendidas"
-            value={stats?.totalBookings || 0}
+            value={stats.totalBookings}
             icon={<FaTicketAlt className="text-3xl text-comandanteN-1" />}
             bgColor="bg-lightTheme-card"
           />
         </div>
 
-        {/* Sección de próximos estrenos */}
+        {/* Gráficos Estadísticos */}
         <h2 className="text-2xl font-semibold text-lightTheme-text mb-6">
-          Próximos Estrenos
+          Visualización de Datos
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {upcomingMovies.length > 0 ? (
-            upcomingMovies.map((movie) => (
-              <div
-                key={movie.id}
-                className="bg-lightTheme-card rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300"
-              >
-                {/* Imagen de la película */}
-                {movie.imageUrl && (
-                  <img
-                    src={movie.imageUrl}
-                    alt={movie.title}
-                    className="w-full h-60 object-cover"
-                  />
-                )}
-                {/* Información de la película */}
-                <div className="p-4">
-                  <h3 className="text-xl font-semibold text-lightTheme-text mb-2">
-                    {movie.title}
-                  </h3>
-                  <p className="text-gray-600">
-                    Fecha de estreno:{" "}
-                    {new Date(movie.releaseDate).toLocaleDateString()}
-                  </p>
-                </div>
-              </div>
-            ))
-          ) : (
-            <div className="col-span-full text-center text-gray-400">
-              No hay próximos estrenos.
-            </div>
-          )}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="bg-lightTheme-card p-6 rounded-lg shadow-md">
+            <h3 className="text-xl font-semibold text-lightTheme-text mb-4">
+              Conteo de accesos
+            </h3>
+            <Bar data={barChartData} options={barChartOptions} key="barChart" />
+          </div>
+          <div className="bg-lightTheme-card p-6 rounded-lg shadow-md">
+            <h3 className="text-xl font-semibold text-lightTheme-text mb-4">
+              Peliculas vistas por su categoría
+            </h3>
+            <Pie data={pieChartData} options={{ responsive: true }} key="pieChart" />
+          </div>
         </div>
       </div>
     </div>
