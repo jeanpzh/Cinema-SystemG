@@ -2,6 +2,7 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 import AdminLayout from "@/layouts/AdminLayout";
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Home from "./Home";
 
 const AdminRoutes = lazy(() => import("./AdminRoutes"));
 
@@ -34,7 +35,7 @@ function LazyRoutes() {
               <Route path="*" element={<AdminRoutes />} />
             </Route>
 
-            <Route path="/" element={<h1>Home</h1>} />
+            <Route path="/" element={<Home />} />
           </Routes>
         </Suspense>
       </ErrorBoundary>
