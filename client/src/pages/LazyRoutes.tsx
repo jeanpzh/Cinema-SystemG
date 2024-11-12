@@ -30,7 +30,7 @@ function LazyRoutes() {
         <Suspense fallback={<h1>Loading...</h1>}>
           <Routes>
             <Route path="/login" element={<h1>Login</h1>} />
-            <Route path="/admin" element={<AdminLayout />}>
+            <Route path="/admin/*" element={<AdminLayout />}>
               <Route path="*" element={<AdminRoutes />} />
             </Route>
 
