@@ -8,7 +8,7 @@ export const obtenerPeliculas = async (
   res: Response
 ): Promise<void> => {
   return new PeliculaLN().obtenerPeliculasLN().then((peliculas) => {
-    res.status(200).json(peliculas[0]);
+    res.status(200).json(peliculas);
   });
 };
 
@@ -27,8 +27,18 @@ export const añadirPelicula = async (
     Sinopsis,
     Genero
   );
-  await new PeliculaLN().añadirPeliculaLN(pelicula);
-  res.status(201).json(pelicula.getPeliculaId());
+
+  try {
+    const peliculaAgregada = await new PeliculaLN().añadirPeliculaLN(pelicula);
+    res.status(201).json(peliculaAgregada);
+  } catch (error: any) {
+    console.error("Error al agregar película:", error);
+    if (error.message === "La película ya existe en la base de datos") {
+      res.status(400).json({ mensaje: error.message });
+    } else {
+      res.status(500).json({ mensaje: "Error interno del servidor." });
+    }
+  }
 };
 export const obtenerPeliculaPorID = async (
   req: Request,
@@ -57,7 +67,7 @@ export const editarPelicula = async (
   const { id } = req.params;
   const { Nombre_Pelicula, Clasificacion, Duracion, Sinopsis, Genero } =
     req.body;
-  
+
   const pelicula = new Pelicula(
     id,
     Nombre_Pelicula,
@@ -66,7 +76,21 @@ export const editarPelicula = async (
     Sinopsis,
     Genero
   );
-  return new PeliculaLN().actualizarPeliculaLN(pelicula).then((pelicula) => {
-    res.status(200).json(pelicula);
-  });
+  try {
+    const peliculaActualizada = await new PeliculaLN().actualizarPeliculaLN(
+      pelicula
+    );
+    if (!peliculaActualizada) {
+      res.status(404).json({ mensaje: "Película no encontrada." });
+      return;
+    }
+    res.status(200).json(peliculaActualizada);
+  } catch (error: any) {
+    console.error("Error al editar película:", error);
+    if (error.message === "La película ya existe en la base de datos") {
+      res.status(400).json({ mensaje: error.message });
+    } else {
+      res.status(500).json({ mensaje: "Error interno del servidor." });
+    }
+  }
 };

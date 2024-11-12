@@ -1,14 +1,10 @@
-import { FieldPacket, RowDataPacket } from "mysql2";
 import Sala from "../models/Sala";
-import conn from "../config";
+import pool from "../db/config";
 
 class SalaDA {
   async obtenerSalasDA(): Promise<Sala[]> {
     try {
-      const [filas]: [RowDataPacket[], FieldPacket[]] = await conn
-        .promise()
-        .execute("CALL paObtenerSalas");
-      return filas as Sala[];
+      return (await pool.query("CALL ObtenerSalas()")).rows;
     } catch (error) {
       console.error(error);
       return [];

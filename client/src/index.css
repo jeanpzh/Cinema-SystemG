@@ -1,0 +1,40 @@
+/* src/index.css */
+
+/* Importaciones de Tailwind y PrimeReact */
+@import "primereact/resources/themes/saga-purple/theme.css"; /* Importa tu tema de PrimeReact primero */
+@import "primereact/resources/primereact.min.css";
+@import "primeicons/primeicons.css";
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+/* Eliminar bordes de celdas de la tabla */
+.p-datatable .p-datatable-thead > tr > th,
+.p-datatable .p-datatable-tbody > tr > td {
+  border: none !important;
+}
+
+/* Alternar colores de fondo de las filas */
+.p-datatable-tbody > tr:nth-child(odd) {
+  background-color: #f9f9f9 !important;
+}
+
+.p-datatable-tbody > tr:nth-child(even) {
+  background-color: #ffffff !important;
+}
+
+/* Hover effect */
+.p-datatable-tbody > tr:hover {
+  background-color: #e5e7eb !important; /* bg-gray-200 */
+}
+
+/* Alinear contenido de la columna de acciones al centro */
+.p-datatable .p-datatable-tbody > tr > td:last-child {
+  text-align: center !important;
+  vertical-align: middle !important;
+}

@@ -7,19 +7,26 @@ class PeliculaLN {
     return peliculas;
   }
 
-  async añadirPeliculaLN(pelicula: Pelicula) {
-    const nuevaPelicula: Pelicula = await new PeliculaDA().añadirPeliculaDA(
-      pelicula
-    );
-    return nuevaPelicula;
+  public async añadirPeliculaLN(pelicula: Pelicula): Promise<Pelicula> {
+    try {
+      return await new PeliculaDA().añadirPeliculaDA(pelicula);
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
   }
 
   async obtenerPeliculaIDLN(id: string) {
     return await new PeliculaDA().obtenerPeliculaIDDA(id);
   }
 
-  async actualizarPeliculaLN(pelicula: Pelicula) {
-    await new PeliculaDA().actualizarPeliculaDA(pelicula);
+  public async actualizarPeliculaLN(
+    pelicula: Pelicula
+  ): Promise<Pelicula | null> {
+    try {
+      return await new PeliculaDA().actualizarPeliculaDA(pelicula);
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
   }
 
   async eliminarPeliculaLN(id: string) {

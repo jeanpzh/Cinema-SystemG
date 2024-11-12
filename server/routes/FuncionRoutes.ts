@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  actualizarFuncion,
   añadirFuncion,
   eliminarFuncion,
   obtenerFuncionPorID,
@@ -14,5 +15,6 @@ funcionRouter.get("/", obtenerFunciones);
 funcionRouter.post("/", añadirFuncion);
 funcionRouter.get("/:id", obtenerFuncionPorID);
 funcionRouter.delete("/:id", eliminarFuncion);
+funcionRouter.put("/:id", actualizarFuncion);
 
 export default funcionRouter;
