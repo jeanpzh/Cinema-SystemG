@@ -120,7 +120,7 @@ export default function Home() {
             <h3 className="text-4xl font-bold mb-12 text-[#2D0329]">
               Próximos estrenos
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 p-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 space-x-2">
               {upcomingMovies.map((movie, index) => (
                 <div
                   key={index}
@@ -132,7 +132,7 @@ export default function Home() {
                       <img
                         src={movie.image}
                         alt={movie.title}
-                        className="w-full h-[300px] object-cover transition-transform duration-300 group-hover:scale-105"
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
                       />
                       <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-[#190329] to-transparent">
                         <h4 className="text-lg font-semibold text-white">
@@ -164,7 +164,7 @@ export default function Home() {
                 placeholder="Tu correo electrónico"
                 className="flex-grow bg-white/10 border-0 text-white placeholder-white/50 focus:ring-2 focus:ring-white"
               />
-              <HomeButton className="ml-2 flex items-center text-[#2D0329] hover:bg-gray-100 rounded-full px-6 transition-all duration-300 hover:shadow-lg ">
+              <HomeButton className="ml-2 flex items-center text-[#2D0329] rounded-full px-6 transition-all duration-300 hover:shadow-lg hover:text-black ">
                 Suscribirse <Mail className="ml-2 h-4 w-4" />
               </HomeButton>
             </div>

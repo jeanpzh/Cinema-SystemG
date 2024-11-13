@@ -4,7 +4,6 @@ interface ButtonProps {
   children: ReactNode;
   className?: string;
   variant?: "default" | "ghost";
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }
 
