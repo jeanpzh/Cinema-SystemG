@@ -128,11 +128,11 @@ export default function Home() {
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <Card className="overflow-hidden group">
-                    <CardContent className="p-0 relative">
+                    <CardContent className="p-0 relative h-[500px] object-cover w-full">
                       <img
                         src={movie.image}
                         alt={movie.title}
-                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                        className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
                       />
                       <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-[#190329] to-transparent">
                         <h4 className="text-lg font-semibold text-white">
