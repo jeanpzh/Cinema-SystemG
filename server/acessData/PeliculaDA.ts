@@ -13,14 +13,14 @@ export class PeliculaDA {
    * @param tituloNormalizado Título de la película normalizado.
    * @param peliculaId ID de la película a actualizar.
    */
-    async evitarDuplicados(tituloNormalizado: string, peliculaId?: string) {
-      const pelicula = await this.obtenerPeliculaPorTituloNormalizado(
-        tituloNormalizado
-      );
-      if (pelicula && pelicula.Codigo_Pelicula !== peliculaId) {
-        throw new Error("Ya existe una película con el mismo título");
-      }
+  async evitarDuplicados(tituloNormalizado: string, peliculaId?: string) {
+    const pelicula = await this.obtenerPeliculaPorTituloNormalizado(
+      tituloNormalizado
+    );
+    if (pelicula && pelicula.Codigo_Pelicula !== peliculaId) {
+      throw new Error("Ya existe una película con el mismo título");
     }
+  }
 
   /**
    * Obtiene una película por su título normalizado.

@@ -82,8 +82,17 @@ export const actualizarTrabajador = async (
 
   const trabajador = validation.data;
 
-  if (trabajador.Password)
+  const data = (await new TrabajadorLN().obtenerTrabajadorPorIdLN(
+    trabajador.Codigo_Trabajador
+  )) as any;
+
+  if (!data) {
+    return res.status(404).json({ message: "Trabajador no encontrado" });
+  }
+  if (trabajador.Password && trabajador.Password !== data.Password) {
+    console.log(trabajador.Password, data.Password);
     trabajador.Password = hashearPassword(trabajador.Password);
+  }
 
   const trabajadorData = new Trabajador(
     trabajador.Codigo_Trabajador,

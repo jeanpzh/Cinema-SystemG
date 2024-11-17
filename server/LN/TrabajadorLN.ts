@@ -14,4 +14,7 @@ export class TrabajadorLN {
   async eliminarTrabajadorLN(codigo_trabajador: string): Promise<void> {
     await new TrabajadorDA().eliminarTrabajador(codigo_trabajador);
   }
+  async obtenerTrabajadorPorIdLN(codigo_trabajador: string): Promise<Trabajador | null> {
+    return await new TrabajadorDA().obtenerTrabajadorPorId(codigo_trabajador);
+  }
 }

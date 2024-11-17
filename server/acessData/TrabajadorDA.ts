@@ -82,4 +82,16 @@ export class TrabajadorDA {
       throw new Error(error.message);
     }
   }
+  async obtenerTrabajadorPorId(codigo_trabajador: string): Promise<any> {
+    try {
+      const result = await pool.query(
+        'SELECT * FROM "paObtenerTrabajadorID"($1)',
+        [codigo_trabajador]
+      );
+      const data = result.rows[0];
+      return data;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  }
 }
