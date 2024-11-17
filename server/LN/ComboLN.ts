@@ -42,7 +42,7 @@ class ComboLN {
       comboData.Nombre_Combo,
       comboData.Descripcion,
       comboData.Precio,
-      comboData.Imagen_Combo || "", // Si no se envía una nueva imagen, mantener la existente
+      comboData.Imagen_Combo || "", 
       detalles
     );
 

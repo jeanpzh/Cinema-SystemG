@@ -42,3 +42,13 @@ export interface DetalleEnriquecido extends DetalleCombo {
 export interface ComboEnriquecido extends Omit<Combo, "Detalles"> {
   Detalles: DetalleEnriquecido[];
 }
+
+export interface Trabajador {
+  Codigo_Trabajador: string;
+  Correo: string;
+  Nombre: string;
+  Username: string;
+  Password: string;
+  Telefono: string;
+  Rol: string;
+}

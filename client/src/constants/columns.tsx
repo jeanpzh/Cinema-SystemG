@@ -64,3 +64,11 @@ export const COLUMN_COMBOS: ColumnProps<Combo>[] = [
       ),
   },
 ];
+
+export const COLUMN_TRABAJADORES = [
+  { field: "Username", header: "Username" },
+  { field: "Nombre", header: "Nombre" },
+  { field: "Correo", header: "Email" },
+  { field: "Rol", header: "Rol" },
+  { field: "Telefono", header: "Teléfono" },
+];

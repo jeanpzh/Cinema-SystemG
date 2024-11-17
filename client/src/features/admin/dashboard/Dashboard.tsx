@@ -1,13 +1,34 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
 import { FaFilm, FaUser, FaTicketAlt } from "react-icons/fa";
 import StatCard from "./StatCard";
 import { Bar, Pie } from "react-chartjs-2";
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, ArcElement, Tooltip, Legend } from 'chart.js';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  ArcElement,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { useLoginStore } from "@/store/loginStore";
 
 // Register necessary components for Chart.js
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, ArcElement, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  ArcElement,
+  Tooltip,
+  Legend
+);
 
 const Dashboard = () => {
+  const user = useLoginStore((state: any) => state.user);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [stats, setStats] = useState({
     totalMovies: 120,
     totalUsers: 1500,
@@ -51,7 +72,6 @@ const Dashboard = () => {
     },
   };
 
-
   // Datos del gráfico de barras
   const barChartData = {
     labels: ["Películas", "Usuarios", "Entradas"],
@@ -64,25 +84,39 @@ const Dashboard = () => {
     ],
   };
 
-
   // Pie chart data
   // Pie chart data con géneros de películas
   const pieChartData = {
-    labels: ["Acción", "Terror", "Comedia", "Ciencia Ficción", "Drama", "Romance", "Documental"],
+    labels: [
+      "Acción",
+      "Terror",
+      "Comedia",
+      "Ciencia Ficción",
+      "Drama",
+      "Romance",
+      "Documental",
+    ],
     datasets: [
       {
         data: [30, 20, 15, 10, 10, 10, 5], // Ejemplo de porcentajes por género
-        backgroundColor: ["#4A90E2", "#E94A3F", "#FFD700", "#9D50BB", "#FF6347", "#FF69B4", "#4682B4"],
+        backgroundColor: [
+          "#4A90E2",
+          "#E94A3F",
+          "#FFD700",
+          "#9D50BB",
+          "#FF6347",
+          "#FF69B4",
+          "#4682B4",
+        ],
       },
     ],
   };
-
 
   return (
     <div className="flex-1 p-8 bg-lightTheme-background min-h-screen">
       <div className="max-w-5xl mx-auto">
         <h1 className="text-3xl font-semibold text-lightTheme-text mb-8 text-center">
-          Administración CinePlex
+          Bienvenido {user?.user.name} !
         </h1>
 
         {/* Estadísticas Generales */}
@@ -122,7 +156,11 @@ const Dashboard = () => {
             <h3 className="text-xl font-semibold text-lightTheme-text mb-4">
               Peliculas vistas por su categoría
             </h3>
-            <Pie data={pieChartData} options={{ responsive: true }} key="pieChart" />
+            <Pie
+              data={pieChartData}
+              options={{ responsive: true }}
+              key="pieChart"
+            />
           </div>
         </div>
       </div>

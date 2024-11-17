@@ -6,7 +6,7 @@ import {
   createPeliculas,
   updatePeliculas,
 } from "@/api/peliculas";
-import { Combo, Pelicula, Producto } from "@/constants/table";
+import { Combo, Pelicula, Producto, Trabajador } from "@/constants/table";
 import {
   createProductos,
   deleteProductos,
@@ -21,6 +21,12 @@ import {
   updateFuncion,
 } from "@/api/funciones";
 import { createCombo, deleteCombo, getCombos, updateCombo } from "@/api/combos";
+import {
+  createTrabajador,
+  deleteTrabajador,
+  obtenerTrabajadores,
+  updateTrabajador,
+} from "@/api/trabajadores";
 
 interface CrudOperations<T> {
   get: () => Promise<AxiosResponse<T[]>>;
@@ -206,6 +212,25 @@ export const useCombos = () => {
       create: createCombo,
       update: updateCombo,
       delete: deleteCombo,
+    }),
+    []
+  );
+
+  return useCrud(operations);
+};
+export const useTrabajadores = () => {
+  const operations: CrudOperations<Trabajador> = useMemo(
+    () => ({
+      get: async () => {
+        const response = await obtenerTrabajadores();
+        if (!response) {
+          throw new Error("Failed to fetch funciones");
+        }
+        return response;
+      },
+      create: createTrabajador,
+      update: updateTrabajador,
+      delete: deleteTrabajador,
     }),
     []
   );

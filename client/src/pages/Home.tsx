@@ -1,11 +1,11 @@
+// src/pages/Home.tsx
+
+import React from "react";
 import { HomeButton } from "@/components/ui/HomeButton";
 import { Input } from "@/components/ui/Input";
 import { Card, CardContent } from "@/components/ui/Card";
-import { Mail, Menu } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-} from "@/components/ui/Dropdown-menu";
+import { Mail } from "lucide-react";
+import {} from "@/components/ui/Dropdown-menu";
 
 export default function Home() {
   const upcomingMovies = [
@@ -32,8 +32,8 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-white text-gray-800">
-      <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50">
+    <div className="min-h-screen bg-tokyoNight-bg text-tokyoNight-text font-poppins">
+      <header className="bg-tokyoNight-bg/80 backdrop-blur-md sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center space-x-2">
             <img
@@ -41,16 +41,16 @@ export default function Home() {
               alt="CineSystem Logo"
               className="w-10 h-10"
             />
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-[#190329] via-[#2D0329] to-[#420229] bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-[#190329] via-[#2D0329] to-[#420229] bg-clip-text text-tokyoNight-primary">
               CINEPLEX
             </h1>
           </div>
-          <nav className="hidden md:block ">
+          <nav className="hidden md:block px-16">
             <ul className="flex space-x-12">
               <li>
                 <a
                   href="#home"
-                  className="hover:text-[#2D0329] transition-colors"
+                  className="hover:text-tokyoNight-primary transition-colors"
                 >
                   Inicio
                 </a>
@@ -58,7 +58,7 @@ export default function Home() {
               <li>
                 <a
                   href="#upcoming"
-                  className="hover:text-[#2D0329] transition-colors"
+                  className="hover:text-tokyoNight-primary transition-colors"
                 >
                   Próximos estrenos
                 </a>
@@ -66,7 +66,7 @@ export default function Home() {
               <li>
                 <a
                   href="#contact"
-                  className="hover:text-[#2D0329] transition-colors"
+                  className="hover:text-tokyoNight-primary transition-colors"
                 >
                   Contacto
                 </a>
@@ -74,34 +74,43 @@ export default function Home() {
               <li>
                 <a
                   href="#vision"
-                  className="hover:text-[#2D0329] transition-colors"
+                  className="hover:text-tokyoNight-primary transition-colors"
                 >
                   Nuestra Visión
                 </a>
               </li>
+              {/* Nuevos Enlaces de Login y Registro */}
+              <li>
+                <a
+                  href="/login"
+                  className="hover:text-tokyoNight-primary transition-colors"
+                >
+                  Login
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/register"
+                  className="hover:text-tokyoNight-primary transition-colors"
+                >
+                  Registro
+                </a>
+              </li>
             </ul>
           </nav>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <HomeButton variant="ghost" className="md:hidden z-40">
-                <Menu className="h-6 w-6" />
-              </HomeButton>
-            </DropdownMenuTrigger>
-            <div className="relative z-30">{/* Contenido del menú */}</div>
-          </DropdownMenu>
         </div>
       </header>
 
       <main>
         <section
           id="home"
-          className="relative h-[80vh] bg-cover bg-center flex items-center overflow-hidden p-4 "
+          className="relative h-[80vh] bg-cover bg-center flex items-center overflow-hidden p-4"
           style={{
             backgroundImage: 'url("/william.jpg?height=700&width=1200")',
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-[#190329] via-[#2D0329]  to-[#420229] opacity-70"></div>
-          <div className="container mx-[100px] px-4 py-2 z-10 animate-fade-in">
+          <div className="absolute inset-0 bg-gradient-to-r from-[#190329] via-[#2D0329] to-[#420229] opacity-70"></div>
+          <div className="container mx-[100px] px-4 py-2 z-10 animate-fadeIn">
             <h2 className="text-6xl font-bold mb-4 text-white leading-tight">
               Bienvenido a <br />
               CINEPLEX
@@ -109,7 +118,7 @@ export default function Home() {
             <p className="text-xl mb-8 text-white max-w-lg">
               Disfruta de las mejores películas en la comodidad de tu hogar.
             </p>
-            <HomeButton className="text-[#2D0329] hover:bg-gray-100 rounded-full px-8 py-6 text-lg font-semibold transition-all duration-300 hover:shadow-lg">
+            <HomeButton className="text-tokyoNight-secondary hover:bg-gray-100 rounded-full px-8 py-6 text-lg font-semibold transition-all duration-300 hover:shadow-lg">
               Explorar Catálogo
             </HomeButton>
           </div>
@@ -117,14 +126,14 @@ export default function Home() {
 
         <section id="upcoming" className="py-24 bg-gray-50">
           <div className="container mx-auto px-4">
-            <h3 className="text-4xl font-bold mb-12 text-[#2D0329]">
+            <h3 className="text-4xl font-bold mb-12 text-tokyoNight-primary">
               Próximos estrenos
             </h3>
             <div className="grid grid-cols-1 p-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 space-x-2">
               {upcomingMovies.map((movie, index) => (
                 <div
                   key={index}
-                  className="animate-fade-in"
+                  className="animate-fadeIn"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <Card className="overflow-hidden group">
@@ -162,9 +171,9 @@ export default function Home() {
               <Input
                 type="email"
                 placeholder="Tu correo electrónico"
-                className="flex-grow bg-white/10 border-0 text-white placeholder-white/50 focus:ring-2 focus:ring-white"
+                className="flex-grow bg-transparent border border-tokyoNight-secondary text-white placeholder-white/50 focus:ring-2 focus:ring-tokyoNight-primary"
               />
-              <HomeButton className="ml-2 flex items-center text-[#2D0329] rounded-full px-6 transition-all duration-300 hover:shadow-lg hover:text-black ">
+              <HomeButton className="ml-2 flex items-center text-tokyoNight-primary bg-tokyoNight-secondary hover:bg-tokyoNight-primary rounded-full px-6 py-3 transition-all duration-300 hover:shadow-lg">
                 Suscribirse <Mail className="ml-2 h-4 w-4" />
               </HomeButton>
             </div>
@@ -173,7 +182,7 @@ export default function Home() {
 
         <section id="vision" className="py-24 bg-white">
           <div className="container mx-auto px-4">
-            <h3 className="text-4xl font-bold mb-8 text-[#2D0329] text-center">
+            <h3 className="text-4xl font-bold mb-8 text-tokyoNight-primary text-center">
               Nuestra Visión
             </h3>
             <div className="max-w-3xl mx-auto text-center">
@@ -195,7 +204,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="bg-gray-100 py-12 text-[#2D0329]">
+      <footer className="bg-gray-100 py-12 text-tokyoNight-primary">
         <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center space-x-2 mb-4 md:mb-0">
             <img
@@ -206,14 +215,36 @@ export default function Home() {
             <p className="font-semibold">© 2024 CINEPLEX</p>
           </div>
           <div className="flex flex-wrap justify-center md:justify-end space-x-4">
-            <a href="#" className="hover:text-[#420229] transition-colors">
+            <a
+              href="/terms"
+              className="hover:text-tokyoNight-accent transition-colors"
+            >
               Términos de Servicio
             </a>
-            <a href="#" className="hover:text-[#420229] transition-colors">
+            <a
+              href="/privacy"
+              className="hover:text-tokyoNight-accent transition-colors"
+            >
               Política de Privacidad
             </a>
-            <a href="#" className="hover:text-[#420229] transition-colors">
+            <a
+              href="/contact"
+              className="hover:text-tokyoNight-accent transition-colors"
+            >
               Contacto
+            </a>
+            {/* Nuevos Enlaces de Login y Registro en el Footer */}
+            <a
+              href="/login"
+              className="hover:text-tokyoNight-accent transition-colors"
+            >
+              Login
+            </a>
+            <a
+              href="/register"
+              className="hover:text-tokyoNight-accent transition-colors"
+            >
+              Registro
             </a>
           </div>
         </div>

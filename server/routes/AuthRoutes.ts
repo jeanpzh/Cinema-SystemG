@@ -1,8 +1,17 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
+import { login, logout, obtenerDatosUser } from "../controllers/AuthController";
+import { verifyToken } from "../middleware/authMiddleware";
+import { checkWorkerRole } from "../middleware/roleMiddleware";
 
-const authRouter = Router();
+const loginRouter = Router();
 
-authRouter.post("/login", (req: Request, res: Response) => {
-  res.send("Login");
-});
-export default authRouter;
+loginRouter.post("/login", login);
+loginRouter.get(
+  "/dashboard",
+  verifyToken,
+  checkWorkerRole(["admin", "producto", "pelicula"]),
+  obtenerDatosUser
+);
+loginRouter.post("/logout", logout);
+
+export default loginRouter;

@@ -1,40 +1,59 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import ErrorBoundary from "@/components/ErrorBoundary";
 import AdminLayout from "@/layouts/AdminLayout";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./Home";
+import LoginPage from "./Login";
+import PrivateRoute from "./PrivateRoute";
+import { useLoginStore } from "@/store/loginStore";
 
 const AdminRoutes = lazy(() => import("./AdminRoutes"));
 
-/**
- *
- * @returns LazyRoutes - Componente que contiene las rutas de la aplicación
- * @see AdminRoutes - Componente que contiene las rutas del admin
- * @see Main - Componente que contiene el contenido principal de la aplicación
- * @see BrowserRouter - Componente que envuelve la aplicación y le proporciona las propiedades de la versión 7 de react-router
- * @see Route - Componente que renderiza un componente cuando la ruta coincide con la ubicación actual
- * @see Routes - Componente que renderiza el primer hijo <Route> o <Redirect> que coincide con la ubicación actual
- * @see Suspense - Componente que muestra un spinner de carga mientras se carga el componente
- * @see lazy - Función que permite cargar un componente de forma dinámica
- * @see ErrorBoundary - Componente que captura errores en la aplicación
- */
-
 function LazyRoutes() {
-  return (
-    // relativeSplatPath: true - startTransition: true - Se añaden las propiedades de la versión 7 de react-router , para evitar posibles errores después de la actualización
+  const fetchUser = useLoginStore((state: any) => state.loadUser);
+  const loading = useLoginStore((state: any) => state.loading);
+  const [initialLoading, setInitialLoading] = useState(true);
 
+  useEffect(() => {
+    const loadUser = async () => {
+      await fetchUser();
+      setInitialLoading(false);
+    };
+    loadUser();
+    return () => {
+      setInitialLoading(true);
+    };
+  }, [fetchUser]);
+
+  if (initialLoading || loading) {
+    return <div>Loading...</div>;
+  }
+  const forbiddenRoutes = {
+    producto: ["/admin/trabajadores", "/admin/peliculas", "/admin/funciones"],
+    pelicula: ["/admin/trabajadores", "/admin/productos", "/admin/combos"],
+  };
+  return (
     <BrowserRouter
       future={{ v7_relativeSplatPath: true, v7_startTransition: true }}
     >
-      {" "}
       <ErrorBoundary>
         <Suspense fallback={<h1>Loading...</h1>}>
           <Routes>
-            <Route path="/login" element={<h1>Login</h1>} />
-            <Route path="/admin/*" element={<AdminLayout />}>
-              <Route path="*" element={<AdminRoutes />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route
+              element={
+                <PrivateRoute
+                  allowedRoles={["admin", "producto", "pelicula"]}
+                  forbiddenRoutes={forbiddenRoutes}
+                  forbiddenRoles={["cliente"]}
+                />
+              }
+            >
+              <Route path="/admin/*" element={<AdminLayout />}>
+                <Route path="*" element={<AdminRoutes />} />
+              </Route>
             </Route>
-
             <Route path="/" element={<Home />} />
           </Routes>
         </Suspense>
