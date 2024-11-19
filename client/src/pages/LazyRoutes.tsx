@@ -7,6 +7,7 @@ import Home from "./Home";
 import LoginPage from "./Login";
 import PrivateRoute from "./PrivateRoute";
 import { useLoginStore } from "@/store/loginStore";
+import Faq from "./Faq";
 
 const AdminRoutes = lazy(() => import("./AdminRoutes"));
 
@@ -55,6 +56,7 @@ function LazyRoutes() {
               </Route>
             </Route>
             <Route path="/" element={<Home />} />
+            <Route path="/Faq" element={<Faq/>} />
           </Routes>
         </Suspense>
       </ErrorBoundary>
