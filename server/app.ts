@@ -10,6 +10,7 @@ import loginRouter from "./routes/AuthRoutes";
 import TrabajadorRouter from "./routes/TrabajadorRoutes";
 import cookieParser from "cookie-parser";
 import { loginLimiter } from "./middleware/rateLimiter";
+import PFroutes from "./routes/PreguntasFrecuentesRoutes";
 
 declare global {
   namespace Express {
@@ -48,6 +49,7 @@ app.use("/peliculas", movieRouter);
 app.use("/funcion", funcionRouter);
 app.use("/productos", productRouter);
 app.use("/combos", comboRouter);
+app.use("/pf", PFroutes);
 app.use("/", TrabajadorRouter);
 app.use(
   (
