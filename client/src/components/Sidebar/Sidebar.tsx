@@ -10,6 +10,7 @@ import {
   FaConciergeBell,
   FaLongArrowAltUp,
   FaUser,
+  FaQuestionCircle,
 } from "react-icons/fa";
 import { Timer } from "./Timer";
 import { useLoginStore } from "@/store/loginStore";
@@ -73,7 +74,7 @@ const Sidebar: FC<SidebarProps> = ({ user }) => {
       </header>
 
       {/* Temporizador */}
-      <div className="p-4">
+      <div>
         <Timer exp={user.exp.toString()} />
       </div>
 
@@ -127,7 +128,7 @@ const Sidebar: FC<SidebarProps> = ({ user }) => {
           <SidebarOptions
             to="/admin/preguntas-frecuentes"
             label="Preguntas Frecuentes"
-            icon={<FaConciergeBell className="text-lg" />}
+            icon={<FaQuestionCircle className="text-lg" />}
           />
         )}
       </nav>

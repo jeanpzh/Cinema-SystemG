@@ -41,19 +41,19 @@ export const Timer = ({ exp }: TimerProps) => {
   const seconds = time % 60;
 
   return (
-    <div className="flex items-center justify-center p-4">
+    <div className="flex items-center justify-center p-2">
       <div className="timer text-center bg-[#1e1e1e] rounded-lg p-4 text-white shadow-md">
         <h3 className="text-lg font-semibold mb-2">Tiempo Restante</h3>
-        <div className="flex space-x-2 text-3xl font-bold">
+        <div className="flex space-x-2 text-3xl text-center items-center justify-center font-bold">
           <span
-            className="jst-minutes animate-pulse text-green-400"
+            className="jst-minutes animate-pulse  text-yellow-400"
             title="Minutos"
           >
             {formatTime(minutes)}
           </span>
           <span className="text-gray-300">:</span>
           <span
-            className="jst-seconds animate-pulse text-red-400"
+            className="jst-seconds animate-pulse text-yellow-400"
             title="Segundos"
           >
             {formatTime(seconds)}
