@@ -7,37 +7,31 @@ npx shadcn@latest init
 npx shadcn@latest add accordion
 */
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
-import { Film, Popcorn, Ticket, Clock, CreditCard, Star } from 'lucide-react'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Film, Popcorn, Star } from "lucide-react";
+
+import { getPreguntasFrecuentes } from "@/api/preguntas_frecuentes";
+import { useEffect, useState } from "react";
+import { PreguntaFrecuente } from "@/constants/table";
 
 export default function Faq() {
-  const faqs = [
+  const [faqs, setFaqs] = useState<PreguntaFrecuente[]>([
     {
-      question: "¿Cómo puedo comprar entradas en línea?",
-      answer: "Puede comprar entradas en línea visitando nuestro sitio web oficial, seleccionando la película, la fecha y la hora deseada, y siguiendo el proceso de pago seguro.",
-      icon: <Ticket className="w-6 h-6 mr-2" />
+      id: "1",
+      pregunta: "",
+      respuesta: "",
     },
-    {
-      question: "¿Cuál es la política de reembolso?",
-      answer: "Las entradas pueden ser reembolsadas hasta 2 horas antes del inicio de la función. Después de ese tiempo, no se ofrecen reembolsos.",
-      icon: <CreditCard className="w-6 h-6 mr-2" />
-    },
-    {
-      question: "¿Hay descuentos para estudiantes o personas mayores?",
-      answer: "Sí, ofrecemos descuentos para estudiantes y personas mayores de 60 años. Es necesario presentar una identificación válida en la taquilla.",
-      icon: <Ticket className="w-6 h-6 mr-2" />
-    },
-    {
-      question: "¿Puedo llevar mi propia comida y bebida?",
-      answer: "No se permite ingresar con alimentos o bebidas externos. Contamos con una amplia variedad de opciones en nuestra cafetería.",
-      icon: <Popcorn className="w-6 h-6 mr-2" />
-    },
-    {
-      question: "¿Cómo funciona la reserva de asientos?",
-      answer: "Al comprar sus entradas, ya sea en línea o en taquilla, podrá seleccionar sus asientos específicos en un mapa interactivo de la sala.",
-      icon: <Clock className="w-6 h-6 mr-2" />
-    }
-  ]
+  ]);
+  useEffect(() => {
+    getPreguntasFrecuentes().then((res) => {
+      setFaqs(res.data);
+    });
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-[#3E0229] to-black text-white p-8 flex flex-col items-center justify-center">
@@ -50,26 +44,34 @@ export default function Faq() {
           <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-clip-text text-white">
             Preguntas Frecuentes
           </h1>
-          <p className="text-xl text-pink-200">Todo lo que necesitas saber sobre CinePurpura</p>
+          <p className="text-xl text-pink-200">
+            Todo lo que necesitas saber sobre CinePurpura
+          </p>
         </div>
         <Accordion type="single" collapsible className="w-full space-y-4">
           {faqs.map((faq, index) => (
-            <AccordionItem key={index} value={`item-${index}`} className="bg-gradient-to-r from-[#3E0229] to-black rounded-lg overflow-hidden border border-pink-500">
+            <AccordionItem
+              key={index}
+              value={`item-${index}`}
+              className="bg-gradient-to-r from-[#3E0229] to-black rounded-lg overflow-hidden border border-pink-500"
+            >
               <AccordionTrigger className="text-left text-lg font-semibold hover:text-pink-400 transition-colors px-6 py-4">
                 <div className="flex items-center">
-                  {faq.icon}
-                  {faq.question}
+                  <Popcorn className="w-6 h-6 mr-2" />
+                  {faq.pregunta}
                 </div>
               </AccordionTrigger>
               <AccordionContent className="text-pink-200 px-6 py-4 bg-black bg-opacity-50">
-                {faq.answer}
+                {faq.respuesta}
               </AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>
       </div>
       <footer className="mt-12 text-center text-white">
-        <p className="mb-2">¿Tienes más preguntas? Contáctanos en info@cineplex.com</p>
+        <p className="mb-2">
+          ¿Tienes más preguntas? Contáctanos en info@cineplex.com
+        </p>
         <div className="flex justify-center space-x-4">
           <Star className="w-6 h-6" />
           <Star className="w-6 h-6" />
@@ -79,5 +81,5 @@ export default function Faq() {
         </div>
       </footer>
     </div>
-  )
+  );
 }
