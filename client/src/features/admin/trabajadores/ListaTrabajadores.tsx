@@ -12,6 +12,7 @@ import ModalFormularioTrabajador from "./ModalFormularioTrabajador";
 import SearchBar from "@/components/SearchBar";
 import HeaderList from "@/components/HeaderList";
 import { useAlert } from "@/hooks/useAlert";
+import ItemFilter from "@/utils/ItemFilter";
 
 function ListaTrabajadores() {
   const [storedTrabajadores, setStoredTrabajadores] = useState<Trabajador[]>(
@@ -107,7 +108,7 @@ function ListaTrabajadores() {
       } else {
         console.log(data);
         const nuevoTrabajador = await crearTrabajador(data);
-         
+
         setStoredTrabajadores([...storedTrabajadores, nuevoTrabajador.data]);
       }
     } catch (error: any) {
@@ -120,6 +121,11 @@ function ListaTrabajadores() {
     }
     hideAddDialog();
   };
+  const itemsFiltered = ItemFilter({
+    searchTerm,
+    memoItems: memoTrabajadores,
+    getNombreItem: (item) => item.Nombre,
+  });
 
   return (
     <div className="p-8 flex flex-col gap-6">
@@ -140,7 +146,7 @@ function ListaTrabajadores() {
       {/* Tabla */}
       <Table
         label="Trabajadores"
-        items={memoTrabajadores}
+        items={itemsFiltered}
         columns={COLUMN_TRABAJADORES}
         editProduct={handleEditTrabajador}
         confirmDeleteProduct={handleDeleteTrabajador}
