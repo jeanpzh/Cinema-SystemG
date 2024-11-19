@@ -31,8 +31,13 @@ function LazyRoutes() {
     return <div>Loading...</div>;
   }
   const forbiddenRoutes = {
-    producto: ["/admin/trabajadores", "/admin/peliculas", "/admin/funciones"],
-    pelicula: ["/admin/trabajadores", "/admin/productos", "/admin/combos"],
+    producto: [
+      "/admin/trabajadores",
+      "/admin/peliculas",
+      "/admin/funciones",
+      "/admin/preguntas-frecuentes",
+    ],
+    pelicula: ["/admin/trabajadores", "/admin/productos", "/admin/combos", "/admin/preguntas-frecuentes"],
   };
   return (
     <BrowserRouter

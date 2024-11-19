@@ -7,7 +7,6 @@ import ModalEliminacion from "../../../components/ModalEliminacion";
 import FooterDialog from "@/components/FooterDialog";
 import SearchBar from "@/components/SearchBar";
 import HeaderList from "@/components/HeaderList";
-import ItemFilter from "@/utils/ItemFilter";
 import { useAlert } from "@/hooks/useAlert";
 import ModalFormularioPF from "./ModalFormularioPF";
 
