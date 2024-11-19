@@ -224,6 +224,12 @@ export default function Home() {
               Política de Privacidad
             </a>
             <a
+              href="/Faq"
+              className="hover:text-tokyoNight-accent transition-colors"
+            >
+              Preguntas Frecuentes
+            </a>
+            <a
               href="/contact"
               className="hover:text-tokyoNight-accent transition-colors"
             >
