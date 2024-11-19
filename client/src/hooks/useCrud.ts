@@ -6,7 +6,7 @@ import {
   createPeliculas,
   updatePeliculas,
 } from "@/api/peliculas";
-import { Combo, Pelicula, Producto, Trabajador } from "@/constants/table";
+import { Combo, Pelicula, PreguntaFrecuente, Producto, Trabajador } from "@/constants/table";
 import {
   createProductos,
   deleteProductos,
@@ -27,6 +27,7 @@ import {
   obtenerTrabajadores,
   updateTrabajador,
 } from "@/api/trabajadores";
+import { createPreguntasFrecuentes, deletePreguntasFrecuentes, getPreguntasFrecuentes, updatePreguntasFrecuentes } from "@/api/preguntas_frecuentes";
 
 interface CrudOperations<T> {
   get: () => Promise<AxiosResponse<T[]>>;
@@ -237,3 +238,17 @@ export const useTrabajadores = () => {
 
   return useCrud(operations);
 };
+
+export const usePreguntasFrecuentes = () => {
+  const operations: CrudOperations<PreguntaFrecuente> = useMemo(
+    () => ({
+      get: getPreguntasFrecuentes,
+      create: createPreguntasFrecuentes,
+      update: updatePreguntasFrecuentes,
+      delete: deletePreguntasFrecuentes,
+    }),
+    []
+  );
+
+  return useCrud(operations);
+}

@@ -207,11 +207,7 @@ export default function Home() {
       <footer className="bg-gray-100 py-12 text-tokyoNight-primary">
         <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center space-x-2 mb-4 md:mb-0">
-            <img
-              src="/CINEX2.png?height=40&width=40"
-              alt="CineSystem Logo"
-              className="w-8 h-8"
-            />
+            <img src="/CINEX2.png" alt="CineSystem Logo" className="w-8 h-8" />
             <p className="font-semibold">© 2024 CINEPLEX</p>
           </div>
           <div className="flex flex-wrap justify-center md:justify-end space-x-4">

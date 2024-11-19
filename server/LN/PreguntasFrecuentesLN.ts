@@ -25,7 +25,22 @@ export class PreguntasFrecuentesLN {
   }
   async eliminarPreguntaFrecuenteLN(id: string) {
     try {
-       await new PreguntasFrecuentesDA().eliminarPreguntaFrecuenteDA(id);
+      await new PreguntasFrecuentesDA().eliminarPreguntaFrecuenteDA(id);
+    } catch (error) {
+      throw error;
+    }
+  }
+  async actualizarPreguntaFrecuenteLN(
+    id: string,
+    pregunta: string,
+    respuesta: string
+  ) {
+    try {
+      return await new PreguntasFrecuentesDA().actualizarPreguntaFrecuenteDA(
+        id,
+        pregunta,
+        respuesta
+      );
     } catch (error) {
       throw error;
     }

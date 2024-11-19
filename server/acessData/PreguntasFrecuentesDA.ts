@@ -1,4 +1,5 @@
 import pool from "../db/config";
+import { PreguntasFrecuentes } from "../models/PreguntasFrecuentes";
 
 export class PreguntasFrecuentesDA {
   async obtenerPreguntasFrecuentesDAL() {
@@ -32,6 +33,20 @@ export class PreguntasFrecuentesDA {
       await pool.query(query, [id]);
     } catch (error) {
       console.error("Error al eliminar pregunta frecuente:", error);
+    }
+  }
+  async actualizarPreguntaFrecuenteDA(
+    id: string,
+    pregunta: string,
+    respuesta: string
+  ) {
+    try {
+      const PFactualizada = new PreguntasFrecuentes(id, pregunta, respuesta);
+      const query = 'SELECT * FROM "paActualizarPF"($1, $2, $3)';
+      await pool.query(query, [id, pregunta, respuesta]);
+      return PFactualizada;
+    } catch (error) {
+      throw error;
     }
   }
 }

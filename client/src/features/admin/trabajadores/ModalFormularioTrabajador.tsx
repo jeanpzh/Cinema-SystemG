@@ -38,7 +38,15 @@ const ModalFormularioTrabajador: React.FC<ModalFormularioTrabajadorProps> = ({
 
   const handleOnHide = () => {
     onHide();
-    reset();
+    reset({
+      Codigo_Trabajador: "",
+      Correo: "",
+      Nombre: "",
+      Username: "",
+      Password: "",
+      Telefono: "",
+      Rol: "",
+    });
   };
 
   useEffect(() => {
@@ -66,7 +74,6 @@ const ModalFormularioTrabajador: React.FC<ModalFormularioTrabajadorProps> = ({
   }, [reset, trabajador]);
 
   const onSubmit = (data: Trabajador) => {
-    // Convertir el Rol a "producto" o "pelicula"
     data.Rol = data.Rol === "supervisor de productos" ? "producto" : "pelicula";
     onAdd(data);
     handleOnHide();

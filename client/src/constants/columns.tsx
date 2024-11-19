@@ -72,3 +72,8 @@ export const COLUMN_TRABAJADORES = [
   { field: "Rol", header: "Rol" },
   { field: "Telefono", header: "Teléfono" },
 ];
+
+export const COLUMN_PREGUNTAS_FRECUENTES = [
+  { field: "pregunta", header: "Pregunta" },
+  { field: "respuesta", header: "Respuesta" },
+];

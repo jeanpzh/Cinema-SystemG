@@ -5,6 +5,7 @@ import ListaFunciones from "@/features/admin/shows/ListaFunciones";
 import Dashboard from "@/features/admin/dashboard/Dashboard";
 import { Navigate, Route, Routes } from "react-router-dom";
 import ListaTrabajadores from "@/features/admin/trabajadores/ListaTrabajadores";
+import ListaPreguntasFrecuentes from "@/features/admin/preguntas_frecuentes/ListaPF";
 
 function AdminRoutes() {
   return (
@@ -16,6 +17,12 @@ function AdminRoutes() {
       <Route path="productos" element={<ListaProductos />} />
       <Route path="funciones" element={<ListaFunciones />} />
       <Route path="combos" element={<ListaCombos />} />
+      <Route path="404" element={<h1>404</h1>} />
+      <Route path="*" element={<Navigate to="/404" />} />
+      <Route
+        path="preguntas-frecuentes"
+        element={<ListaPreguntasFrecuentes />}
+      />
       <Route path="*" element={<Navigate to="/404" />} />
     </Routes>
   );

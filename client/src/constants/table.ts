@@ -52,3 +52,9 @@ export interface Trabajador {
   Telefono: string;
   Rol: string;
 }
+
+export interface PreguntaFrecuente {
+  id: string;
+  pregunta: string;
+  respuesta: string;
+}

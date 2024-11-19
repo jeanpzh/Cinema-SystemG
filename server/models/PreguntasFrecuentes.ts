@@ -1,24 +1,32 @@
 export class PreguntasFrecuentes {
-  private Pregunta: string;
-  private Respuesta: string;
+  private id: string;
+  private pregunta: string;
+  private respuesta: string;
 
-  constructor() {
-    this.Pregunta = "";
-    this.Respuesta = "";
+  constructor(id: string, pregunta: string, respuesta: string) {
+    this.id = id;
+    this.pregunta = pregunta;
+    this.respuesta = respuesta;
   }
 
   public getPregunta(): string {
-    return this.Pregunta;
+    return this.pregunta;
   }
 
   public setPregunta(Pregunta: string): void {
-    this.Pregunta = Pregunta;
+    this.pregunta = Pregunta;
   }
   public getRespuesta(): string {
-    return this.Respuesta;
+    return this.respuesta;
   }
 
   public setRespuesta(Respuesta: string): void {
-    this.Respuesta = Respuesta;
+    this.respuesta = Respuesta;
+  }
+  public getId(): string {
+    return this.id;
+  }
+  public setId(id: string): void {
+    this.id = id;
   }
 }

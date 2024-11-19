@@ -123,6 +123,13 @@ const Sidebar: FC<SidebarProps> = ({ user }) => {
             />
           </>
         )}
+        {user && user.rol.toLowerCase() === "admin" && (
+          <SidebarOptions
+            to="/admin/preguntas-frecuentes"
+            label="Preguntas Frecuentes"
+            icon={<FaConciergeBell className="text-lg" />}
+          />
+        )}
       </nav>
 
       {/* Pie de Página */}
