@@ -12,6 +12,8 @@ loginRouter.get(
   checkWorkerRole(["admin", "producto", "pelicula"]),
   obtenerDatosUser
 );
+loginRouter.get("/profile", verifyToken, obtenerDatosUser);
+
 loginRouter.post("/logout", logout);
 
 export default loginRouter;

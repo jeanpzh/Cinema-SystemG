@@ -9,9 +9,13 @@ export const useLoginStore = create((set) => ({
   loadUser: async () => {
     set({ loading: true, error: null });
     try {
-      const res = await axios.get("http://localhost:3000/dashboard", {
+      const res = await axios.get("http://localhost:3000/profile", {
         withCredentials: true,
       });
+      if (res.data.role === "admin")
+        await axios.get("http://localhost:3000/dashboard", {
+          withCredentials: true,
+        });
       set({ user: res.data, loading: false });
     } catch (error: unknown) {
       if (error instanceof Error) set({ error: error.message, loading: false });

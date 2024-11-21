@@ -15,20 +15,20 @@ export const verifyToken = (
   next: NextFunction
 ): void => {
   try {
-    // Verificar la existencia de SECRET_TOKEN
+    // Verifica la existencia de SECRET_TOKEN
     const secretToken = process.env.SECRET_TOKEN;
     if (!secretToken) {
       throw new Error("SECRET_TOKEN no está configurado");
     }
 
-    // Obtener el token de las cookies
+    // Obtiene el token de las cookies
     const token = req.cookies.token;
     if (!token) {
       res.status(401).json({ message: "No se proporcionó token" });
       return;
     }
 
-    // Verificar el token
+    // Verifica el token
     const decoded = verify(token, secretToken) as UserPayload;
 
     // Agrega el payload a la request
@@ -37,8 +37,6 @@ export const verifyToken = (
       role: decoded.role,
       exp: decoded.exp,
     };
-
-    console.log("Payload del token:", req.user);
 
     next();
   } catch (error) {

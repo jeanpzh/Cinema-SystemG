@@ -6,8 +6,13 @@ import { Input } from "@/components/ui/Input";
 import { Card, CardContent } from "@/components/ui/Card";
 import { Mail } from "lucide-react";
 import {} from "@/components/ui/Dropdown-menu";
+import { Link } from "react-router-dom";
+import { useLoginStore } from "@/store/loginStore";
 
 export default function Home() {
+  const user = useLoginStore((state) => state.user);
+  
+
   const upcomingMovies = [
     {
       title: "Estreno 1",
@@ -33,74 +38,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-tokyoNight-bg text-tokyoNight-text font-poppins">
-      <header className="bg-tokyoNight-bg/80 backdrop-blur-md sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center space-x-2">
-            <img
-              src="/CINEX2.png"
-              alt="CineSystem Logo"
-              className="w-10 h-10"
-            />
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-[#190329] via-[#2D0329] to-[#420229] bg-clip-text text-tokyoNight-primary">
-              CINEPLEX
-            </h1>
-          </div>
-          <nav className="hidden md:block px-16">
-            <ul className="flex space-x-12">
-              <li>
-                <a
-                  href="#home"
-                  className="hover:text-tokyoNight-primary transition-colors"
-                >
-                  Inicio
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#upcoming"
-                  className="hover:text-tokyoNight-primary transition-colors"
-                >
-                  Próximos estrenos
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#contact"
-                  className="hover:text-tokyoNight-primary transition-colors"
-                >
-                  Contacto
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#vision"
-                  className="hover:text-tokyoNight-primary transition-colors"
-                >
-                  Nuestra Visión
-                </a>
-              </li>
-              {/* Nuevos Enlaces de Login y Registro */}
-              <li>
-                <a
-                  href="/login"
-                  className="hover:text-tokyoNight-primary transition-colors"
-                >
-                  Login
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/register"
-                  className="hover:text-tokyoNight-primary transition-colors"
-                >
-                  Registro
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </header>
-
       <main>
         <section
           id="home"
@@ -118,9 +55,11 @@ export default function Home() {
             <p className="text-xl mb-8 text-white max-w-lg">
               Disfruta de las mejores películas en la comodidad de tu hogar.
             </p>
-            <HomeButton className="text-tokyoNight-secondary hover:bg-gray-100 rounded-full px-8 py-6 text-lg font-semibold transition-all duration-300 hover:shadow-lg">
-              Explorar Catálogo
-            </HomeButton>
+            <Link to="/peliculas">
+              <HomeButton className="text-tokyoNight-secondary hover:bg-gray-100 rounded-full px-8 py-6 text-lg font-semibold transition-all duration-300 hover:shadow-lg">
+                Ver Películas
+              </HomeButton>
+            </Link>
           </div>
         </section>
 

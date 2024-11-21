@@ -11,6 +11,8 @@ import TrabajadorRouter from "./routes/TrabajadorRoutes";
 import cookieParser from "cookie-parser";
 import { loginLimiter } from "./middleware/rateLimiter";
 import PFroutes from "./routes/PreguntasFrecuentesRoutes";
+import clientRouter from "./routes/ClientRoutes";
+import asientoRouter from "./routes/AsientoController";
 
 declare global {
   namespace Express {
@@ -51,6 +53,8 @@ app.use("/productos", productRouter);
 app.use("/combos", comboRouter);
 app.use("/pf", PFroutes);
 app.use("/", TrabajadorRouter);
+app.use("/cliente", clientRouter);
+app.use("/asientos", asientoRouter);
 app.use(
   (
     err: any,

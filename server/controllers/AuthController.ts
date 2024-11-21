@@ -37,9 +37,8 @@ const generateToken = (data: CookieData): string => {
 
 export const login = async (req: Request, res: Response): Promise<any> => {
   try {
-    console.log(req.body);
     const validation = LoginSchema.safeParse(req.body);
-    console.log(validation);
+
     if (!validation.success)
       return res.status(400).json({ errors: validation.error.errors });
 
@@ -59,7 +58,7 @@ export const login = async (req: Request, res: Response): Promise<any> => {
         .status(400)
         .json({ error: "Usuario o contraseña incorrectos" });
 
-    const rol = await new AdminLN().obtenerRolLN(user_id);
+    const rol = await new AuthLN().obtenerRolLN(user_id);
 
     if (!rol) return res.status(400).json({ error: "Rol no encontrado" });
 
@@ -110,6 +109,5 @@ export const logout = async (req: Request, res: Response): Promise<any> => {
     sameSite: "strict",
     path: "/",
   });
-  console.log("Logout exitoso");
   res.json({ message: "Logout exitoso" });
 };

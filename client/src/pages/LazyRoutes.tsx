@@ -3,13 +3,13 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 import AdminLayout from "@/layouts/AdminLayout";
 import { lazy, Suspense, useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "./Home";
 import LoginPage from "./Login";
 import PrivateRoute from "./PrivateRoute";
 import { useLoginStore } from "@/store/loginStore";
-import Faq from "./Faq";
+import ClientLayout from "@/layouts/ClientLayout";
 
 const AdminRoutes = lazy(() => import("./AdminRoutes"));
+const ClientRoutes = lazy(() => import("./ClientRoutes"));
 
 function LazyRoutes() {
   const fetchUser = useLoginStore((state: any) => state.loadUser);
@@ -37,7 +37,12 @@ function LazyRoutes() {
       "/admin/funciones",
       "/admin/preguntas-frecuentes",
     ],
-    pelicula: ["/admin/trabajadores", "/admin/productos", "/admin/combos", "/admin/preguntas-frecuentes"],
+    pelicula: [
+      "/admin/trabajadores",
+      "/admin/productos",
+      "/admin/combos",
+      "/admin/preguntas-frecuentes",
+    ],
   };
   return (
     <BrowserRouter
@@ -60,8 +65,9 @@ function LazyRoutes() {
                 <Route path="*" element={<AdminRoutes />} />
               </Route>
             </Route>
-            <Route path="/" element={<Home />} />
-            <Route path="/Faq" element={<Faq/>} />
+            <Route path="/*" element={<ClientLayout />}>
+              <Route path="*" element={<ClientRoutes />} />
+            </Route>
           </Routes>
         </Suspense>
       </ErrorBoundary>
