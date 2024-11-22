@@ -58,3 +58,11 @@ export interface PreguntaFrecuente {
   pregunta: string;
   respuesta: string;
 }
+
+export interface Asiento {
+  Codigo_Asiento: string;
+  Codigo_Sala: string;
+  Fila: string;
+  Numero: string;
+  Disponible: boolean;
+}

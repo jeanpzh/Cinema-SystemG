@@ -1,9 +1,27 @@
 import axios from "axios";
 import { create } from "zustand";
 
-export const useLoginStore = create((set) => ({
+interface User {
+  email: string;
+  name: string;
+  user_id: string;
+  username: string;
+}
+
+type State = {
+  user: null | { rol: string; name: string; email: string; user: User };
+  loading: boolean;
+  error: null | string;
+};
+type Actions = {
+  loadUser: () => Promise<void>;
+  clearUser: () => Promise<void>;
+};
+
+export const useLoginStore = create<State & Actions>((set) => ({
   user: null, // <-- Estado inicial del usuario en el dashboard (admin -trabajador)
   loading: false, // <-- Estado inicial de carga
+  error: null, // <-- Estado inicial de error
 
   // Carga de usuarios una vez que se ha logueado
   loadUser: async () => {
@@ -24,7 +42,14 @@ export const useLoginStore = create((set) => ({
   },
   clearUser: async () => {
     try {
-      set({ user: null });
+      const res = await axios.post(
+        "http://localhost:3000/logout",
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+      if (res.status === 200) set({ user: null });
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
     }

@@ -15,7 +15,6 @@ import {
 import { Timer } from "./Timer";
 import { useLoginStore } from "@/store/loginStore";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { FC } from "react";
 
 // Definición de tipos para las props del Sidebar
@@ -37,30 +36,12 @@ const Sidebar: FC<SidebarProps> = ({ user }) => {
 
   const handleLogout = async () => {
     try {
-      // Llama al endpoint de logout en el backend
-      const response = await axios.post(
-        "http://localhost:3000/logout",
-        {},
-        {
-          withCredentials: true,
-        }
-      );
-
-      if (response.status === 200) {
-        // Limpia el estado local del usuario
-        logout();
-        // Navega a la página de login
-        navigate("/login");
-      } else {
-        console.error("Error al cerrar sesión");
-        // Opcional: Muestra un mensaje de error al usuario
-      }
+      logout();
+      navigate("/login");
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
-      // Opcional: Maneja el error de forma adecuada
     }
   };
-
   return (
     <aside className="fixed flex flex-col w-60 h-screen bg-neutral-800 text-white shadow-lg font-sans">
       {/* Encabezado del Sidebar */}

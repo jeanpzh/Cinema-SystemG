@@ -1,11 +1,97 @@
 // Header.tsx
 
 import { useLoginStore } from "@/store/loginStore";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Profile } from "./Profile";
 
 function Header() {
   const user = useLoginStore((state) => state.user);
+  const location = useLocation();
+
+  const buttons = [
+    {
+      condition: location.pathname === "/",
+      button: [
+        {
+          text: "Inicio",
+          link: "#home",
+        },
+        {
+          text: "Contacto",
+          link: "#contact",
+        },
+        {
+          text: "Nuestra Visión",
+          link: "#vision",
+        },
+        {
+          text: "Proximos Estrenos",
+          link: "#upcoming",
+        },
+        {
+          text: "Peliculas",
+          link: "/peliculas",
+        },
+        {
+          text: "Productos",
+          link: "/productos",
+        },
+      ],
+    },
+    {
+      condition: location.pathname !== "/",
+      button: [
+        {
+          text: "Inicio",
+          link: "/",
+        },
+
+        {
+          text: "Peliculas",
+          link: "/peliculas",
+        },
+        {
+          text: "Productos",
+          link: "/productos",
+        },
+      ],
+    },
+  ];
+
+  const profile = [
+    {
+      component:
+        user &&
+        user.rol !== "admin" &&
+        user.rol !== "producto" &&
+        user.rol !== "pelicula" ? (
+          <Profile user={user.user} />
+        ) : (
+          <Link
+            to="/login"
+            className="text-tokyoNight-primary hover:text-tokyoNight-accent transition-colors"
+          >
+            Login
+          </Link>
+        ),
+    },
+    {
+      component:
+        user &&
+        user.rol !== "admin" &&
+        user.rol !== "producto" &&
+        user.rol !== "pelicula" ? null : (
+          <Link
+            key={user ? "asassa" : "assaas"}
+            to="/register"
+            className="text-tokyoNight-primary hover:text-tokyoNight-accent transition-colors"
+          >
+            Registro
+          </Link>
+        ),
+    },
+  ];
+  console.log(user);
 
   return (
     <header className="bg-tokyoNight-bg/80 backdrop-blur-md sticky top-0 z-50">
@@ -21,83 +107,24 @@ function Header() {
         {/* Navegación */}
         <nav className="hidden md:block">
           <ul className="flex space-x-8 items-center">
-            {/* Enlaces a Secciones */}
-            <li>
-              <a
-                href="#home"
-                className="hover:text-tokyoNight-primary transition-colors"
-              >
-                Inicio
-              </a>
-            </li>
-            <li>
-              <a
-                href="#upcoming"
-                className="hover:text-tokyoNight-primary transition-colors"
-              >
-                Próximos estrenos
-              </a>
-            </li>
-            <li>
-              <Link
-                to="/peliculas"
-                className="hover:text-tokyoNight-primary transition-colors"
-              >
-                Películas
-              </Link>
-            </li>
-            <li>
-              <a
-                href="#productos"
-                className="hover:text-tokyoNight-primary transition-colors"
-              >
-                Productos
-              </a>
-            </li>
-            <li>
-              <a
-                href="#contact"
-                className="hover:text-tokyoNight-primary transition-colors"
-              >
-                Contacto
-              </a>
-            </li>
-            <li>
-              <a
-                href="#vision"
-                className="hover:text-tokyoNight-primary transition-colors"
-              >
-                Nuestra Visión
-              </a>
-            </li>
-
-            {/* Enlace de Registro */}
-            {!user ? (
-              <li>
-                <Link
-                  to="/register"
-                  className="hover:text-tokyoNight-primary transition-colors"
-                >
-                  Registro
-                </Link>
-              </li>
-            ) : null}
-
-            {/* Enlaces de Login o Perfil del Usuario */}
-            {user ? (
-              <li>
-                <Profile user={user.user} />
-              </li>
-            ) : (
-              <li>
-                <Link
-                  to="/login"
-                  className="hover:text-tokyoNight-primary transition-colors"
-                >
-                  Login
-                </Link>
-              </li>
+            {buttons.map((button) =>
+              button.condition
+                ? button.button.map((btn) => (
+                    <li key={btn.text}>
+                      <a
+                        href={btn.link}
+                        className="text-white hover:text-tokyoNight-accent transition-colors"
+                      >
+                        {btn.text}
+                      </a>
+                    </li>
+                  ))
+                : null
             )}
+
+            {profile.map((prof) => (
+              <li key={prof.component ? "profile" : null}>{prof.component}</li>
+            ))}
           </ul>
         </nav>
       </div>

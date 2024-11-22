@@ -20,7 +20,7 @@ export interface FuncionElegida {
   Nombre_Sala: string;
 }
 
-export default function MovieDetails() {
+export default function DetallesPelicula() {
   const { data: funciones } = useFunciones();
   const loadPelicula = useEntradaStore((state) => state.pelicula);
   const setPelicula = useEntradaStore((state) => state.setPelicula);

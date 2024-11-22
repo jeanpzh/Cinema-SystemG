@@ -7,12 +7,8 @@ import { Card, CardContent } from "@/components/ui/Card";
 import { Mail } from "lucide-react";
 import {} from "@/components/ui/Dropdown-menu";
 import { Link } from "react-router-dom";
-import { useLoginStore } from "@/store/loginStore";
 
 export default function Home() {
-  const user = useLoginStore((state) => state.user);
-  
-
   const upcomingMovies = [
     {
       title: "Estreno 1",

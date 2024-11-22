@@ -1,10 +1,24 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import Faq from "./Faq";
 import SeleccionarPelicula from "@/features/client/SeleccionarPelicula";
 import Home from "./Home";
-import DetallesPelicula from "@/features/client/detallesPelicula";
+import DetallesPelicula from "@/features/client/DetallesPelicula";
 import SeleccionarAsiento from "@/features/client/SeleccionarAsiento";
+import ProductSelectionSPA from "@/features/client/SelecciónProductoCombo";
+import { useProductoStore } from "@/store/productoStore";
+import { useComboStore } from "@/store/comboStore";
+
 function ClientRoutes() {
+  const location = useLocation();
+
+  // Funcion para limpiar la seleccion
+  const limpiarSeleccion = () => {
+    useProductoStore.getState().clearProductos();
+    useComboStore.getState().clearCombos();
+  };
+
+  if (!location.pathname.includes("productos")) limpiarSeleccion();
+
   return (
     <Routes>
       <Route path="/" element={<Home />} />
@@ -17,6 +31,11 @@ function ClientRoutes() {
         path="peliculas/:idPelicula/:idSala/asientos"
         element={<SeleccionarAsiento />}
       />
+      <Route
+        path="peliculas/:idPelicula/:idSala/asientos/productos"
+        element={<ProductSelectionSPA />}
+      />
+      <Route path="productos" element={<ProductSelectionSPA />} />
     </Routes>
   );
 }

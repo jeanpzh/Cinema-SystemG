@@ -25,8 +25,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
 
   // Función para manejar el cierre de sesión
   const handleLogout = () => {
-    clearUser();
-
+    clearUser();  
     setIsMenuOpen(false);
   };
 

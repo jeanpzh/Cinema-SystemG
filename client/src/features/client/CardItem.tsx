@@ -82,7 +82,6 @@ function CardItem({ Nombre_Pelicula, Cod_Pelicula, pelicula }: Props) {
           </span>
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-3xl font-bold text-white">$599</span>
           <Link
             to={`/peliculas/${Cod_Pelicula}`}
             onClick={onClick}
