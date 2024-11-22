@@ -16,7 +16,7 @@ import { Dialog } from "primereact/dialog";
 import { useEntradaStore } from "@/store/entradaStore";
 
 // Define los tipos para nuestros asientos y filas
-interface Asiento {
+export interface Asiento {
   id_asiento: string;
   fila: string;
   numero_asiento: string;

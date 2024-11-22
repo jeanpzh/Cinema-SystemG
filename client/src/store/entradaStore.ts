@@ -2,7 +2,8 @@
 // el cliente va a seleccionar la película, la función y si es quiere productos adicionales
 // Con zustand
 
-import { Asiento, Funcion, Pelicula, Producto } from "@/constants/table";
+import { Funcion, Pelicula, Producto } from "@/constants/table";
+import { Asiento } from "@/features/client/SeleccionarAsiento";
 import { create } from "zustand";
 
 type State = {
