@@ -1,4 +1,4 @@
-import Header from "@/features/client/Header";
+import Header from "@/features/client/interfaz_principal/Header";
 import { Outlet } from "react-router-dom";
 
 function ClientLayout() {

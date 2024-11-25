@@ -24,7 +24,7 @@ function ListaPeliculas() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isEditing, setIsEditing] = useState(false);
 
-  const { showAlert } = useAlert(); // Usa el hook
+  const { showAlert } = useAlert();
 
   const {
     data: peliculas,
@@ -65,7 +65,7 @@ function ListaPeliculas() {
 
   const confirmDelete = () => {
     if (selectedPelicula) {
-      eliminarPelicula(selectedPelicula.Codigo_Pelicula)
+      eliminarPelicula?.(selectedPelicula.Codigo_Pelicula)
         .then(() => {
           const listaNueva = storedPeliculas.filter(
             (pelicula) =>
@@ -90,14 +90,14 @@ function ListaPeliculas() {
           selectedPelicula.Codigo_Pelicula,
           data
         );
-
-        setStoredPeliculas(
-          storedPeliculas.map((pelicula) =>
-            pelicula.Codigo_Pelicula === selectedPelicula.Codigo_Pelicula
-              ? peliculaActualizada.data
-              : pelicula
-          )
+        console.log(peliculaActualizada);
+        const listaNueva = storedPeliculas.map((pelicula) =>
+          pelicula.Codigo_Pelicula === peliculaActualizada.data.Codigo_Pelicula
+            ? peliculaActualizada.data
+            : pelicula
         );
+
+        setStoredPeliculas(listaNueva);
       } else {
         const nuevaPelicula = await crearPelicula(data);
         setStoredPeliculas([...storedPeliculas, nuevaPelicula.data]);
@@ -113,12 +113,11 @@ function ListaPeliculas() {
     hideAddDialog();
   };
 
-  const filteredPeliculas = ItemFilter({
-    searchTerm,
+  const peliculasFiltered = ItemFilter({
     memoItems: memoPeliculas,
-    getNombreItem: (item) => item.Nombre_Pelicula,
+    searchTerm,
+    getNombreItem: (pelicula) => pelicula.Nombre_Pelicula,
   });
-
   return (
     <div className="p-8 flex flex-col gap-6">
       {/* Título y Botón */}
@@ -138,7 +137,7 @@ function ListaPeliculas() {
       {/* Tabla */}
       <Table
         label="Películas"
-        items={filteredPeliculas}
+        items={peliculasFiltered}
         columns={COLUMN_PELICULAS}
         editProduct={handleEditProduct}
         confirmDeleteProduct={handleDeleteProduct}

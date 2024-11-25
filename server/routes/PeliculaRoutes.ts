@@ -6,11 +6,12 @@ import {
   obtenerPeliculaPorID,
   obtenerPeliculas,
 } from "../controllers/PeliculaController";
+import upload from "../middleware/upload";
 const movieRouter = Router();
 
 movieRouter.get("/", obtenerPeliculas);
-movieRouter.post("/", añadirPelicula);
+movieRouter.post("/", upload.single("Imagen_Pelicula"), añadirPelicula);
 movieRouter.get("/:id", obtenerPeliculaPorID);
 movieRouter.delete("/:id", eliminarPelicula);
-movieRouter.put("/:id", editarPelicula);
+movieRouter.put("/:id", upload.single("Imagen_Pelicula"), editarPelicula);
 export default movieRouter;

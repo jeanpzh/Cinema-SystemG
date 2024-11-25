@@ -11,7 +11,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 /* Eliminar bordes de celdas de la tabla */
 .p-datatable .p-datatable-thead > tr > th,
 .p-datatable .p-datatable-tbody > tr > td {
@@ -98,5 +97,16 @@
   }
   body {
     @apply bg-background text-foreground;
+    margin: 0;
+  
+  }
+}
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
   }
 }

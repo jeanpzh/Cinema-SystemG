@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState, useMemo } from "react";
 import { AxiosResponse } from "axios";
 import {
@@ -6,7 +7,13 @@ import {
   createPeliculas,
   updatePeliculas,
 } from "@/api/peliculas";
-import { Combo, Pelicula, PreguntaFrecuente, Producto, Trabajador } from "@/constants/table";
+import {
+  Combo,
+  Pelicula,
+  PreguntaFrecuente,
+  Producto,
+  Trabajador,
+} from "@/constants/table";
 import {
   createProductos,
   deleteProductos,
@@ -27,7 +34,14 @@ import {
   obtenerTrabajadores,
   updateTrabajador,
 } from "@/api/trabajadores";
-import { createPreguntasFrecuentes, deletePreguntasFrecuentes, getPreguntasFrecuentes, updatePreguntasFrecuentes } from "@/api/preguntas_frecuentes";
+import {
+  createPreguntasFrecuentes,
+  deletePreguntasFrecuentes,
+  getPreguntasFrecuentes,
+  updatePreguntasFrecuentes,
+} from "@/api/preguntas_frecuentes";
+import { obtenerEntradas } from "@/api/entrada_service";
+import { generar_voucher, obtenerVoucher } from "@/api/voucherPago";
 
 interface CrudOperations<T> {
   get: () => Promise<AxiosResponse<T[]>>;
@@ -41,10 +55,8 @@ interface CrudState<T> {
   data: T[] | null;
   isLoading: boolean;
   error: Error | null;
-  fetchData?: () => Promise<void>;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  fetchData: () => Promise<void>;
   createItem: (data: T) => Promise<any>;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   updateItem: (id: string, data: T) => Promise<any>;
   deleteItem: (id: string) => Promise<void>;
   getById?: (id: string) => Promise<AxiosResponse<T>>;
@@ -142,10 +154,25 @@ const useCrud = <T>(operations: CrudOperations<T>): CrudState<T> => {
     };
   }, [operations]);
 
+  const fetchData = async () => {
+    setIsLoading(true);
+    try {
+      const response = await operations.get();
+      setData(response.data);
+    } catch (error) {
+      setError(
+        error instanceof Error ? error : new Error("An unknown error occurred")
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return {
     data,
     isLoading,
     error,
+    fetchData,
     createItem,
     updateItem,
     deleteItem,
@@ -181,7 +208,6 @@ export const useProducts = () => {
   return useCrud(operations);
 };
 export const useFunciones = () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const operations: CrudOperations<any> = useMemo(
     () => ({
       get: async () => {
@@ -251,4 +277,33 @@ export const usePreguntasFrecuentes = () => {
   );
 
   return useCrud(operations);
-}
+};
+export const useEntradas = () => {
+  const operations: CrudOperations<any> = useMemo(
+    () => ({
+      get: obtenerEntradas,
+      create: async () => Promise.reject(new Error("Not implemented")),
+      update: async () => Promise.reject(new Error("Not implemented")),
+      delete: async () => Promise.reject(new Error("Not implemented")),
+    }),
+
+    []
+  );
+
+  return useCrud(operations);
+};
+export const useVoucher = () => {
+  const operations: CrudOperations<any> = useMemo(
+    () => ({
+      get: async () => Promise.reject(new Error("Not implemented")),
+      create: generar_voucher,
+      update: async () => Promise.reject(new Error("Not implemented")),
+      delete: async () => Promise.reject(new Error("Not implemented")),
+      getById: obtenerVoucher,
+    }),
+
+    []
+  );
+
+  return useCrud(operations);
+};

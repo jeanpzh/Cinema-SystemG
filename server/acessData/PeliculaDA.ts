@@ -78,8 +78,7 @@ export class PeliculaDA {
     try {
       const query = 'SELECT * FROM "paObtenerPeliculas"()';
       const result = await pool.query(query);
-
-      return result.rows as Pelicula[];
+      return result.rows;
     } catch (error) {
       console.error("Error executing query:", error);
       throw new Error("Error al obtener las películas");
@@ -93,15 +92,8 @@ export class PeliculaDA {
    */
   async añadirPeliculaDA(pelicula: Pelicula): Promise<Pelicula> {
     try {
-      const tituloNormalizado = pelicula
-        .getTitulo()
-        .toLowerCase()
-        .replace(/\s+/g, "");
-
-      await this.evitarDuplicados(tituloNormalizado);
-
       const insertarPeliculaQuery = `
-        SELECT "InsertarPelicula"($1, $2, $3, $4, $5, $6)
+        SELECT "InsertarPelicula"($1, $2, $3, $4, $5, $6, $7)
       `;
       const insertarValues = [
         pelicula.getPeliculaId(),
@@ -110,21 +102,23 @@ export class PeliculaDA {
         pelicula.getDuracion(),
         pelicula.getSinopsis(),
         pelicula.getGenero(),
+        pelicula.getImagen(),
       ];
 
       await pool.query(insertarPeliculaQuery, insertarValues);
 
-      const peliculaAnyadida = await this.obtenerPeliculaIDDA(
-        pelicula.getPeliculaId()
+      return new Pelicula(
+        pelicula.getPeliculaId(),
+        pelicula.getTitulo(),
+        pelicula.getClasificacion(),
+        pelicula.getDuracion(),
+        pelicula.getSinopsis(),
+        pelicula.getGenero(),
+        pelicula.getImagen()
       );
-      if (!peliculaAnyadida) {
-        throw new Error("Error al obtener la película recién añadida");
-      }
-
-      return peliculaAnyadida;
     } catch (error) {
-      if (error instanceof Error) throw new Error(error.message);
-      else throw new Error("Error al añadir la película");
+      console.error("Error executing query:", error);
+      throw new Error("Error al añadir la película");
     }
   }
 
@@ -135,15 +129,8 @@ export class PeliculaDA {
    */
   async actualizarPeliculaDA(pelicula: Pelicula): Promise<Pelicula | null> {
     try {
-      const tituloNormalizado = pelicula
-        .getTitulo()
-        .toLowerCase()
-        .replace(/\s+/g, "");
-
-      await this.evitarDuplicados(tituloNormalizado, pelicula.getPeliculaId());
-
       const actualizarPeliculaQuery = `
-        SELECT "paActualizarPelicula"($1, $2, $3, $4, $5, $6)
+        SELECT "paActualizarPelicula"($1, $2, $3, $4, $5, $6, $7)
       `;
       const actualizarValues = [
         pelicula.getPeliculaId(),
@@ -152,12 +139,19 @@ export class PeliculaDA {
         pelicula.getDuracion(),
         pelicula.getSinopsis(),
         pelicula.getGenero(),
+        pelicula.getImagen(),
       ];
 
       await pool.query(actualizarPeliculaQuery, actualizarValues);
 
-      const peliculaActualizada = await this.obtenerPeliculaIDDA(
-        pelicula.getPeliculaId()
+      const peliculaActualizada = new Pelicula(
+        pelicula.getPeliculaId(),
+        pelicula.getTitulo(),
+        pelicula.getClasificacion(),
+        pelicula.getDuracion(),
+        pelicula.getSinopsis(),
+        pelicula.getGenero(),
+        pelicula.getImagen()
       );
 
       return peliculaActualizada;

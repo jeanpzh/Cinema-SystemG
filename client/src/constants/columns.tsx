@@ -1,13 +1,32 @@
 import { ColumnProps } from "@/components/Table";
-import { Combo, Producto } from "./table";
+import { Combo, Pelicula, Producto } from "./table";
 import DetailsColumn from "@/features/admin/combos/DetailsColumn";
+const apiUrl = import.meta.env.VITE_API_URL;
 
 export const COLUMN_PELICULAS = [
   { field: "Nombre_Pelicula", header: "Nombre" },
-  { field: "Clasificacion", header: "Clasificación" },
-  { field: "Duracion", header: "Duración" },
+
   { field: "Genero", header: "Género" },
+
+  { field: "Duracion", header: "Duración" },
+
+  { field: "Clasificacion", header: "Clasificación" },
+
   { field: "Sinopsis", header: "Sinopsis" },
+
+  {
+    field: "Imagen_Pelicula",
+    header: "Imagen",
+    body: (rowData: Pelicula) =>
+      rowData.Imagen_Pelicula ? (
+        <img
+          src={`${apiUrl}/resize-${rowData.Imagen_Pelicula}`}
+          alt={rowData.Nombre_Pelicula}
+        />
+      ) : (
+        "No hay imagen"
+      ),
+  },
 ];
 export const COLUMN_PRODUCTOS = [
   { field: "Nombre", header: "Nombre" },

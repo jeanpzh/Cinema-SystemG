@@ -74,7 +74,7 @@ export default function TableComponent<T extends DataTableValue>({
         value={items || []}
         header={header}
         footer={footer}
-        className="min-w-full"
+        className="min-w-full text-center w-[100%] p-2"
         dataKey="id"
         selectionMode="single"
         selectionPageOnly

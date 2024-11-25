@@ -13,6 +13,8 @@ import { loginLimiter } from "./middleware/rateLimiter";
 import PFroutes from "./routes/PreguntasFrecuentesRoutes";
 import clientRouter from "./routes/ClientRoutes";
 import asientoRouter from "./routes/AsientoController";
+import entradaRouter from "./routes/EntradaRoutes";
+import comprar_entrada_router from "./routes/ComprarEntradaRoutes";
 
 declare global {
   namespace Express {
@@ -35,7 +37,7 @@ const corsOptions = {
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
 };
-
+app.use(express.static("optimize"));
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -55,6 +57,8 @@ app.use("/pf", PFroutes);
 app.use("/", TrabajadorRouter);
 app.use("/cliente", clientRouter);
 app.use("/asientos", asientoRouter);
+app.use("/entradas", entradaRouter);
+app.use("/comprar-entrada", comprar_entrada_router);
 app.use(
   (
     err: any,

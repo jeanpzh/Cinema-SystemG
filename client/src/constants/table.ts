@@ -5,6 +5,7 @@ export interface Pelicula {
   Clasificacion: string;
   Genero: string;
   Sinopsis: string;
+  Imagen_Pelicula: string;
 }
 export interface Producto {
   Codigo_Producto: string;

@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import PeliculaLN from "../LN/PeliculaLN";
 import Pelicula from "../models/Pelicula";
 import { randomUUID } from "crypto";
+import { helperImage } from "../middleware/upload";
 
 export const obtenerPeliculas = async (
   req: Request,
@@ -18,6 +19,9 @@ export const añadirPelicula = async (
 ): Promise<void> => {
   const { Nombre_Pelicula, Clasificacion, Duracion, Sinopsis, Genero } =
     req.body;
+  const Imagen_Pelicula = req.file?.filename || "";
+
+  helperImage(req.file?.path || "", `resize-${req.file?.filename}` || "", 300);
 
   const pelicula = new Pelicula(
     randomUUID(),
@@ -25,7 +29,8 @@ export const añadirPelicula = async (
     Clasificacion,
     Duracion,
     Sinopsis,
-    Genero
+    Genero,
+    Imagen_Pelicula
   );
 
   try {
@@ -67,6 +72,9 @@ export const editarPelicula = async (
   const { id } = req.params;
   const { Nombre_Pelicula, Clasificacion, Duracion, Sinopsis, Genero } =
     req.body;
+  const Imagen_Pelicula = req.file?.filename || "";
+
+  helperImage(req.file?.path || "", `resize-${req.file?.filename}` || "", 300);
 
   const pelicula = new Pelicula(
     id,
@@ -74,7 +82,8 @@ export const editarPelicula = async (
     Clasificacion,
     Duracion,
     Sinopsis,
-    Genero
+    Genero,
+    Imagen_Pelicula
   );
   try {
     const peliculaActualizada = await new PeliculaLN().actualizarPeliculaLN(

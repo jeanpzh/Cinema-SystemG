@@ -1,24 +1,40 @@
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import Faq from "./Faq";
-import SeleccionarPelicula from "@/features/client/SeleccionarPelicula";
+import SeleccionarPelicula from "@/features/client/seleccionar_pelicula/SeleccionarPelicula";
 import Home from "./Home";
-import DetallesPelicula from "@/features/client/DetallesPelicula";
-import SeleccionarAsiento from "@/features/client/SeleccionarAsiento";
-import ProductSelectionSPA from "@/features/client/SelecciónProductoCombo";
+import DetallesPelicula from "@/features/client/seleccionar_funcion/DetallesPelicula";
+import SeleccionarAsiento from "@/features/client/seleccionar_asiento/SeleccionarAsiento";
+import ProductSelectionSPA from "@/features/client/seleccionar_producto_combo/SelecciónProductoCombo";
 import { useProductoStore } from "@/store/productoStore";
 import { useComboStore } from "@/store/comboStore";
-
+import ResumenCompra from "@/features/client/resumen_compra/ResumenCompra";
+import SeleccionEntradas from "@/features/client/seleccionar_entrada/SeleccionarEntrada";
+import { useEntradaStore } from "@/store/entradaStore";
+import GestionPagos from "@/features/client/gestion_pagos/IU_Pago";
+import BoletaCompra from "@/features/client/gestion_boletos/BoletaCompra";
+import { useLoginStore } from "@/store/loginStore";
+import NotFound from "./NotFound";
 function ClientRoutes() {
   const location = useLocation();
 
+  const user = useLoginStore((state) => state.user);
   // Funcion para limpiar la seleccion
-  const limpiarSeleccion = () => {
+  const limpiarSeleccionProductos = () => {
     useProductoStore.getState().clearProductos();
     useComboStore.getState().clearCombos();
   };
 
-  if (!location.pathname.includes("productos")) limpiarSeleccion();
+  const limpiarSeleccionEntradas = () => {
+    useEntradaStore.getState().reset();
+  };
 
+  if (!location.pathname.includes("productos")) limpiarSeleccionProductos();
+  if (!location.pathname.includes("peliculas")) limpiarSeleccionEntradas();
+
+  if (!user && location.pathname.includes("entradas"))
+    return <Navigate to="/login" />;
+  if (!user && location.pathname.includes("resumen-compra"))
+    return <Navigate to="/login" />;
   return (
     <Routes>
       <Route path="/" element={<Home />} />
@@ -32,10 +48,49 @@ function ClientRoutes() {
         element={<SeleccionarAsiento />}
       />
       <Route
-        path="peliculas/:idPelicula/:idSala/asientos/productos"
+        path="peliculas/:idPelicula/:idSala/asientos/entradas"
+        element={<SeleccionEntradas />}
+      />
+      <Route
+        path="peliculas/:idPelicula/:idSala/asientos/entradas/productos"
         element={<ProductSelectionSPA />}
       />
       <Route path="productos" element={<ProductSelectionSPA />} />
+
+      <Route path="productos/resumen-compra" element={<ResumenCompra />} />
+      <Route path="productos/resumen-compra/pago" element={<GestionPagos />} />
+      <Route
+        path="productos/resumen-compra/pago/:idPago"
+        element={<BoletaCompra />}
+      />
+      <Route
+        path="peliculas/:idPelicula/:idSala/asientos/entradas/productos/resumen-compra"
+        element={<ResumenCompra />}
+      />
+
+      <Route
+        path="peliculas/:idPelicula/:idSala/asientos/entradas/resumen-compra"
+        element={<ResumenCompra />}
+      />
+      <Route
+        path="peliculas/:idPelicula/:idSala/asientos/entradas/resumen-compra/pago"
+        element={<GestionPagos />}
+      />
+      <Route
+        path="peliculas/:idPelicula/:idSala/asientos/entradas/productos/resumen-compra/pago"
+        element={<GestionPagos />}
+      />
+      <Route
+        path="peliculas/:idPelicula/:idSala/asientos/entradas/productos/resumen-compra/pago/:idPago"
+        element={<BoletaCompra />}
+      />
+      <Route
+        path="peliculas/:idPelicula/:idSala/asientos/entradas/resumen-compra/pago/:idPago"
+        element={<BoletaCompra />}
+      />
+
+      <Route path="*" element={<Navigate to="/404" />} />
+      <Route path="404" element={<NotFound />} />
     </Routes>
   );
 }

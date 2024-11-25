@@ -5,8 +5,8 @@ import { Funcion } from "@/constants/table";
 import { obtenerOpciones } from "@/api/funciones";
 import { PeliculaOpcion, SalaOpcion, HorarioOpcion } from "@/constants/options";
 import { Dropdown } from "primereact/dropdown";
-import CustomButton from '@/components/Button';
-
+import CustomButton from "@/components/Button";
+import { useFunciones } from "@/hooks/useCrud";
 
 interface Props {
   visible: boolean;
@@ -21,6 +21,7 @@ const ModalFormularioFunciones: React.FC<Props> = ({
   onAdd,
   funcion,
 }) => {
+  const { data: funciones } = useFunciones();
   const [codigoPelicula, setCodigoPelicula] = useState("");
   const [codigoSala, setCodigoSala] = useState("");
   const [codigoHorario, setCodigoHorario] = useState("");
@@ -54,11 +55,9 @@ const ModalFormularioFunciones: React.FC<Props> = ({
     }
   }, [funcion]);
 
-  // Función para manejar el cierre del modal
   const handleOnHide = () => {
-    // Aquí puedes agregar cualquier lógica adicional antes de cerrar el modal
-    resetForm(); // Resetear el formulario si lo necesitas
-    onHide(); // Llamar a la función onHide pasada como prop
+    resetForm();
+    onHide();
   };
 
   const resetForm = () => {
@@ -75,9 +74,10 @@ const ModalFormularioFunciones: React.FC<Props> = ({
       Codigo_Horario: codigoHorario,
     };
     onAdd(newFuncion);
-    handleOnHide(); // Usar handleOnHide para manejar el cierre
+    handleOnHide();
   };
-
+  console.log(funciones);
+  // Filtramos las salas de tal forma que solo se muestren las salas que no han sido asignadas a una función
 
   return (
     <Dialog
@@ -125,7 +125,14 @@ const ModalFormularioFunciones: React.FC<Props> = ({
           <Dropdown
             id="sala"
             value={codigoSala}
-            options={salas}
+            options={
+              salas.filter(
+                (sala) =>
+                  !funciones?.find(
+                    (funcion) => funcion.Codigo_Sala === sala.Codigo_Sala
+                  )
+              ) || []
+            }
             onChange={(e) => setCodigoSala(e.value)}
             optionLabel="Nombre"
             optionValue="Codigo_Sala"
@@ -169,7 +176,6 @@ const ModalFormularioFunciones: React.FC<Props> = ({
             Aceptar
           </CustomButton>
         </div>
-
       </div>
     </Dialog>
   );

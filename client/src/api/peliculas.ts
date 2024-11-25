@@ -9,7 +9,9 @@ export const deletePeliculas = async (id: string) => {
   return await axios.delete(apiUrl + "/peliculas/" + id);
 };
 export const createPeliculas = async (data: Pelicula) => {
-  return await axios.post(apiUrl + "/peliculas", data);
+  const dato = await axios.post(apiUrl + "/peliculas", data);
+  console.log(dato);
+  return dato;
 };
 export const updatePeliculas = async (id: string, data: Pelicula) => {
   return await axios.put(apiUrl + "/peliculas/" + id, data);

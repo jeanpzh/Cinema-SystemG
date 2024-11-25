@@ -1,49 +1,55 @@
 // models/Pelicula.ts
 export default class Pelicula {
-  private pelicula_id: string;
-  private titulo: string;
-  private clasificacion: string;
-  private duracion: number;
-  private sinopsis: string;
-  private genero: string;
+  private Codigo_Pelicula: string;
+  private Nombre_Pelicula: string;
+  private Clasificacion: string;
+  private Duracion: number;
+  private Sinopsis: string;
+  private Genero: string;
+  private Imagen_Pelicula: string;
 
   constructor(
-    pelicula_id: string,
-    titulo: string,
-    clasificacion: string,
-    duracion: number,
-    sinopsis: string,
-    genero: string
+    Codigo_Pelicula: string,
+    Nombre_Pelicula: string,
+    Clasificacion: string,
+    Duracion: number,
+    Sinopsis: string,
+    Genero: string,
+    Imagen_Pelicula: string
   ) {
-    this.pelicula_id = pelicula_id;
-    this.titulo = titulo;
-    this.clasificacion = clasificacion;
-    this.duracion = duracion;
-    this.sinopsis = sinopsis;
-    this.genero = genero;
+    this.Codigo_Pelicula = Codigo_Pelicula;
+    this.Nombre_Pelicula = Nombre_Pelicula;
+    this.Clasificacion = Clasificacion;
+    this.Duracion = Duracion;
+    this.Sinopsis = Sinopsis;
+    this.Genero = Genero;
+    this.Imagen_Pelicula = Imagen_Pelicula;
   }
 
   getPeliculaId(): string {
-    return this.pelicula_id;
+    return this.Codigo_Pelicula;
   }
 
   getTitulo(): string {
-    return this.titulo;
+    return this.Nombre_Pelicula;
   }
 
   getClasificacion(): string {
-    return this.clasificacion;
+    return this.Clasificacion;
   }
 
   getDuracion(): number {
-    return this.duracion;
+    return this.Duracion;
   }
 
   getSinopsis(): string {
-    return this.sinopsis;
+    return this.Sinopsis;
   }
 
   getGenero(): string {
-    return this.genero;
+    return this.Genero;
+  }
+  getImagen(): string {
+    return this.Imagen_Pelicula;
   }
 }

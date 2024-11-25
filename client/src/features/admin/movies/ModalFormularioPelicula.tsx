@@ -1,15 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // AgregarPelicula.tsx
 import { useForm, Controller } from "react-hook-form";
 import { Dialog } from "primereact/dialog";
 import { Dropdown } from "primereact/dropdown";
 import "primeicons/primeicons.css";
 import { Pelicula } from "@/constants/table";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface AgregarPeliculaProps {
   visible: boolean;
   onHide: () => void;
-  onAdd: (data: Pelicula) => void;
+  onAdd: any;
   pelicula?: Pelicula;
 }
 
@@ -19,25 +20,52 @@ const AgregarPelicula: React.FC<AgregarPeliculaProps> = ({
   onAdd,
   pelicula,
 }) => {
+  const [preview, setPreview] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
     control,
     reset,
     formState: { errors },
-  } = useForm<Pelicula>({
-    defaultValues: pelicula || {
-      Nombre_Pelicula: "",
-      Clasificacion: "",
-      Genero: "",
-      Duracion: "",
-      Codigo_Pelicula: "",
-      Sinopsis: "",
-    },
-  });
+  } = useForm<Pelicula>(
+    pelicula
+      ? {
+          defaultValues: {
+            Nombre_Pelicula: pelicula.Nombre_Pelicula,
+            Clasificacion: pelicula.Clasificacion,
+            Genero: pelicula.Genero,
+            Duracion: pelicula.Duracion,
+            Codigo_Pelicula: pelicula.Codigo_Pelicula,
+            Sinopsis: pelicula.Sinopsis,
+          },
+        }
+      : {}
+  );
+
   const handleOnHide = () => {
     onHide();
-    reset();
+    reset(
+      pelicula
+        ? {
+            Nombre_Pelicula: pelicula.Nombre_Pelicula,
+            Clasificacion: pelicula.Clasificacion,
+            Genero: pelicula.Genero,
+            Duracion: pelicula.Duracion,
+            Codigo_Pelicula: pelicula.Codigo_Pelicula,
+            Sinopsis: pelicula.Sinopsis,
+          }
+        : {
+            Nombre_Pelicula: "",
+            Clasificacion: "",
+            Genero: "",
+            Duracion: "",
+            Codigo_Pelicula: "",
+            Sinopsis: "",
+            Imagen_Pelicula: "",
+          }
+    );
+    setPreview(null);
   };
   useEffect(() => {
     if (pelicula) {
@@ -57,11 +85,19 @@ const AgregarPelicula: React.FC<AgregarPeliculaProps> = ({
         Duracion: "",
         Codigo_Pelicula: "",
         Sinopsis: "",
+        Imagen_Pelicula: "",
       });
     }
   }, [reset, pelicula]);
-  const onSubmit = (data: Pelicula) => {
-    onAdd(data);
+  const onSubmit = async (data: Pelicula) => {
+    const formData = new FormData();
+    formData.append("Nombre_Pelicula", data.Nombre_Pelicula);
+    formData.append("Clasificacion", data.Clasificacion);
+    formData.append("Duracion", data.Duracion);
+    formData.append("Sinopsis", data.Sinopsis);
+    formData.append("Genero", data.Genero);
+    formData.append("Imagen_Pelicula", data.Imagen_Pelicula[0]);
+    onAdd(formData);
     handleOnHide();
   };
 
@@ -82,6 +118,17 @@ const AgregarPelicula: React.FC<AgregarPeliculaProps> = ({
     { label: "Romance", value: "Romance" },
     { label: "Documental", value: "Documental" },
   ];
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newFile = e.target.files?.[0];
+    if (newFile) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result as string);
+      };
+      reader.readAsDataURL(newFile);
+    }
+  };
 
   return (
     <Dialog
@@ -247,23 +294,60 @@ const AgregarPelicula: React.FC<AgregarPeliculaProps> = ({
               </p>
             )}
           </div>
+          {/* 
+            Subir imagen para procesar en el backend
+          */}
+          <div>
+            <label
+              htmlFor="imagen"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Imagen
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              {...register("Imagen_Pelicula", {
+                required: "Este campo es requerido.",
+              })}
+              onChange={handleImageChange}
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Selecciona una imagen"
+              required
+            />
+            {errors.Imagen_Pelicula && (
+              <p className="mt-1 text-sm text-red-600">
+                {errors.Imagen_Pelicula.message}
+              </p>
+            )}
+          </div>
+          {/* Imagen previa */}
+          {preview && (
+            <div className="flex justify-center">
+              <img
+                src={preview}
+                alt="Imagen de la película"
+                className="w-1/2 h-auto"
+              />
+            </div>
+          )}
 
           {/* Botones */}
-       <div className="flex justify-end space-x-4">
-          <button
-            type="button"
-            onClick={handleOnHide}
-            className="w-[150px] bg-black h-[50px] my-3 flex items-center justify-center rounded-xl cursor-pointer relative overflow-hidden transition-all duration-500 ease-in-out shadow-md hover:scale-105 hover:shadow-lg before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-gradient-to-r before:from-[#FF5E5E] before:to-[#FF9191] before:transition-all before:duration-500 before:ease-in-out before:z-[-1] before:rounded-xl text-[#fff] hover:before:left-0"
-          >
-            Cancelar
-          </button>
-          <button
-            type="submit"
-            className="w-[150px] bg-black h-[50px] my-3 flex items-center justify-center rounded-xl cursor-pointer relative overflow-hidden transition-all duration-500 ease-in-out shadow-md hover:scale-105 hover:shadow-lg before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-gradient-to-r before:from-[#009b49] before:to-[rgb(105,184,141)] before:transition-all before:duration-500 before:ease-in-out before:z-[-1] before:rounded-xl text-[#fff] hover:before:left-0"
-          >
-            Guardar
-          </button>
-        </div>
+          <div className="flex justify-end space-x-4">
+            <button
+              type="button"
+              onClick={handleOnHide}
+              className="w-[150px] bg-black h-[50px] my-3 flex items-center justify-center rounded-xl cursor-pointer relative overflow-hidden transition-all duration-500 ease-in-out shadow-md hover:scale-105 hover:shadow-lg before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-gradient-to-r before:from-[#FF5E5E] before:to-[#FF9191] before:transition-all before:duration-500 before:ease-in-out before:z-[-1] before:rounded-xl text-[#fff] hover:before:left-0"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              className="w-[150px] bg-black h-[50px] my-3 flex items-center justify-center rounded-xl cursor-pointer relative overflow-hidden transition-all duration-500 ease-in-out shadow-md hover:scale-105 hover:shadow-lg before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-gradient-to-r before:from-[#009b49] before:to-[rgb(105,184,141)] before:transition-all before:duration-500 before:ease-in-out before:z-[-1] before:rounded-xl text-[#fff] hover:before:left-0"
+            >
+              Guardar
+            </button>
+          </div>
         </form>
       </div>
     </Dialog>

@@ -2,11 +2,12 @@
 import ErrorBoundary from "@/components/ErrorBoundary";
 import AdminLayout from "@/layouts/AdminLayout";
 import { lazy, Suspense, useEffect, useState } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import LoginPage from "./Login";
 import PrivateRoute from "./PrivateRoute";
 import { useLoginStore } from "@/store/loginStore";
 import ClientLayout from "@/layouts/ClientLayout";
+import NotFound from "./NotFound";
 
 const AdminRoutes = lazy(() => import("./AdminRoutes"));
 const ClientRoutes = lazy(() => import("./ClientRoutes"));
@@ -68,6 +69,8 @@ function LazyRoutes() {
             <Route path="/*" element={<ClientLayout />}>
               <Route path="*" element={<ClientRoutes />} />
             </Route>
+            <Route path="*" element={<Navigate to={"404"} />} />
+            <Route path="404" element={<NotFound />} />
           </Routes>
         </Suspense>
       </ErrorBoundary>

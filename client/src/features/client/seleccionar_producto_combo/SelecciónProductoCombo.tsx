@@ -12,29 +12,69 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/Card";
-import { SeleccionarProducto } from "./SeleccionarProductos";
-import { SeleccionarCombo } from "./SeleccionarCombo";
-import ItemsSeleccionados from "./ItemsSeleccionados";
 import { useProductoStore } from "@/store/productoStore";
 import { useComboStore } from "@/store/comboStore";
 import { useCombos, useProducts } from "@/hooks/useCrud";
+import { Dialog } from "primereact/dialog";
+import { useLocation, useNavigate } from "react-router-dom";
+import ItemsSeleccionados from "./ItemsSeleccionados";
+import PrecioTotal from "./PrecioTotal";
+import { SeleccionarProducto } from "./SeleccionarProductos";
+import { SeleccionarCombo } from "./SeleccionarCombo";
 
 export default function ProductSelectionSPA() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const [isOpenModal, setIsOpenModal] = useState(false);
+
   const { data: products } = useProducts();
 
   const { data: combos } = useCombos();
 
   const [activeTab, setActiveTab] = useState<"products" | "combos">("products");
+
   const handleReserve = () => {
-    const itemType = activeTab === "products" ? "producto(s)" : "combo(s)";
-    alert(`Reservando ${itemType}...`);
+    setIsOpenModal(true);
   };
+
+  const handleContinue = () => {
+    setIsOpenModal(false);
+    navigate(`${location.pathname}/resumen-compra`);
+  };
+
   // Obtenemos los items seleccionados
   const productosSeleccionados = useProductoStore((state) => state.productos);
   const combosSeleccionados = useComboStore((state) => state.combos);
 
   return (
     <div className="flex flex-col md:flex-row gap-6">
+      <Dialog
+        visible={isOpenModal}
+        onHide={() => setIsOpenModal(false)}
+        header={<strong>Reserva de productos/combos</strong>}
+      >
+        <main className="flex flex-col gap-4 p-4">
+          <p>¿Estás seguro de que deseas reservar los siguientes items?</p>
+          {productosSeleccionados.length > 0 ||
+          combosSeleccionados.length > 0 ? (
+            <ItemsSeleccionados
+              products={productosSeleccionados}
+              combos={combosSeleccionados}
+            />
+          ) : (
+            <p>No hay items seleccionados</p>
+          )}
+          <PrecioTotal
+            productosSeleccionados={productosSeleccionados}
+            combosSeleccionados={combosSeleccionados}
+          />
+        </main>
+        <footer className="flex justify-between p-4">
+          <button onClick={() => setIsOpenModal(false)}>Cancelar</button>
+          <button onClick={handleContinue}>Continuar</button>
+        </footer>
+      </Dialog>
       <Card className="w-full md:w-1/4">
         <CardHeader>
           <CardTitle>Categorías</CardTitle>
@@ -72,13 +112,26 @@ export default function ProductSelectionSPA() {
           <ScrollArea className="h-[600px] w-full rounded-md border p-4">
             {activeTab === "products" ? (
               <SeleccionarProducto
-                products={products || []}
+                products={(products || []).map((product) => ({
+                  ...product,
+                  Cantidad: 0,
+                }))}
                 productosSeleccionados={productosSeleccionados}
               />
             ) : (
               <SeleccionarCombo
-                combos={combos || []}
-                combosSeleccionados={combosSeleccionados}
+                combos={
+                  combos?.map((combo) => ({
+                    ...combo,
+                    Cantidad: 0,
+                  })) || []
+                }
+                combosSeleccionados={
+                  combosSeleccionados.map((combo) => ({
+                    ...combo,
+                    Cantidad: combo.Cantidad,
+                  })) || []
+                }
               />
             )}
           </ScrollArea>
@@ -113,26 +166,10 @@ export default function ProductSelectionSPA() {
         <CardFooter className="flex flex-col">
           {/* Apartado para visualizar el costo total */}
           <div>
-            {
-              productosSeleccionados.length > 0 ||
-              combosSeleccionados.length > 0 ? (
-                <div className="flex justify-between">
-                  <p className="text-base font-semibold">Total:</p>
-                  <p className="text-base font-semibold">
-                    $
-                    {productosSeleccionados.reduce(
-                      (acc, current) => acc + Number(current.Precio || 0), // Suma el precio de los productos
-                      0
-                    ) +
-                      combosSeleccionados.reduce(
-                        (acc, current) => acc + Number(current.Precio || 0), // Suma el precio de los combos
-                        0
-                      )}
-                  </p>
-                </div>
-              ) : null
-              /* Si no hay items seleccionados, no se muestra el total */
-            }
+            <PrecioTotal
+              productosSeleccionados={productosSeleccionados}
+              combosSeleccionados={combosSeleccionados}
+            />
           </div>
 
           <Button

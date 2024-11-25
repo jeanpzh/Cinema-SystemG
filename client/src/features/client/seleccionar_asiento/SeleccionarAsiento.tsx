@@ -24,6 +24,7 @@ export interface Asiento {
 }
 
 const SeleccionarAsiento: React.FC = () => {
+  const guardarAsientos = useEntradaStore((state) => state.setAsientos);
   const navigate = useNavigate();
   const location = useLocation();
   const [asientos, setAsientos] = useState<Asiento[]>([]);
@@ -38,22 +39,23 @@ const SeleccionarAsiento: React.FC = () => {
       asientos: selectedSeats,
     });
     setIsOpenModal(false);
+    guardarAsientos(selectedSeats);
     setTimeout(() => {
-      navigate(`${location.pathname}/resumen-compra`);
+      navigate(`${location.pathname}/entradas`);
     }, 1000);
   };
 
   // Funcion para que cuando se haga click en el boton de comprar productos adicionales se guarde en el estado global y se redirija a la pagina de productos
-  const handleClickProductos = () => {
+  /* const handleClickProductos = () => {
     useEntradaStore.setState({
       asientos: selectedSeats,
     });
     setIsOpenModal(false);
-    console.log(location.pathname);
+    guardarAsientos(selectedSeats);
     setTimeout(() => {
       navigate(`${location.pathname}/productos`);
     }, 1000);
-  };
+  }; */
 
   useEffect(() => {
     // Función para obtener los asientos desde el backend
@@ -145,13 +147,13 @@ const SeleccionarAsiento: React.FC = () => {
             <Button onClick={handleClickConfirmar} className="w-full max-w-xs">
               Confirmar Reserva
             </Button>
-            <Button
+            {/*  <Button
               variant="outline"
               onClick={handleClickProductos}
               className="w-full max-w-xs mt-2"
             >
               Comprar Productos Adicionales
-            </Button>
+            </Button> */}
           </div>
         ) : (
           <div className="flex flex-col items-center space-y-4">
