@@ -17,6 +17,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
   const clearUser = useLoginStore((state) => state.clearUser);
+  const loadUser = useLoginStore((state) => state.user)?.user;
 
   // Toggle para abrir/cerrar el menú
   const toggleMenu = () => {
@@ -25,7 +26,8 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
 
   // Función para manejar el cierre de sesión
   const handleLogout = () => {
-    clearUser();  
+    clearUser();
+    console.log(loadUser);
     setIsMenuOpen(false);
   };
 

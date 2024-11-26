@@ -20,7 +20,7 @@ export class ClienteDA {
       // Ejecutamos la consulta
       await pool.query(query, values);
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }
 }

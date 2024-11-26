@@ -1,12 +1,12 @@
 // Header.tsx
 
-import { useLoginStore } from "@/store/loginStore";
 import { Link, useLocation } from "react-router-dom";
 import { Profile } from "./Profile";
+import { useLoginStore } from "@/store/loginStore";
 
 function Header() {
-  const user = useLoginStore((state) => state.user);
   const location = useLocation();
+  const user = useLoginStore((state) => state.user);
 
   const buttons = [
     {
@@ -61,7 +61,7 @@ function Header() {
   const profile = [
     {
       component:
-        user &&
+        user !== null &&
         user.rol !== "admin" &&
         user.rol !== "producto" &&
         user.rol !== "pelicula" ? (
@@ -91,7 +91,6 @@ function Header() {
         ),
     },
   ];
-  console.log(user);
 
   return (
     <header className="bg-tokyoNight-bg/80 backdrop-blur-md sticky top-0 z-50">

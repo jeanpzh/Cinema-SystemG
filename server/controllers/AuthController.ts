@@ -103,11 +103,19 @@ export const obtenerDatosUser = async (
 };
 
 export const logout = async (req: Request, res: Response): Promise<any> => {
-  res.clearCookie("token", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
-    path: "/",
-  });
-  res.json({ message: "Logout exitoso" });
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      path: "/",
+    });
+    res.status(200).json({ message: "Logout exitoso" });
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error("Error al cerrar sesión:", error.message);
+    } else {
+      res.status(500).json({ message: "Error interno del servidor" });
+    }
+  }
 };

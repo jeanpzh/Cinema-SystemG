@@ -49,7 +49,12 @@ export const useLoginStore = create<State & Actions>((set) => ({
           withCredentials: true,
         }
       );
-      if (res.status === 200) set({ user: null });
+      console.log(res);
+      if (res.status === 200) {
+        console.log("Sesión cerrada");
+        set({ user: null, loading: false, error: null });
+        console.log("Usuario eliminado");
+      }
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
     }

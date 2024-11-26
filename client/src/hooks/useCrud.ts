@@ -42,10 +42,11 @@ import {
 } from "@/api/preguntas_frecuentes";
 import { obtenerEntradas } from "@/api/entrada_service";
 import { generar_voucher, obtenerVoucher } from "@/api/voucherPago";
+import { create_cliente } from "@/api/cliente";
 
 interface CrudOperations<T> {
   get: () => Promise<AxiosResponse<T[]>>;
-  create: (data: T) => Promise<AxiosResponse<T>>;
+  create: (data: T) => Promise<AxiosResponse<T>> | null;
   update: (id: string, data: T) => Promise<AxiosResponse<T>>;
   delete: (id: string) => Promise<AxiosResponse<void>>;
   getById?: (id: string) => Promise<AxiosResponse<T>>;
@@ -56,7 +57,7 @@ interface CrudState<T> {
   isLoading: boolean;
   error: Error | null;
   fetchData: () => Promise<void>;
-  createItem: (data: T) => Promise<any>;
+  createItem: (data: T) => Promise<any> | null;
   updateItem: (id: string, data: T) => Promise<any>;
   deleteItem: (id: string) => Promise<void>;
   getById?: (id: string) => Promise<AxiosResponse<T>>;
@@ -300,6 +301,21 @@ export const useVoucher = () => {
       update: async () => Promise.reject(new Error("Not implemented")),
       delete: async () => Promise.reject(new Error("Not implemented")),
       getById: obtenerVoucher,
+    }),
+
+    []
+  );
+
+  return useCrud(operations);
+};
+
+export const useCliente = () => {
+  const operations: CrudOperations<any> = useMemo(
+    () => ({
+      get: async () => Promise.reject(new Error("Not implemented")),
+      create: create_cliente,
+      update: async () => Promise.reject(new Error("Not implemented")),
+      delete: async () => Promise.reject(new Error("Not implemented")),
     }),
 
     []

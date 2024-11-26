@@ -7,7 +7,7 @@ import { ClienteLN } from "../LN/ClienteLN";
 
 const clientSchema = z.object({
   nombre: z.string().min(4, "El nombre es requerido"),
-  telefono: z.string().min(1, "El teléfono es requerido"),
+  telefono: z.number().int().min(1, "El teléfono es requerido"),
   correo: z.string().email("El correo no es válido"),
   username: z.string().min(1, "El username es requerido"),
   password: z.string().min(1, "La contraseña es requerida"),
@@ -25,9 +25,10 @@ export const registrarCliente = async (
 
   try {
     const { nombre, telefono, correo, username, password } = req.body;
-
+    console.log(req.body);
     // Validamos que el email y password no estén vacíos
     const validation = clientSchema.safeParse(req.body);
+    console.log(validation.error);
 
     // Si la validación falla, retornamos un error 400 con los errores
     if (!validation.success)
@@ -42,7 +43,7 @@ export const registrarCliente = async (
 
     const nuevoCliente = new Cliente(
       randomUUID(),
-      correo,
+      correo.toLowerCase(),
       nombre,
       username,
       hashedPassword,
@@ -53,13 +54,30 @@ export const registrarCliente = async (
     await new ClienteLN().registrarClienteLN(nuevoCliente);
 
     // Retornamos un mensaje de éxito
-    return res.status(200).json({ message: "Cliente registrado con éxito" });
-  } catch (error) {
-    if (error instanceof Error && error.message.includes("llave duplicada")) {
-      return res.status(400).json({ error: "El email ya está registrado" });
+    return res.status(201).json({ message: "Cliente registrado con éxito" });
+  } catch (error: any) {
+    console.log(error.length);
+    if (error.detail.includes("Correo")) {
+      console.log(error);
+      return res
+        .status(400)
+        .json({ mensaje: "Ya existe una cuenta con este correo" });
+    } else if (error.detail.includes("Username")) {
+      console.log(error);
+      return res
+        .status(500)
+        .json({ mensaje: "Ya existe una cuenta con este username ingresado" });
+    } else if (
+      error.detail.includes("Correo") &&
+      error.detail.includes("Username")
+    ) {
+      console.log(error);
+      return res
+        .status(600)
+        .json({ mensaje: "Ya existe una cuenta con este correo y username" });
+    } else {
+      console.log(error);
+      return res.status(500).json({ mensaje: "Error interno del servidor." });
     }
-    return res
-      .status(500)
-      .json("Ha ocurrido un error inesperado, por favor intenta nuevamente");
   }
 };
