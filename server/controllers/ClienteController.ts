@@ -7,7 +7,7 @@ import { ClienteLN } from "../LN/ClienteLN";
 
 const clientSchema = z.object({
   nombre: z.string().min(4, "El nombre es requerido"),
-  telefono: z.string().min(1, "El teléfono es requerido"),
+  telefono: z.number().int().min(1, "El teléfono es requerido"),
   correo: z.string().email("El correo no es válido"),
   username: z.string().min(1, "El username es requerido"),
   password: z.string().min(1, "La contraseña es requerida"),
@@ -25,13 +25,15 @@ export const registrarCliente = async (
 
   try {
     const { nombre, telefono, correo, username, password } = req.body;
-
+    console.log(req.body);
     // Validamos que el email y password no estén vacíos
     const validation = clientSchema.safeParse(req.body);
 
     // Si la validación falla, retornamos un error 400 con los errores
-    if (!validation.success)
+    if (!validation.success) {
+      console.log(validation.error.errors);
       return res.status(400).json({ errors: validation.error.errors });
+    }
 
     // Si la validación es correcta, verificamos que el email no esté registrado, para ello el campo email debe ser único en la base de datos, (try catch se encarga de manejar el error de llave duplicada)
 
