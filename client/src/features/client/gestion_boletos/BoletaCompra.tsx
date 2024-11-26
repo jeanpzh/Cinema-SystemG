@@ -41,8 +41,8 @@ export default function BoletaCompra() {
   return (
     <Card className="w-full max-w-md mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
       {/* Encabezado */}
-      <div className="bg-blue-600 p-6 text-white text-center">
-        <h1 className="text-2xl font-mono font-bold">Boleto de Compra</h1>
+      <div className="space-y-4 bg-gradient-to-r from-black to-purple-900 p-6 text-white text-center">
+        <h1 className="text-3xl font-mono font-bold">Boleto de Compra</h1>
       </div>
 
       {/* Contenido Principal */}
