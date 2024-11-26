@@ -1,9 +1,13 @@
+import { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardFooter } from "@/components/ui/Card";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/Card";
 import { Button } from "@/components/ui/button";
 import { Combo, useComboStore } from "@/store/comboStore";
-import { Plus, Minus } from "lucide-react";
+import { Plus, Minus, Package } from 'lucide-react';
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
 
 interface Props {
   combos: Combo[];
@@ -16,6 +20,7 @@ export function SeleccionarCombo({
 }: Props) {
   const setCombos = useComboStore((state) => state.setCombos);
   const updateCombo = useComboStore((state) => state.updateCantidad);
+  const [activeCombo, setActiveCombo] = useState<string | null>(null);
 
   const handleOnCheckedChange = (combo: Combo) => {
     setCombos(
@@ -58,123 +63,149 @@ export function SeleccionarCombo({
 
   if (!combos || combos.length === 0) {
     return (
-      <div className="text-center text-[#a9b1d6]">
+      <div className="text-center text-gray-500">
         No hay combos disponibles.
       </div>
     );
   }
 
   return (
-    <div className="space-y-6 p-4 bg-[#1a1b26] text-[#a9b1d6]">
-      <h2 className="text-2xl font-bold text-[#7aa2f7] mb-4">
-        Selección de Combos
-      </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {combos.map((combo) => (
-          <Card
-            key={combo.Codigo_Combo}
-            className="bg-[#24283b] border-[#414868]"
-          >
-            <CardContent className="p-4">
-              <div className="flex items-start space-x-4">
-                <img
-                  src={combo.Imagen_Combo}
-                  alt={combo.Nombre_Combo}
-                  width={100}
-                  height={100}
-                  className="rounded-md object-cover"
-                />
-                <div className="flex-grow">
-                  <div className="flex items-start justify-between">
-                    <div className="space-y-1">
-                      <Label
-                        htmlFor={`combo-${combo.Codigo_Combo}`}
-                        className="text-lg font-semibold text-[#7aa2f7]"
-                      >
-                        {combo.Nombre_Combo}
-                      </Label>
-                      <p className="text-sm text-[#565f89]">
-                        {combo.Descripcion}
-                      </p>
-                    </div>
-                    <Checkbox
-                      id={`combo-${combo.Codigo_Combo}`}
-                      checked={handleChecked(combo)}
-                      onCheckedChange={() => handleOnCheckedChange(combo)}
-                      className="border-[#414868]"
-                    />
-                  </div>
-                  <p className="mt-2 text-sm font-medium">
-                    Precio: ${combo.Precio}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-            <CardFooter className="bg-[#1f2335] p-2 flex justify-between items-center">
-              <div className="flex items-center space-x-2">
-                <Button
-                  size="icon"
-                  variant="outline"
-                  onClick={() => handleQuantityChange(combo.Codigo_Combo, -1)}
-                  disabled={
-                    !combosSeleccionados.find(
-                      (c) => c.Codigo_Combo === combo.Codigo_Combo
-                    )?.Cantidad
-                  }
-                  className="h-8 w-8 rounded-full bg-[#414868] text-[#a9b1d6] hover:bg-[#414868]/80"
-                >
-                  <Minus className="h-4 w-4" />
-                </Button>
-                <span className="w-8 text-center">
-                  {combosSeleccionados.find(
-                    (c) => c.Codigo_Combo === combo.Codigo_Combo
-                  )?.Cantidad || 0}
-                </span>
-                <Button
-                  size="icon"
-                  variant="outline"
-                  onClick={() => handleQuantityChange(combo.Codigo_Combo, 1)}
-                  className="h-8 w-8 rounded-full bg-[#414868] text-[#a9b1d6] hover:bg-[#414868]/80"
-                >
-                  <Plus className="h-4 w-4" />
-                </Button>
-              </div>
-              <Button
-                variant="default"
-                size="sm"
-                onClick={() => handleOnCheckedChange(combo)}
-                className="bg-[#7aa2f7] text-[#1a1b26] hover:bg-[#7aa2f7]/80"
-              >
-                {handleChecked(combo) ? "Quitar" : "Agregar"}
-              </Button>
-            </CardFooter>
-          </Card>
-        ))}
-      </div>
-      <Card className="mt-6 bg-[#24283b] border-[#414868]">
+    <div className="space-y-6">
+      {/* Selección de Combos */}
+      <Card className="border shadow-sm">
+        <CardHeader className="bg-gray-100">
+          <CardTitle className="text-xl font-bold">Selección de Combos</CardTitle>
+        </CardHeader>
         <CardContent className="p-4">
-          <h3 className="text-xl font-semibold text-[#7aa2f7] mb-2">
-            Resumen del Pedido
-          </h3>
-          {combosSeleccionados.map((combo) => (
-            <div
-              key={combo.Codigo_Combo}
-              className="flex justify-between items-center py-2"
-            >
-              <span>
-                {combo.Nombre_Combo} x{}
-              </span>
-              <span>${(combo.Precio * (combo.Cantidad || 0)).toFixed(2)}</span>
+          <ScrollArea className="h-[500px] pr-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {combos.map((combo) => (
+                <Card
+                  key={combo.Codigo_Combo}
+                  className={`border ${
+                    activeCombo === combo.Codigo_Combo ? "ring-1 ring-gray-400" : ""
+                  }`}
+                  onMouseEnter={() => setActiveCombo(combo.Codigo_Combo)}
+                  onMouseLeave={() => setActiveCombo(null)}
+                >
+                  {/* Contenido del Combo */}
+                  <CardContent className="p-4">
+                    <div className="flex items-start gap-4">
+                      <img
+                        src={combo.Imagen_Combo}
+                        alt={combo.Nombre_Combo}
+                        className="w-24 h-24 object-cover rounded"
+                      />
+                      <div className="flex-grow">
+                        <div className="flex justify-between items-start mb-2">
+                          <Label
+                            htmlFor={`combo-${combo.Codigo_Combo}`}
+                            className="text-lg font-semibold"
+                          >
+                            {combo.Nombre_Combo}
+                          </Label>
+                          <Checkbox
+                            id={`combo-${combo.Codigo_Combo}`}
+                            checked={handleChecked(combo)}
+                            onCheckedChange={() => handleOnCheckedChange(combo)}
+                          />
+                        </div>
+                        <Badge variant="outline" className="mb-2 block w-fit">
+                          ${combo.Precio}
+                        </Badge>
+                        <p className="text-sm text-gray-600">{combo.Descripcion}</p>
+                      </div>
+                    </div>
+                  </CardContent>
+  
+                  {/* Footer del Combo */}
+                  <CardFooter className="p-4 flex justify-between items-center">
+                    {/* Control de Cantidad */}
+                    <div className="flex items-center gap-2">
+                      <Button
+                        size="icon"
+                        variant="outline"
+                        onClick={() =>
+                          handleQuantityChange(combo.Codigo_Combo, -1)
+                        }
+                        disabled={
+                          !combosSeleccionados.find(
+                            (c) => c.Codigo_Combo === combo.Codigo_Combo
+                          )?.Cantidad
+                        }
+                      >
+                        <Minus />
+                      </Button>
+                      <span className="w-8 text-center font-medium">
+                        {combosSeleccionados.find(
+                          (c) => c.Codigo_Combo === combo.Codigo_Combo
+                        )?.Cantidad || 0}
+                      </span>
+                      <Button
+                        size="icon"
+                        variant="outline"
+                        onClick={() =>
+                          handleQuantityChange(combo.Codigo_Combo, 1)
+                        }
+                      >
+                        <Plus />
+                      </Button>
+                    </div>
+  
+                    {/* Botón Agregar/Quitar */}
+                    <Button
+                      variant={handleChecked(combo) ? "destructive" : "default"}
+                      size="sm"
+                      onClick={() => handleOnCheckedChange(combo)}
+                    >
+                      {handleChecked(combo) ? "Quitar" : "Agregar"}
+                    </Button>
+                  </CardFooter>
+                </Card>
+              ))}
             </div>
-          ))}
-          <div className="flex justify-between items-center pt-4 border-t border-[#414868] mt-4">
-            <span className="font-bold">Total:</span>
-            <span className="font-bold">
-              ${Number(calculateTotal().toFixed(2))}
-            </span>
-          </div>
+          </ScrollArea>
         </CardContent>
+      </Card>
+  
+      {/* Resumen del Pedido */}
+      <Card className="border shadow-sm">
+        <CardHeader className="bg-gray-100">
+          <CardTitle className="text-lg font-bold flex items-center gap-2">
+            <Package className="h-5 w-5" />
+            Resumen del Pedido
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-4">
+          <ScrollArea className="h-[200px] rounded-md border">
+            {combosSeleccionados.length > 0 ? (
+              combosSeleccionados.map((combo) => (
+                <div
+                  key={combo.Codigo_Combo}
+                  className="flex justify-between items-center py-2 px-4 hover:bg-gray-50"
+                >
+                  <span className="font-medium">
+                    {combo.Nombre_Combo} x {combo.Cantidad}
+                  </span>
+                  <span className="font-semibold">
+                    ${(combo.Precio * (combo.Cantidad || 0)).toFixed(2)}
+                  </span>
+                </div>
+              ))
+            ) : (
+              <div className="p-4 text-center text-gray-500 italic">
+                No hay combos seleccionados
+              </div>
+            )}
+          </ScrollArea>
+        </CardContent>
+        <Separator className="my-2" />
+        <CardFooter className="p-4 flex justify-between items-center">
+          <span className="text-lg font-bold">Total:</span>
+          <span className="text-2xl font-bold">${calculateTotal().toFixed(2)}</span>
+        </CardFooter>
       </Card>
     </div>
   );
 }
+
