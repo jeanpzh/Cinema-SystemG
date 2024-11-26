@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/label";
-import { Minus, Plus, Ticket } from "lucide-react";
+import { Minus, Plus, Ticket } from 'lucide-react';
 import { useEntradas } from "@/hooks/useCrud";
 import { useEntradaStore } from "@/store/entradaStore";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -79,17 +79,17 @@ export default function SeleccionEntradas() {
   const remainingTickets = asientos.length - totalTickets;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#1a1b26] to-[#24283b] p-6">
-      <Card className="mx-auto max-w-xl overflow-hidden border-none bg-[#1a1b26]/80 shadow-2xl backdrop-blur-sm">
-        <CardHeader className="space-y-4 bg-[#24283b] p-6">
+    <div className="min-h-screen bg-gradient-to-br from-rose-50 to-indigo-50 p-6 flex items-center justify-center">
+      <Card className="w-full max-w-2xl overflow-hidden border-none bg-white/95 shadow-xl backdrop-blur-sm rounded-3xl transition-all duration-300 hover:shadow-rose-200/50">
+        <CardHeader className="space-y-4 bg-gradient-to-r from-rose-900 to-purple-900 p-8">
           <div className="flex items-center justify-center gap-3">
-            <Ticket className="h-8 w-8 text-[#7aa2f7]" />
-            <CardTitle className="text-3xl font-bold text-white">
+            <Ticket className="h-10 w-10 text-rose-200 animate-pulse" />
+            <CardTitle className="text-4xl font-bold text-rose-100">
               Selección de Entradas
             </CardTitle>
           </div>
-          <div className="rounded-lg bg-[#1a1b26]/50 p-4 text-center">
-            <p className="text-sm font-medium text-[#c0caf5]">
+          <div className="rounded-2xl bg-white/10 p-4 text-center backdrop-blur-sm">
+            <p className="text-lg font-medium text-rose-100">
               {remainingTickets > 0
                 ? `Selecciona ${remainingTickets} ${
                     remainingTickets === 1 ? "entrada más" : "entradas más"
@@ -99,21 +99,21 @@ export default function SeleccionEntradas() {
           </div>
         </CardHeader>
 
-        <CardContent className="space-y-6 p-6">
+        <CardContent className="space-y-6 p-8">
           {tiposEntrada.map((tipo) => (
             <div
               key={tipo.tipo}
-              className="group rounded-xl bg-[#24283b]/50 p-5 transition-all hover:bg-[#24283b]"
+              className="group rounded-2xl bg-rose-50/50 p-6 transition-all hover:bg-rose-100/50 hover:shadow-md"
             >
               <div className="flex items-center justify-between">
-                <div className="space-y-1">
+                <div className="space-y-2">
                   <Label
                     htmlFor={tipo.tipo}
-                    className="text-lg font-semibold text-[#c0caf5]"
+                    className="text-xl font-semibold text-rose-950 group-hover:text-rose-900 transition-colors"
                   >
                     {tipo.tipo}
                   </Label>
-                  <p className="text-lg font-bold text-[#7aa2f7]">
+                  <p className="text-2xl font-bold text-rose-800 group-hover:text-rose-700 transition-colors">
                     ${tipo.precio}
                   </p>
                 </div>
@@ -128,10 +128,10 @@ export default function SeleccionEntradas() {
                         (entradas[tipo.tipo] || 0) - 1
                       )
                     }
-                    className="h-10 w-10 rounded-lg border-[#414868] bg-[#1a1b26]/50 text-[#c0caf5] transition-colors hover:bg-[#1a1b26] hover:text-[#7aa2f7]"
+                    className="h-12 w-12 rounded-xl border-rose-200 bg-white text-rose-700 transition-all hover:bg-rose-800 hover:text-white hover:scale-105"
                     aria-label={`Disminuir cantidad de ${tipo.tipo}`}
                   >
-                    <Minus className="h-5 w-5" />
+                    <Minus className="h-6 w-6" />
                   </Button>
                   <Input
                     id={tipo.tipo}
@@ -144,7 +144,7 @@ export default function SeleccionEntradas() {
                         parseInt(e.target.value) || 0
                       )
                     }
-                    className="w-16 rounded-lg border-[#414868] bg-[#1a1b26]/50 text-center text-lg font-medium text-[#c0caf5]"
+                    className="w-20 rounded-xl border-rose-200 bg-white text-center text-2xl font-bold text-rose-900 transition-all focus:border-rose-500 focus:ring-rose-500"
                     aria-label={`Cantidad de entradas para ${tipo.tipo}`}
                   />
                   <Button
@@ -157,10 +157,10 @@ export default function SeleccionEntradas() {
                         (entradas[tipo.tipo] || 0) + 1
                       )
                     }
-                    className="h-10 w-10 rounded-lg border-[#414868] bg-[#1a1b26]/50 text-[#c0caf5] transition-colors hover:bg-[#1a1b26] hover:text-[#7aa2f7]"
+                    className="h-12 w-12 rounded-xl border-rose-200 bg-white text-rose-700 transition-all hover:bg-rose-800 hover:text-white hover:scale-105"
                     aria-label={`Aumentar cantidad de ${tipo.tipo}`}
                   >
-                    <Plus className="h-5 w-5" />
+                    <Plus className="h-6 w-6" />
                   </Button>
                 </div>
               </div>
@@ -168,17 +168,17 @@ export default function SeleccionEntradas() {
           ))}
         </CardContent>
 
-        <CardFooter className="flex flex-col space-y-4 bg-[#24283b] p-6">
-          <div className="flex items-center justify-between">
-            <span className="text-lg font-medium text-[#c0caf5]">
+        <CardFooter className="flex flex-col space-y-6 bg-gradient-to-r from-rose-900 to-purple-900 p-8">
+          <div className="flex items-center justify-between bg-white/10 rounded-2xl p-6 backdrop-blur-sm">
+            <span className="text-xl font-medium text-rose-100">
               Total a pagar
             </span>
-            <span className="text-3xl font-bold text-[#7aa2f7]">
+            <span className="text-4xl font-bold text-rose-100">
               ${total.toFixed(2)}
             </span>
           </div>
           <Button
-            className="w-full bg-[#7aa2f7] py-6 text-lg font-semibold text-[#1a1b26] transition-colors hover:bg-[#bb9af7] disabled:bg-[#414868] disabled:text-[#c0caf5]"
+            className="w-full bg-rose-100 py-8 text-xl font-bold text-rose-900 transition-all hover:bg-rose-200 hover:scale-[1.02] disabled:bg-gray-300 disabled:text-gray-500 rounded-xl shadow-lg hover:shadow-rose-300/50"
             disabled={totalTickets !== asientos.length}
             onClick={handleOnClick}
           >
@@ -193,20 +193,20 @@ export default function SeleccionEntradas() {
         modal
         draggable={false}
         resizable={false}
-        className="rounded-xl bg-[#1a1b26] p-6"
-        headerClassName="border-b border-[#414868] pb-4"
-        contentClassName="py-6"
+        className="rounded-3xl bg-white p-8 border border-rose-100"
+        headerClassName="border-b border-rose-100 pb-6"
+        contentClassName="py-8"
         header={
-          <h2 className="text-2xl font-bold ">Confirmación de Reserva</h2>
+          <h2 className="text-3xl font-bold text-rose-900">Confirmación de Reserva</h2>
         }
       >
-        <div className="space-y-6">
-          <p className="text-lg">
+        <div className="space-y-8">
+          <p className="text-xl text-rose-950">
             ¿Deseas agregar productos adicionales a tu compra?
           </p>
-          <div className="flex gap-4">
+          <div className="flex gap-6">
             <Button
-              className="flex-1 bg-[#414868] py-6 text-base font-semibold text-[#c0caf5] transition-colors hover:bg-[#565f89]"
+              className="flex-1 bg-rose-100 py-6 text-lg font-semibold text-rose-900 transition-all hover:bg-rose-200 hover:scale-105 rounded-xl"
               onClick={() => {
                 navigate(`${location.pathname}/resumen-compra`);
                 setIsOpenModal(false);
@@ -215,7 +215,7 @@ export default function SeleccionEntradas() {
               No, continuar sin productos
             </Button>
             <Button
-              className="flex-1 bg-[#7aa2f7] py-6 text-base font-semibold text-[#1a1b26] transition-colors hover:bg-[#bb9af7]"
+              className="flex-1 bg-gradient-to-r from-rose-800 to-purple-800 py-6 text-lg font-semibold text-white transition-all hover:from-rose-900 hover:to-purple-900 hover:scale-105 rounded-xl"
               onClick={() => {
                 navigate(`${location.pathname}/productos`);
                 setIsOpenModal(false);
@@ -229,3 +229,4 @@ export default function SeleccionEntradas() {
     </div>
   );
 }
+
