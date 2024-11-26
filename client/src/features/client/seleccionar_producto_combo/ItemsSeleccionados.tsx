@@ -1,8 +1,8 @@
-// src/components/ItemsSeleccionados.tsx
 import React from "react";
 import { Combo } from "@/store/comboStore";
 import { Producto } from "@/store/productoStore";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/Card";
 
 interface Props {
   products: Producto[];
@@ -15,62 +15,52 @@ const ItemsSeleccionados: React.FC<Props> = ({ products, combos }) => {
       {products.map(
         (product) =>
           product.Cantidad > 0 && (
-            <div
-              key={product.Codigo_Producto}
-              className="flex items-center space-x-4 bg-gray-50 p-3 rounded-md shadow-sm"
-            >
-              <img
-                src={product.Imagen_Producto}
-                alt={product.Nombre}
-                width={50}
-                height={50}
-                className="rounded-md object-cover w-12 h-12"
-              />
-              <div className="flex-grow">
-                <p className="text-base font-semibold text-gray-800">
-                  {product.Nombre}
-                </p>
-                <p className="text-sm text-gray-500">
-                  Precio: ${Number(product.Precio).toFixed(2)}
-                </p>
-                <div className="flex items-center space-x-2">
-                  <Badge variant="secondary" className="text-sm">
-                    Cantidad: {product.Cantidad}
-                  </Badge>
+            <Card key={product.Codigo_Producto} className="overflow-hidden">
+              <CardContent className="p-4 flex items-start gap-4">
+                <img
+                  src={product.Imagen_Producto}
+                  alt={product.Nombre}
+                  className="w-16 h-16 rounded-md object-cover"
+                />
+                <div className="flex-grow">
+                  <p className="text-lg font-semibold">{product.Nombre}</p>
+                  <div className="flex items-center justify-between mt-2">
+                    <Badge variant="secondary">
+                      Cantidad: {product.Cantidad}
+                    </Badge>
+                    <p className="text-lg font-medium">
+                      ${Number(product.Precio).toFixed(2)}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           )
       )}
 
       {combos.map(
         (combo) =>
           combo.Cantidad > 0 && (
-            <div
-              key={combo.Codigo_Combo}
-              className="flex items-center space-x-4 bg-gray-50 p-3 rounded-md shadow-sm"
-            >
-              <img
-                src={combo.Imagen_Combo}
-                alt={combo.Nombre_Combo}
-                width={50}
-                height={50}
-                className="rounded-md object-cover w-12 h-12"
-              />
-              <div className="flex-grow">
-                <p className="text-base font-semibold text-gray-800">
-                  {combo.Nombre_Combo}
-                </p>
-                <p className="text-sm text-gray-500">
-                  Precio: ${Number(combo.Precio).toFixed(2)}
-                </p>
-                <div className="flex items-center space-x-2">
-                  <Badge variant="secondary" className="text-sm">
-                    Cantidad: {combo.Cantidad}
-                  </Badge>
+            <Card key={combo.Codigo_Combo} className="overflow-hidden">
+              <CardContent className="p-4 flex items-start gap-4">
+                <img
+                  src={combo.Imagen_Combo}
+                  alt={combo.Nombre_Combo}
+                  className="w-16 h-16 rounded-md object-cover"
+                />
+                <div className="flex-grow">
+                  <p className="text-lg font-semibold">{combo.Nombre_Combo}</p>
+                  <div className="flex items-center justify-between mt-2">
+                    <Badge variant="secondary">
+                      Cantidad: {combo.Cantidad}
+                    </Badge>
+                    <p className="text-lg font-medium">
+                      ${Number(combo.Precio).toFixed(2)}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           )
       )}
     </div>
@@ -78,3 +68,4 @@ const ItemsSeleccionados: React.FC<Props> = ({ products, combos }) => {
 };
 
 export default ItemsSeleccionados;
+

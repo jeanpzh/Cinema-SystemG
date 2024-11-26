@@ -39,8 +39,6 @@ export function SeleccionarProducto({
   };
 
   const handleQuantityChange = (productId: string, change: number) => {
-    // Si la cantidad es menor al stock, se actualiza la cantidad
-
     const product = productosSeleccionados.find(
       (p) => p.Codigo_Producto === productId
     );
@@ -50,8 +48,6 @@ export function SeleccionarProducto({
     if (product.Cantidad + change > product.Stock) {
       return;
     }
-    console.log(product.Cantidad);
-    console.log(product.Stock);
     updateCantidad(
       productId,
       Math.max(
@@ -77,49 +73,43 @@ export function SeleccionarProducto({
   }
 
   return (
-    <div className="space-y-6 p-4 bg-[#1a1b26] text-[#a9b1d6]">
-      <h2 className="text-2xl font-bold text-[#7aa2f7] mb-4">Menú del Cine</h2>
+    <div className="space-y-6 p-4">
+      <h2 className="text-2xl font-bold mb-4">Menú del Cine</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {products.map((product) => (
-          <Card
-            key={product.Codigo_Producto}
-            className="bg-[#24283b] border-[#414868]"
-          >
-            <CardContent className="p-4">
-              <div className="flex items-start space-x-4">
+          <Card key={product.Codigo_Producto} className="shadow-md">
+            <CardContent className="p-4 flex flex-col gap-4">
+              <div className="flex items-start gap-4">
                 <img
                   src={product.Imagen_Producto}
                   alt={product.Nombre}
                   width={100}
                   height={100}
-                  className="rounded-md object-cover"
+                  className="rounded-lg object-cover"
                 />
                 <div className="flex-grow">
                   <div className="flex items-start justify-between">
-                    <div className="space-y-1">
-                      <Label
-                        htmlFor={`product-${product.Codigo_Producto}`}
-                        className="text-lg font-semibold text-[#7aa2f7]"
-                      >
-                        {product.Nombre}
-                      </Label>
-                      <p className="text-sm text-[#565f89]">{product.Tipo}</p>
-                    </div>
+                    <Label
+                      htmlFor={`product-${product.Codigo_Producto}`}
+                      className="text-lg font-semibold"
+                    >
+                      {product.Nombre}
+                    </Label>
                     <Checkbox
                       id={`product-${product.Codigo_Producto}`}
                       checked={handleChecked(product)}
                       onCheckedChange={() => handleOnCheckedChange(product)}
-                      className="border-[#414868]"
                     />
                   </div>
+                  <p className="text-sm">{product.Tipo}</p>
                   <p className="mt-2 text-sm font-medium">
                     Precio: ${product.Precio}
                   </p>
                 </div>
               </div>
             </CardContent>
-            <CardFooter className="bg-[#1f2335] p-2 flex justify-between items-center">
-              <div className="flex items-center space-x-2">
+            <CardFooter className="p-4 flex justify-between items-center">
+              <div className="flex items-center gap-2">
                 <Button
                   size="icon"
                   variant="outline"
@@ -131,11 +121,10 @@ export function SeleccionarProducto({
                       (p) => p.Codigo_Producto === product.Codigo_Producto
                     )
                   }
-                  className="h-8 w-8 rounded-full"
                 >
-                  <Minus className="h-4 w-4" />
+                  <Minus />
                 </Button>
-                <span className="w-8 text-center">
+                <span>
                   {productosSeleccionados.find(
                     (p) => p.Codigo_Producto === product.Codigo_Producto
                   )?.Cantidad || 0}
@@ -146,16 +135,14 @@ export function SeleccionarProducto({
                   onClick={() =>
                     handleQuantityChange(product.Codigo_Producto, 1)
                   }
-                  className="h-8 w-8 rounded-full"
                 >
-                  <Plus className="h-4 w-4" />
+                  <Plus />
                 </Button>
               </div>
               <Button
                 variant="default"
                 size="sm"
                 onClick={() => handleOnCheckedChange(product)}
-                className="bg-[#7aa2f7] text-[#1a1b26] hover:bg-[#7aa2f7]/80"
               >
                 {handleChecked(product) ? "Quitar" : "Agregar"}
               </Button>
@@ -163,11 +150,9 @@ export function SeleccionarProducto({
           </Card>
         ))}
       </div>
-      <Card className="mt-6 bg-[#24283b] border-[#414868]">
+      <Card className="mt-6 shadow-md">
         <CardContent className="p-4">
-          <h3 className="text-xl font-semibold text-[#7aa2f7] mb-2">
-            Resumen del Pedido
-          </h3>
+          <h3 className="text-xl font-semibold mb-2">Resumen del Pedido</h3>
           {productosSeleccionados.map((product) => (
             <div
               key={product.Codigo_Producto}
@@ -181,7 +166,7 @@ export function SeleccionarProducto({
               </span>
             </div>
           ))}
-          <div className="flex justify-between items-center pt-4 border-t border-[#414868] mt-4">
+          <div className="flex justify-between items-center pt-4 border-t mt-4">
             <span className="font-bold">Total:</span>
             <span className="font-bold">${calculateTotal().toFixed(2)}</span>
           </div>
