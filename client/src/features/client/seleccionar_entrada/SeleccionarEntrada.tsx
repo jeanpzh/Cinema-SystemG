@@ -79,7 +79,7 @@ export default function SeleccionEntradas() {
   const remainingTickets = asientos.length - totalTickets;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 to-indigo-50 p-6 flex items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-br from-[#1a1b26] to-[#24283b] p-6 flex items-center justify-center">
       <Card className="w-full max-w-2xl overflow-hidden border-none bg-white/95 shadow-xl backdrop-blur-sm rounded-3xl transition-all duration-300 hover:shadow-rose-200/50">
         <CardHeader className="space-y-4 bg-gradient-to-r from-rose-900 to-purple-900 p-8">
           <div className="flex items-center justify-center gap-3">
