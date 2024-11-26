@@ -18,7 +18,8 @@ export class ClienteDA {
         cliente.getCorreo,
       ];
       // Ejecutamos la consulta
-      await pool.query(query, values);
+      const res = await pool.query(query, values);
+      return res.rows[0];
     } catch (error) {
       console.log(error);
     }

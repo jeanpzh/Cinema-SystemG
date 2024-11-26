@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -15,7 +14,6 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Dialog } from "primereact/dialog";
 import { useEntradaStore } from "@/store/entradaStore";
 
-// Define los tipos para nuestros asientos y filas
 export interface Asiento {
   id_asiento: string;
   fila: string;
@@ -31,9 +29,6 @@ const SeleccionarAsiento: React.FC = () => {
   const { idSala } = useParams();
   const [isOpenModal, setIsOpenModal] = useState(false);
 
-  // Funciones
-
-  // Funcion para que cuando se haga click en el boton de confirmar se guarde en el estado global y se redirija a la pagina de resumen de compra
   const handleClickConfirmar = () => {
     useEntradaStore.setState({
       asientos: selectedSeats,
@@ -45,20 +40,7 @@ const SeleccionarAsiento: React.FC = () => {
     }, 1000);
   };
 
-  // Funcion para que cuando se haga click en el boton de comprar productos adicionales se guarde en el estado global y se redirija a la pagina de productos
-  /* const handleClickProductos = () => {
-    useEntradaStore.setState({
-      asientos: selectedSeats,
-    });
-    setIsOpenModal(false);
-    guardarAsientos(selectedSeats);
-    setTimeout(() => {
-      navigate(`${location.pathname}/productos`);
-    }, 1000);
-  }; */
-
   useEffect(() => {
-    // Función para obtener los asientos desde el backend
     const fetchAsientos = async () => {
       try {
         const response = await axios.get<Asiento[]>(
@@ -69,7 +51,6 @@ const SeleccionarAsiento: React.FC = () => {
             },
           }
         );
-
         const data = response.data;
         setAsientos(data);
         console.log("Asientos obtenidos:", data);
@@ -88,12 +69,10 @@ const SeleccionarAsiento: React.FC = () => {
     fetchAsientos();
   }, [idSala]);
 
-  // Filtra los asientos seleccionados correctamente
   const selectedSeats = asientos.filter(
     (seat) => seat.estado === "SELECCIONADO"
   );
 
-  // Maneja la selección de asientos
   const handleSeatClick = (clickedSeat: Asiento) => {
     if (clickedSeat.estado === "OCUPADO") return;
 
@@ -110,7 +89,6 @@ const SeleccionarAsiento: React.FC = () => {
     );
   };
 
-  // Agrupa los asientos por fila para una mejor visualización
   const groupedSeats = asientos.reduce((acc, seat) => {
     if (!acc[seat.fila]) {
       acc[seat.fila] = [];
@@ -120,49 +98,42 @@ const SeleccionarAsiento: React.FC = () => {
   }, {} as { [key: string]: Asiento[] });
 
   return (
-    <Card className="w-full max-w-4xl mx-auto bg-tokyoNight-bg text-tokyoNight-primary p-6 rounded-lg shadow-lg">
+    <Card className="w-full max-w-5xl mx-auto bg-gradient-to-br from-[#1a1b26] to-[#24283b] text-[#c0caf5] p-8 rounded-xl shadow-2xl border border-[#7aa2f7]">
       <Dialog
         header={
-          <h1 className="text-center text-xl font-semibold">
+          <h1 className="text-center text-2xl font-bold text-[#7aa2f7] drop-shadow-glow">
             Confirmación de Reserva
           </h1>
         }
         visible={isOpenModal}
         onHide={() => setIsOpenModal(false)}
-        className="p-6 rounded-lg shadow-lg"
+        className="p-8 rounded-xl shadow-2xl bg-[#1a1b26] border border-[#7aa2f7]"
         modal
         draggable={false}
         resizable={false}
-        style={{ width: "400px" }}
+        style={{ width: "450px" }}
         breakpoints={{ "960px": "75vw", "640px": "90vw" }}
       >
         {selectedSeats.length > 0 ? (
-          <div className="flex flex-col items-center space-y-4">
-            <h2 className="text-lg font-medium">Has seleccionado:</h2>
-            <p className="text-center">
+          <div className="flex flex-col items-center space-y-6">
+            <h2 className="text-xl font-semibold text-[#7aa2f7]">Has seleccionado:</h2>
+            <p className="text-center text-lg text-[#c0caf5]">
               {selectedSeats
                 .map((seat) => `${seat.fila}-${seat.numero_asiento}`)
                 .join(", ")}
             </p>
-            <Button onClick={handleClickConfirmar} className="w-full max-w-xs">
+            <Button onClick={handleClickConfirmar} className="w-full max-w-xs text-lg font-semibold bg-[#7aa2f7] hover:bg-[#9ece6a] transition-colors duration-300">
               Confirmar Reserva
             </Button>
-            {/*  <Button
-              variant="outline"
-              onClick={handleClickProductos}
-              className="w-full max-w-xs mt-2"
-            >
-              Comprar Productos Adicionales
-            </Button> */}
           </div>
         ) : (
-          <div className="flex flex-col items-center space-y-4">
-            <h2 className="text-lg font-medium">
+          <div className="flex flex-col items-center space-y-6">
+            <h2 className="text-xl font-semibold text-[#7aa2f7]">
               No has seleccionado ningún asiento.
             </h2>
             <Button
               onClick={() => setIsOpenModal(false)}
-              className="w-full max-w-xs"
+              className="w-full max-w-xs text-lg font-semibold bg-[#f7768e] hover:bg-[#ff9e64] transition-colors duration-300"
             >
               Cerrar
             </Button>
@@ -171,33 +142,29 @@ const SeleccionarAsiento: React.FC = () => {
       </Dialog>
 
       <CardHeader>
-        <CardTitle className="text-3xl font-bold text-center">
+        <CardTitle className="text-4xl font-extrabold text-center text-[#7aa2f7] mb-6">
           Selecciona tus Asientos
         </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col items-center">
-          {/* Pantalla */}
-          <div className="w-3/4 h-2 bg-[#c0caf5] mt-4 mb-8 rounded-md relative">
-            <span className="absolute -top-6 left-1/2 transform -translate-x-1/2 text-sm text-[#c0caf5]">
+          <div className="w-4/5 h-3 bg-[#7dcfff] mt-4 mb-12 rounded-full relative shadow-lg">
+            <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 text-lg font-semibold text-[#7dcfff] drop-shadow-glow">
               Pantalla
             </span>
           </div>
 
-          {/* Renderiza las filas de asientos */}
-          <div className="space-y-6">
+          <div className="space-y-8">
             {Object.entries(groupedSeats).map(([fila, asientosFila]) => (
               <div
                 key={fila}
-                className="flex items-center justify-center space-x-4"
+                className="flex items-center justify-center space-x-6"
               >
-                {/* Etiqueta de la Fila */}
-                <span className="w-10 text-right text-sm text-[#c0caf5] font-medium">
+                <span className="w-12 text-right text-lg text-[#7dcfff] font-semibold">
                   {fila}
                 </span>
 
-                {/* Asientos en la Fila */}
-                <div className="flex space-x-3">
+                <div className="flex space-x-4">
                   {asientosFila.map((asiento) => (
                     <button
                       key={asiento.id_asiento}
@@ -206,12 +173,12 @@ const SeleccionarAsiento: React.FC = () => {
                       aria-label={`Asiento ${asiento.fila}-${
                         asiento.numero_asiento
                       } ${asiento.estado.toLowerCase()}`}
-                      className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-semibold 
+                      className={`w-14 h-14 rounded-lg flex items-center justify-center text-white text-lg font-bold shadow-md transition-all duration-300 transform hover:scale-105 
                         ${
                           asiento.estado === "DISPONIBLE"
-                            ? "bg-[#9ece6a] hover:bg-[#7aa2f7] transition-colors duration-300 cursor-pointer"
+                            ? "bg-[#9ece6a] hover:bg-[#7aa2f7] hover:shadow-[#7aa2f7]/50"
                             : asiento.estado === "SELECCIONADO"
-                            ? "bg-[#7aa2f7] animate-pulse cursor-pointer"
+                            ? "bg-[#7aa2f7] ring-4 ring-[#bb9af7] animate-pulse shadow-[#bb9af7]/50"
                             : "bg-[#f7768e] opacity-50 cursor-not-allowed"
                         }`}
                     >
@@ -224,35 +191,36 @@ const SeleccionarAsiento: React.FC = () => {
           </div>
         </div>
 
-        {/* Leyenda de los estados de los asientos */}
-        <div className="flex justify-center space-x-8 mt-8">
-          <div className="flex items-center space-x-2">
-            <div className="w-5 h-5 bg-[#9ece6a] rounded-full border-2 border-[#7aa2f7]"></div>
-            <span>Disponible</span>
+        <div className="flex justify-center space-x-12 mt-12 bg-[#1a1b26]/50 p-4 rounded-lg shadow-inner">
+          <div className="flex items-center space-x-3">
+            <div className="w-6 h-6 bg-[#9ece6a] rounded-lg shadow-md"></div>
+            <span className="text-lg text-[#9ece6a]">Disponible</span>
           </div>
-          <div className="flex items-center space-x-2">
-            <div className="w-5 h-5 bg-[#7aa2f7] rounded-full border-2 border-[#7aa2f7] animate-pulse"></div>
-            <span>Seleccionado</span>
+          <div className="flex items-center space-x-3">
+            <div className="w-6 h-6 bg-[#7aa2f7] rounded-lg shadow-md ring-2 ring-[#bb9af7] animate-pulse"></div>
+            <span className="text-lg text-[#7aa2f7]">Seleccionado</span>
           </div>
-          <div className="flex items-center space-x-2">
-            <div className="w-5 h-5 bg-[#f7768e] rounded-full border-2 border-[#f7768e] opacity-50"></div>
-            <span>Ocupado</span>
+          <div className="flex items-center space-x-3">
+            <div className="w-6 h-6 bg-[#f7768e] rounded-lg shadow-md opacity-50"></div>
+            <span className="text-lg text-[#f7768e]">Ocupado</span>
           </div>
         </div>
       </CardContent>
       <CardFooter>
-        <div className="w-full text-center">
-          <p className="mb-4 text-lg">
+        <div className="w-full text-center mt-8">
+          <p className="mb-6 text-xl font-semibold text-[#c0caf5]">
             Asientos seleccionados:{" "}
-            {selectedSeats.length > 0
-              ? selectedSeats
-                  .map((seat) => `${seat.fila}-${seat.numero_asiento}`)
-                  .join(", ")
-              : "Ninguno"}
+            <span className="text-[#7aa2f7]">
+              {selectedSeats.length > 0
+                ? selectedSeats
+                    .map((seat) => `${seat.fila}-${seat.numero_asiento}`)
+                    .join(", ")
+                : "Ninguno"}
+            </span>
           </p>
           <Button
             onClick={() => setIsOpenModal(true)}
-            className="w-full max-w-xs"
+            className="w-full max-w-sm text-xl font-bold py-3 bg-[#7aa2f7] hover:bg-[#9ece6a] transition-colors duration-300 transform hover:scale-105 shadow-lg hover:shadow-[#9ece6a]/50"
             disabled={selectedSeats.length === 0}
           >
             Reservar {selectedSeats.length}{" "}
@@ -265,3 +233,4 @@ const SeleccionarAsiento: React.FC = () => {
 };
 
 export default SeleccionarAsiento;
+

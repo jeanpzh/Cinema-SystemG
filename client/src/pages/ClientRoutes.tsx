@@ -14,6 +14,7 @@ import GestionPagos from "@/features/client/gestion_pagos/IU_Pago";
 import BoletaCompra from "@/features/client/gestion_boletos/BoletaCompra";
 import { useLoginStore } from "@/store/loginStore";
 import NotFound from "./NotFound";
+import RegistroCliente from "@/features/client/register/RegistroCliente";
 function ClientRoutes() {
   const location = useLocation();
 
@@ -88,6 +89,7 @@ function ClientRoutes() {
         path="peliculas/:idPelicula/:idSala/asientos/entradas/resumen-compra/pago/:idPago"
         element={<BoletaCompra />}
       />
+      <Route path="/register" element={<RegistroCliente />} />
 
       <Route path="*" element={<Navigate to="/404" />} />
       <Route path="404" element={<NotFound />} />
