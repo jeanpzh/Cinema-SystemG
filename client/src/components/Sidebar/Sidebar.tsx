@@ -2,7 +2,7 @@
 // src/components/Sidebar.tsx
 
 import SidebarOptions from "./SidebarOptions";
-import CinePlexLogo from "../../../src/CINEX.png";
+import CinePlexLogo from "../../../public/CINEX.png";
 import {
   FaHome,
   FaFilm,
