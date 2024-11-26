@@ -60,6 +60,14 @@ export const registrarCliente = async (
     if (error instanceof Error && error.message.includes("llave duplicada")) {
       return res.status(400).json({ error: "El email ya está registrado" });
     }
+    if (error instanceof Error && error.message.includes("correo")) {
+      return res.status(400).json({ error: "El correo ya está registrado" });
+    }
+    if (error instanceof Error && error.message.includes("username")) {
+      return res.status(400).json({ error: "El username ya está registrado" });
+    }
+    console.log(error);
+
     return res
       .status(500)
       .json("Ha ocurrido un error inesperado, por favor intenta nuevamente");

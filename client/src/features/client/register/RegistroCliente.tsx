@@ -41,6 +41,7 @@ export default function RegistroCliente() {
         telefono: parseInt(phone),
         password: password,
       });
+      console.log(res);
 
       if (res.status === 200)
         setTimeout(() => {
