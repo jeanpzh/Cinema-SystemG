@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/label";
-
 import { Film, User, Mail, Lock, AtSign, Phone } from "lucide-react";
 import { useCliente } from "@/hooks/useCrud";
 import { useNavigate } from "react-router-dom";
@@ -28,14 +26,19 @@ export default function RegistroCliente() {
   const [showModal, setShowModal] = useState(false);
   const [showModalError, setShowModalError] = useState(false);
   const [axiosError, setAxiosError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (password.length < 6) {
+      setPasswordError("La contraseña debe tener al menos 6 caracteres.");
+      return;
+    }
+    if (password !== confirmPassword) {
+      setError("Las contraseñas no coinciden");
+      return;
+    }
     try {
-      if (password !== confirmPassword) {
-        setError("Las contraseñas no coinciden");
-        return;
-      }
-
       const res = await crear_cliente({
         nombre: name,
         correo: email,
@@ -52,10 +55,22 @@ export default function RegistroCliente() {
           setShowModal(true);
           clearForm();
         }, 1500);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.log(error);
     }
   };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+    if (newPassword.length < 6) {
+      setPasswordError("La contraseña debe tener al menos 6 caracteres.");
+    } else {
+      setPasswordError("");
+    }
+  };
+
   const clearForm = () => {
     setName("");
     setEmail("");
@@ -185,7 +200,7 @@ export default function RegistroCliente() {
                   type="password"
                   placeholder="••••••••"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={handlePasswordChange}
                   required
                   className="pl-10 bg-white/10 border-white/20 text-white"
                 />
@@ -194,6 +209,7 @@ export default function RegistroCliente() {
                   size={18}
                 />
               </div>
+              {passwordError && <p className="text-red-500">{passwordError}</p>}
             </div>
             <div className="space-y-2">
               <Label htmlFor="confirmPassword" className="text-white">
@@ -208,13 +224,11 @@ export default function RegistroCliente() {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   className="pl-10 bg-white/10 border-white/20 text-white"
                 />
-
                 {error && (
                   <p className="text-red-500 text-pretty">
                     Las contraseñas no coinciden
                   </p>
                 )}
-
                 <Lock
                   className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60"
                   size={18}
@@ -261,8 +275,6 @@ export default function RegistroCliente() {
           </div>
         </DialogContent>
       </Dialog>
-      {/* Error del cliente ya existe : Dialog*/}
-
       <Dialog open={showModalError} onOpenChange={setShowModalError}>
         <DialogContent className="sm:max-w-[425px] bg-gradient-to-br from-purple-900 to-indigo-900 text-white">
           <DialogHeader>
@@ -275,8 +287,6 @@ export default function RegistroCliente() {
             <Button
               onClick={() => {
                 setAxiosError("");
-                // Limpiar los datos del formulario
-                //clearForm();
                 setError("");
                 setShowModalError(false);
               }}
