@@ -311,15 +311,14 @@ export const useVoucher = () => {
 
 export const useCliente = () => {
   const operations: CrudOperations<any> = useMemo(
-    () => ({
-      get: async () => Promise.reject(new Error("Not implemented")),
-      create: create_cliente,
-      update: async () => Promise.reject(new Error("Not implemented")),
-      delete: async () => Promise.reject(new Error("Not implemented")),
-    }),
-
-    []
-  );
+  () => ({
+    get: async (): Promise<any> => Promise.reject(new Error("Not implemented")),
+    create: async (data: any): Promise<any> => create_cliente(data),
+    update: async (): Promise<any> => Promise.reject(new Error("Not implemented")),
+    delete: async (): Promise<any> => Promise.reject(new Error("Not implemented")),
+  }),
+  []
+);
 
   return useCrud(operations);
 };

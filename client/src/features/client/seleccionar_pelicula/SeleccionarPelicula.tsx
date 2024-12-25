@@ -53,10 +53,6 @@ function MovieShowcase() {
                 pelicula={movie}
                 Nombre_Pelicula={movie.Nombre_Pelicula}
               />
-              {/* Etiqueta superior */}
-              <span className="absolute top-2 left-2 bg-gradient-to-r from-red-500 to-purple-600 text-white text-xs font-semibold py-1 px-3 rounded-full shadow-md group-hover:scale-105 transition-transform">
-                {movie.Calificacion > 4 ? "Popular" : "Estreno"}
-              </span>
             </div>
           ))}
         </div>

@@ -47,11 +47,7 @@ function CardItem({ Nombre_Pelicula, Cod_Pelicula, pelicula }: Props) {
               </div>
               <div className="flex items-center gap-x-1">
                 <Star className="h-4 w-4 text-yellow-500" />
-                <span className="font-medium">{pelicula.Calificacion || "N/A"}</span>
-              </div>
-              <div className="flex items-center gap-x-1">
-                <Calendar className="h-4 w-4 text-blue-500" />
-                <span className="font-medium">{pelicula.Fecha_Estreno || "Próximamente"}</span>
+                <span className="font-medium">{pelicula.Clasificacion || "N/A"}</span>
               </div>
             </div>
 
