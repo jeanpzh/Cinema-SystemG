@@ -71,6 +71,9 @@ app.get("/" , (req: Request, res: Response) => {
   res.send("API de Cine");
 });
 
-app.listen(PORT, () => {
-  console.log("Server running at PORT: ", PORT);
-});
+if (process.env.NODE_ENV !== "production") {
+  app.listen(3000, () => {
+    console.log("Servidor local en 3000");
+  });
+}
+export default app;
