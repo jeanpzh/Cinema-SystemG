@@ -1,7 +1,7 @@
 import { Pelicula } from "@/constants/table";
 import { useEntradaStore } from "@/store/entradaStore";
 import { Link } from "react-router-dom";
-import { Clock, Info, Star, Calendar } from 'lucide-react';
+import { Clock, Info, Star } from 'lucide-react';
 const apiUrl = import.meta.env.VITE_API_URL;
 
 interface Props {

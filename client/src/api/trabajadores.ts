@@ -4,7 +4,7 @@ import axios from "axios";
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export const obtenerTrabajadores = async () => {
-  const res = await axios.get("http://localhost:3000/trabajadores");
+  const res = await axios.get(apiUrl + "/trabajadores");
   return res;
 };
 export const createTrabajador = async (trabajador: Trabajador) => {
