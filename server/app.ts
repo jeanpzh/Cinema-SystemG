@@ -15,6 +15,7 @@ import clientRouter from "./routes/ClientRoutes";
 import asientoRouter from "./routes/AsientoController";
 import entradaRouter from "./routes/EntradaRoutes";
 import comprar_entrada_router from "./routes/ComprarEntradaRoutes";
+import path from "path";
 
 declare global {
   namespace Express {
@@ -25,7 +26,7 @@ declare global {
 }
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
 // Configuración de CORS para HTTP ONLY EN LA COOKIE
 const corsOptions = {
@@ -33,6 +34,7 @@ const corsOptions = {
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
 };
+app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static("optimize"));
 app.use(cors(corsOptions));
 app.use(express.json());
