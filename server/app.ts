@@ -29,7 +29,7 @@ const PORT = process.env.PORT || 4000;
 
 // Configuración de CORS para HTTP ONLY EN LA COOKIE
 const corsOptions = {
-  origin: process.env.FRONTEND_URL ?? "http://localhost:3000",
+  origin: "https://client-app-movie.vercel.app" ,
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
 };
