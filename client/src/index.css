@@ -101,6 +101,12 @@
   
   }
 }
+@layer utilities {
+  .border-border {
+    border-color: theme('colors.dark');
+  }
+}
+
 @keyframes pulse {
   0%,
   100% {
