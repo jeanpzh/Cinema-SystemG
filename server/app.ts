@@ -29,7 +29,7 @@ const PORT = process.env.PORT || 3000;
 
 // Configuración de CORS para HTTP ONLY EN LA COOKIE
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: "https://movie-client-ten.vercel.app/",
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
 };
@@ -66,6 +66,10 @@ app.use(
     res.status(500).send("Algo salió mal!");
   }
 );
+
+app.get("/" , (req: Request, res: Response) => {
+  res.send("API de Cine");
+});
 
 app.listen(PORT, () => {
   console.log("Server running at PORT: ", PORT);
