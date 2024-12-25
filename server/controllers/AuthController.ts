@@ -1,9 +1,12 @@
 import { z } from "zod";
 import { Request, Response } from "express";
-import { AdminLN } from "../LN/AdminLN";
 import { AuthLN } from "../LN/AuthLN";
 import { compararPassword } from "../utils/passwordValidation";
 import { sign } from "jsonwebtoken";
+import { configDotenv } from "dotenv";
+
+
+configDotenv();
 
 // Interface para definir los campos que serán enviados en la respuesta por cookie
 interface CookieData {

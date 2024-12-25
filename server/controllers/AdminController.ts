@@ -6,12 +6,6 @@ import { hashearPassword } from "../utils/passwordValidation";
 import { AuthLN } from "../LN/AuthLN";
 import { AdminLN } from "../LN/AdminLN";
 
-// Esquema para validar los datos del login del administrador
-const adminLoginSchema = z.object({
-  username: z.string().max(50),
-  password: z.string().min(6),
-});
-
 // Esquema para validar los datos del administrador
 const adminSchema = z.object({
   Codigo_Admin: z.string(),
